@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
+import { Suspense } from "react";
 import "./globals.css";
 import { PostHogPageview } from "@/components/posthog-pageview";
 
@@ -44,7 +45,9 @@ posthog.init(${JSON.stringify(posthogKey)}, { api_host: ${JSON.stringify(posthog
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <PostHogPageview />
+        <Suspense fallback={null}>
+          <PostHogPageview />
+        </Suspense>
         {children}
       </body>
     </html>
