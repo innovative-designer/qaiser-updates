@@ -1,9 +1,10 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import Script from 'next/script';
 import { Suspense } from 'react';
 
 import { PostHogPageview } from '@/components/posthog-pageview';
+import { SerwistProvider } from '@/components/providers/serwist-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 import { APP_DESCRIPTION, APP_NAME, APP_TAGLINE, APP_URL } from '@/lib/constants';
@@ -23,6 +24,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(APP_URL),
   applicationName: APP_NAME,
+  manifest: '/manifest.json',
   title: {
     default: `${APP_NAME} | ${APP_TAGLINE}`,
     template: `%s | ${APP_NAME}`,
@@ -47,6 +49,19 @@ export const metadata: Metadata = {
     title: `${APP_NAME} | ${APP_TAGLINE}`,
     description: APP_DESCRIPTION,
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: APP_NAME,
+  },
+  icons: {
+    icon: '/icon.svg',
+    apple: '/icon.svg',
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#1e3a5f',
 };
 
 export default function RootLayout({
@@ -72,13 +87,15 @@ posthog.init(${JSON.stringify(posthogKey)}, { api_host: ${JSON.stringify(posthog
         />
       ) : null}
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light">
-          <Suspense fallback={null}>
-            <PostHogPageview />
-          </Suspense>
-          {children}
-          <Toaster position="top-right" richColors />
-        </ThemeProvider>
+        <SerwistProvider>
+          <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light">
+            <Suspense fallback={null}>
+              <PostHogPageview />
+            </Suspense>
+            {children}
+            <Toaster position="top-right" richColors />
+          </ThemeProvider>
+        </SerwistProvider>
       </body>
     </html>
   );

@@ -334,15 +334,6 @@ export function InvoiceDocument({ invoice }: InvoiceDocumentProps) {
             )}
           </View>
 
-          <View style={styles.addressCard}>
-            <Text style={styles.eyebrow}>Status</Text>
-            <Text style={styles.addressName}>
-              {invoice.status === 'sent' ? 'Ready to Send' : 'Draft'}
-            </Text>
-            <Text style={styles.addressLine}>
-              Clean PDF export with formatted totals and business details.
-            </Text>
-          </View>
         </View>
 
         <View style={styles.table}>
@@ -387,9 +378,9 @@ export function InvoiceDocument({ invoice }: InvoiceDocumentProps) {
 
           {invoice.discount > 0 ? (
             <View style={styles.totalRow}>
-              <Text style={styles.totalLabel}>Discount</Text>
+              <Text style={styles.totalLabel}>Discount ({invoice.discount}%)</Text>
               <Text style={styles.totalValue}>
-                -{formatCurrency(invoice.discount, invoice.currency)}
+                -{formatCurrency(invoice.discountAmount, invoice.currency)}
               </Text>
             </View>
           ) : null}

@@ -97,6 +97,7 @@ function createInitialState(): InvoiceData {
     taxRate: DEFAULT_TAX_RATE,
     taxAmount: 0,
     discount: DEFAULT_DISCOUNT,
+    discountAmount: 0,
     total: 0,
     notes: '',
     dueDate: '',
@@ -124,9 +125,10 @@ function recalculateInvoice(state: InvoiceData): InvoiceData {
 
   const subtotal = lineItems.reduce((sum, lineItem) => sum + lineItem.amount, 0);
   const taxRate = Math.max(0, normalizeNumber(state.taxRate));
-  const discount = Math.max(0, normalizeNumber(state.discount));
+  const discount = Math.max(0, Math.min(100, normalizeNumber(state.discount)));
   const taxAmount = subtotal * (taxRate / 100);
-  const total = Math.max(0, subtotal + taxAmount - discount);
+  const discountAmount = subtotal * (discount / 100);
+  const total = Math.max(0, subtotal + taxAmount - discountAmount);
 
   return {
     ...state,
@@ -135,6 +137,7 @@ function recalculateInvoice(state: InvoiceData): InvoiceData {
     taxRate,
     taxAmount,
     discount,
+    discountAmount,
     total,
   };
 }

@@ -58,7 +58,7 @@ export function InvoicePreview({ invoice, className }: InvoicePreviewProps) {
             </p>
             <div className="text-muted-foreground space-y-1 text-xs leading-5">
               {businessLines.length > 0 ? (
-                businessLines.map((line) => <p key={line}>{line}</p>)
+                businessLines.map((line, i) => <p key={i}>{line}</p>)
               ) : (
                 <p>Add your business details to personalize this invoice.</p>
               )}
@@ -85,7 +85,7 @@ export function InvoicePreview({ invoice, className }: InvoicePreviewProps) {
             <p className="text-foreground font-medium">{invoice.clientName || 'Client name'}</p>
             <div className="text-muted-foreground space-y-1 text-xs leading-5">
               {clientLines.length > 0 ? (
-                clientLines.map((line) => <p key={line}>{line}</p>)
+                clientLines.map((line, i) => <p key={i}>{line}</p>)
               ) : (
                 <p>Add client details to complete the invoice.</p>
               )}
@@ -150,8 +150,8 @@ export function InvoicePreview({ invoice, className }: InvoicePreviewProps) {
 
           {invoice.discount > 0 ? (
             <div className="text-muted-foreground flex items-center justify-between">
-              <span>Discount</span>
-              <span>-{formatCurrency(invoice.discount, invoice.currency)}</span>
+              <span>Discount ({invoice.discount}%)</span>
+              <span>-{formatCurrency(invoice.discountAmount, invoice.currency)}</span>
             </div>
           ) : null}
 
