@@ -22,12 +22,15 @@ export interface InvoiceData {
   taxRate: number;
   taxAmount: number;
   discount: number;
+  discountAmount: number;
   total: number;
   notes: string;
   dueDate: string;
   createdAt: string;
   status: 'draft' | 'sent';
   pdfUrl?: string;
+  sentAt?: string;
+  sentVia?: 'whatsapp' | 'email' | 'download' | 'copy';
 }
 
 export interface CurrencyInfo {

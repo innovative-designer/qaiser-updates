@@ -50,7 +50,7 @@ export async function GET() {
     });
 
     if (!response.ok) {
-      return NextResponse.json({ currency: DEFAULT_CURRENCY });
+      return NextResponse.json({ currency: DEFAULT_CURRENCY, country: null });
     }
 
     const data = (await response.json()) as GeoResponse;
@@ -59,8 +59,11 @@ export async function GET() {
       data.currency ||
       DEFAULT_CURRENCY;
 
-    return NextResponse.json({ currency });
+    return NextResponse.json({
+      currency,
+      country: data.country_code || null,
+    });
   } catch {
-    return NextResponse.json({ currency: DEFAULT_CURRENCY });
+    return NextResponse.json({ currency: DEFAULT_CURRENCY, country: null });
   }
 }

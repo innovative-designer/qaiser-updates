@@ -1,0 +1,19 @@
+{
+  "name": "QuickBill — Free Invoice Maker for WhatsApp",
+  "short_name": "QuickBill",
+  "description": "Create and send PDF invoices on WhatsApp. Free. No signup.",
+  "start_url": "/create",
+  "display": "standalone",
+  "background_color": "#f9f9f6",
+  "theme_color": "#1e3a5f",
+  "orientation": "portrait-primary",
+  "categories": ["business", "finance", "productivity"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

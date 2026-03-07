@@ -1,20 +1,27 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   ArrowLeft,
   CheckCircle2,
+  Copy,
   Download,
   Eye,
   Loader2,
+  Mail,
+  MessageCircle,
+  Pencil,
   Plus,
+  Save,
   Sparkles,
   Trash2,
+  X,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { InvoicePreview } from '@/components/invoice-preview/invoice-preview';
+import { ProWaitlistBanner } from '@/components/pro-waitlist-banner';
 import { Footer } from '@/components/shared/footer';
 import { Header } from '@/components/shared/header';
 import { Badge } from '@/components/ui/badge';
@@ -43,6 +50,7 @@ import { useInvoiceForm, type ValidationErrors } from '@/hooks/use-invoice-form'
 import { useLocalInvoices } from '@/hooks/use-local-invoices';
 import { CURRENCIES, formatCurrency } from '@/lib/currencies';
 import { MAX_INVOICES } from '@/lib/constants';
+import { copyCaptionText, downloadPdf, shareOnWhatsApp, shareViaEmail } from '@/lib/share';
 import { cn } from '@/lib/utils';
 
 function getNumberValue(value: string) {
@@ -94,12 +102,58 @@ export default function CreateInvoicePage() {
   const [isSaving, setIsSaving] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedPdfUrl, setGeneratedPdfUrl] = useState<string | null>(null);
+  const [hasSavedBusiness, setHasSavedBusiness] = useState(false);
+  const [businessEditable, setBusinessEditable] = useState(true);
+
+  const BUSINESS_STORAGE_KEY = 'quickbill_business_info';
 
   const today = useMemo(() => new Date().toISOString().split('T')[0] ?? '', []);
   const storageMessage = loading
     ? 'Checking saved invoices...'
     : `${invoices.length} of ${MAX_INVOICES} local slots used.`;
   const hasRemotePdf = Boolean(generatedPdfUrl && !generatedPdfUrl.startsWith('blob:'));
+
+  // Load saved business info on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(BUSINESS_STORAGE_KEY);
+      if (saved) {
+        const data = JSON.parse(saved) as Record<string, string>;
+        if (data.businessName) setField('businessName', data.businessName);
+        if (data.businessEmail) setField('businessEmail', data.businessEmail);
+        if (data.businessPhone) setField('businessPhone', data.businessPhone);
+        if (data.businessAddress) setField('businessAddress', data.businessAddress);
+        setHasSavedBusiness(true);
+        setBusinessEditable(false);
+      }
+    } catch {
+      // ignore invalid localStorage data
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleSaveBusinessInfo = useCallback(() => {
+    const data = {
+      businessName: invoice.businessName,
+      businessEmail: invoice.businessEmail,
+      businessPhone: invoice.businessPhone,
+      businessAddress: invoice.businessAddress,
+    };
+    localStorage.setItem(BUSINESS_STORAGE_KEY, JSON.stringify(data));
+    setHasSavedBusiness(true);
+    setBusinessEditable(false);
+    toast.success('Business info saved for future invoices.');
+  }, [invoice.businessName, invoice.businessEmail, invoice.businessPhone, invoice.businessAddress]);
+
+  const handleClearBusinessInfo = useCallback(() => {
+    localStorage.removeItem(BUSINESS_STORAGE_KEY);
+    setField('businessName', '');
+    setField('businessEmail', '');
+    setField('businessPhone', '');
+    setField('businessAddress', '');
+    setHasSavedBusiness(false);
+    setBusinessEditable(true);
+  }, [setField]);
 
   useEffect(() => {
     return () => {
@@ -215,6 +269,58 @@ export default function CreateInvoicePage() {
     setErrors({});
   }
 
+  function getInvoiceForSharing() {
+    return {
+      ...invoice,
+      pdfUrl: invoice.pdfUrl || generatedPdfUrl || undefined,
+    };
+  }
+
+  async function handleShareWhatsApp() {
+    const invoiceToShare = getInvoiceForSharing();
+
+    if (!invoiceToShare.pdfUrl) {
+      toast.error('Generate a PDF first before sharing.');
+      return;
+    }
+
+    const result = await shareOnWhatsApp(invoiceToShare);
+
+    if (result === 'shared') {
+      toast.success('Invoice shared on WhatsApp.');
+      return;
+    }
+
+    if (result === 'fallback') {
+      toast.info('PDF downloaded. Attach it in the WhatsApp chat that opened.');
+    }
+  }
+
+  async function handleDownloadPdf() {
+    const success = await downloadPdf(getInvoiceForSharing());
+
+    if (!success) {
+      toast.error('Generate a PDF first before downloading.');
+      return;
+    }
+
+    toast.success('PDF downloaded.');
+  }
+
+  async function handleShareEmail() {
+    await shareViaEmail(getInvoiceForSharing());
+    toast.info('Email client opened.');
+  }
+
+  async function handleCopyCaption() {
+    try {
+      await copyCaptionText(getInvoiceForSharing());
+      toast.success('Caption copied to clipboard.');
+    } catch {
+      toast.error('Could not copy caption. Please try again.');
+    }
+  }
+
   return (
     <div className="min-h-screen bg-[linear-gradient(180deg,rgba(244,246,241,0.96)_0%,rgba(248,246,240,0.92)_36%,rgba(250,248,244,1)_100%)]">
       <Header ctaHref="/" ctaLabel="Back Home" />
@@ -288,6 +394,10 @@ export default function CreateInvoicePage() {
           </div>
         </section>
 
+        <div className="mt-6">
+          <ProWaitlistBanner source="banner" variant="banner" />
+        </div>
+
         <div className="mt-6 flex items-center justify-end lg:hidden">
           <Sheet>
             <SheetTrigger asChild>
@@ -296,14 +406,14 @@ export default function CreateInvoicePage() {
                 Preview
               </Button>
             </SheetTrigger>
-            <SheetContent side="bottom" className="h-[88vh] overflow-y-auto px-0">
+            <SheetContent side="bottom" className="h-[85vh] overflow-y-auto p-4">
               <SheetHeader className="px-4 pb-0">
                 <SheetTitle>Invoice Preview</SheetTitle>
                 <SheetDescription>
                   Live preview of the invoice as it will appear to your client.
                 </SheetDescription>
               </SheetHeader>
-              <div className="p-4 pt-2">
+              <div className="pt-2">
                 <InvoicePreview invoice={invoice} />
               </div>
             </SheetContent>
@@ -313,9 +423,60 @@ export default function CreateInvoicePage() {
         <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_420px]">
           <div className="space-y-6">
             <Card className="border border-stone-200/90 bg-white/90 shadow-sm">
-              <CardHeader>
-                <CardTitle>Business Info</CardTitle>
-                <CardDescription>Tell the client who this invoice is from.</CardDescription>
+              <CardHeader className="flex flex-row items-start justify-between gap-4">
+                <div className="space-y-1.5">
+                  <CardTitle>Business Info</CardTitle>
+                  <CardDescription>Tell the client who this invoice is from.</CardDescription>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  {!hasSavedBusiness && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={handleSaveBusinessInfo}
+                      disabled={!invoice.businessName.trim()}
+                    >
+                      <Save className="size-3.5" />
+                      Save
+                    </Button>
+                  )}
+                  {hasSavedBusiness && !businessEditable && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setBusinessEditable(true)}
+                    >
+                      <Pencil className="size-3.5" />
+                      Edit
+                    </Button>
+                  )}
+                  {hasSavedBusiness && businessEditable && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={handleSaveBusinessInfo}
+                      disabled={!invoice.businessName.trim()}
+                    >
+                      <Save className="size-3.5" />
+                      Save
+                    </Button>
+                  )}
+                  {hasSavedBusiness && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleClearBusinessInfo}
+                      className="text-muted-foreground hover:text-destructive"
+                    >
+                      <X className="size-3.5" />
+                      Clear
+                    </Button>
+                  )}
+                </div>
               </CardHeader>
               <CardContent className="grid gap-4 sm:grid-cols-2">
                 <Field id="businessName" label="Business Name" required error={errors.businessName}>
@@ -324,6 +485,7 @@ export default function CreateInvoicePage() {
                     value={invoice.businessName}
                     placeholder="Studio North"
                     aria-invalid={Boolean(errors.businessName)}
+                    disabled={hasSavedBusiness && !businessEditable}
                     onChange={(event) => setField('businessName', event.target.value)}
                   />
                 </Field>
@@ -334,6 +496,7 @@ export default function CreateInvoicePage() {
                     type="email"
                     value={invoice.businessEmail}
                     placeholder="hello@studionorth.com"
+                    disabled={hasSavedBusiness && !businessEditable}
                     onChange={(event) => setField('businessEmail', event.target.value)}
                   />
                 </Field>
@@ -343,6 +506,7 @@ export default function CreateInvoicePage() {
                     id="businessPhone"
                     value={invoice.businessPhone}
                     placeholder="+1 (555) 123-4567"
+                    disabled={hasSavedBusiness && !businessEditable}
                     onChange={(event) => setField('businessPhone', event.target.value)}
                   />
                 </Field>
@@ -352,6 +516,7 @@ export default function CreateInvoicePage() {
                     id="businessAddress"
                     value={invoice.businessAddress}
                     placeholder="221B Market Street, Suite 8, San Francisco"
+                    disabled={hasSavedBusiness && !businessEditable}
                     onChange={(event) => setField('businessAddress', event.target.value)}
                   />
                 </Field>
@@ -418,7 +583,7 @@ export default function CreateInvoicePage() {
                   <span />
                 </div>
 
-                <div className="space-y-3 overflow-x-auto">
+                <div className="-mx-4 space-y-3 overflow-x-auto px-4 sm:mx-0 sm:px-0">
                   {invoice.lineItems.map((item, index) => {
                     const rowInvalid =
                       Boolean(errors.lineItems) && (!item.description.trim() || item.rate <= 0);
@@ -501,10 +666,10 @@ export default function CreateInvoicePage() {
                           <Button
                             type="button"
                             variant="ghost"
-                            size="icon-sm"
+                            size="icon"
                             onClick={() => removeLineItem(index)}
                             disabled={invoice.lineItems.length === 1}
-                            className="text-muted-foreground hover:text-destructive"
+                            className="text-muted-foreground hover:text-destructive size-10"
                           >
                             <Trash2 className="size-4" />
                             <span className="sr-only">Remove line item</span>
@@ -544,11 +709,12 @@ export default function CreateInvoicePage() {
                     />
                   </Field>
 
-                  <Field id="discount" label="Discount">
+                  <Field id="discount" label="Discount (%)">
                     <Input
                       id="discount"
                       type="number"
                       min={0}
+                      max={100}
                       step="0.01"
                       value={invoice.discount}
                       onChange={(event) => setField('discount', getNumberValue(event.target.value))}
@@ -567,8 +733,8 @@ export default function CreateInvoicePage() {
                   </div>
                   {invoice.discount > 0 ? (
                     <div className="flex items-center justify-between text-sm text-stone-600">
-                      <span>Discount</span>
-                      <span>-{formatCurrency(invoice.discount, invoice.currency)}</span>
+                      <span>Discount ({invoice.discount}%)</span>
+                      <span>-{formatCurrency(invoice.discountAmount, invoice.currency)}</span>
                     </div>
                   ) : null}
                   <Separator />
@@ -672,22 +838,37 @@ export default function CreateInvoicePage() {
                     <div>
                       <CardTitle>Invoice Ready</CardTitle>
                       <CardDescription>
-                        Your invoice for {invoice.clientName || 'this client'} is ready to
-                        download{hasRemotePdf ? ', share,' : ''} and archive.
+                        Your invoice for {invoice.clientName || 'this client'} is ready to download
+                        {hasRemotePdf ? ', share,' : ''} and archive.
                       </CardDescription>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-3">
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    <Button className="shadow-sm" onClick={handleShareWhatsApp}>
+                      <MessageCircle className="size-4" />
+                      Send on WhatsApp
+                    </Button>
+                    <Button variant="outline" className="bg-white" onClick={handleDownloadPdf}>
+                      <Download className="size-4" />
+                      Download PDF
+                    </Button>
+                  </div>
+
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    <Button variant="outline" className="bg-white" onClick={handleShareEmail}>
+                      <Mail className="size-4" />
+                      Email Invoice
+                    </Button>
+                    <Button variant="outline" className="bg-white" onClick={handleCopyCaption}>
+                      <Copy className="size-4" />
+                      Copy Caption
+                    </Button>
+                  </div>
+
                   <div className="grid gap-3 sm:grid-cols-2">
                     <Button asChild variant="outline" className="bg-white">
-                      <a href={generatedPdfUrl} download={`invoice-${invoice.id}.pdf`}>
-                        <Download className="size-4" />
-                        Download PDF
-                      </a>
-                    </Button>
-
-                    <Button asChild className="shadow-sm">
                       <a href={generatedPdfUrl} target="_blank" rel="noreferrer">
                         <Eye className="size-4" />
                         Open PDF

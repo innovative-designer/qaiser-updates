@@ -14,6 +14,7 @@ import {
 import { Footer } from '@/components/shared/footer';
 import { Header } from '@/components/shared/header';
 import { JsonLd } from '@/components/shared/json-ld';
+import { ProWaitlistBanner } from '@/components/pro-waitlist-banner';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { APP_DESCRIPTION, APP_NAME, APP_TAGLINE, APP_URL } from '@/lib/constants';
@@ -137,9 +138,9 @@ export default function Home() {
             </div>
 
             <div className="relative z-10">
-              <div className="border-border/80 bg-card rounded-[1.75rem] border p-5 shadow-[0_24px_80px_-36px_rgba(15,23,42,0.28)]">
-                <div className="border-border bg-muted/30 rounded-[1.35rem] border border-dashed p-6">
-                  <div className="border-border/80 flex min-h-[24rem] flex-col justify-between rounded-[1.1rem] border bg-white p-6 shadow-sm">
+              <div className="bg-card rounded-2xl border-border/40 border p-0 shadow-[0_24px_80px_-36px_rgba(15,23,42,0.28)] sm:rounded-[1.75rem] sm:border-border/80 sm:p-5">
+                <div className="bg-muted/30 rounded-2xl p-0 sm:rounded-[1.35rem] sm:border sm:border-dashed sm:border-border sm:p-6">
+                  <div className="flex min-h-[24rem] flex-col justify-between rounded-2xl bg-white p-4 sm:rounded-[1.1rem] sm:border sm:border-border/80 sm:p-6 sm:shadow-sm">
                     <div className="border-border flex items-start justify-between gap-4 border-b border-dashed pb-5">
                       <div>
                         <p className="text-lg font-semibold tracking-tight">Your Business</p>
@@ -254,7 +255,8 @@ export default function Home() {
               Fast invoicing, now with real PDF output.
             </h2>
             <p className="text-muted-foreground">
-              The workflow stays narrow on purpose: one clean form, one live preview, one dependable PDF export path.
+              The workflow stays narrow on purpose: one clean form, one live preview, one dependable
+              PDF export path.
             </p>
           </div>
 
@@ -290,6 +292,9 @@ export default function Home() {
               QuickBill is growing fast. WhatsApp sharing, recurring invoices, client management,
               and a Pro plan with custom branding are all in the pipeline.
             </p>
+            <div className="mx-auto mt-8 max-w-xl text-left">
+              <ProWaitlistBanner source="landing_page" variant="inline" />
+            </div>
           </div>
         </section>
       </main>

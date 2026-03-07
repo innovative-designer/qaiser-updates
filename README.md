@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# QuickBill
 
-## Getting Started
+QuickBill is a Next.js 16 invoice app for creating professional PDF invoices, saving them locally, and sharing them through WhatsApp, email, download, or copied captions. The product is optimized for fast mobile workflows and includes SEO landing pages, a Pro waitlist, and installable PWA support.
 
-First, run the development server:
+## Status
+
+Sprint 3 engineering work is implemented in the repo:
+
+- invoice PDF generation and local persistence
+- WhatsApp / download / email / copy sharing flows
+- Pro waitlist API and UI
+- three Sprint 3 SEO landing pages
+- PWA manifest, service worker, and offline fallback route
+
+Remaining Sprint 3 work is manual verification and launch follow-through:
+
+- real-device QA for WhatsApp sharing
+- Supabase waitlist verification
+- PWA install/offline verification
+- real app icons and launch assets
+- sitemap submission and indexing requests
+
+## Stack
+
+- Next.js 16 App Router
+- React 19
+- TypeScript
+- Tailwind CSS v4
+- shadcn/ui
+- `@react-pdf/renderer`
+- Supabase
+- IndexedDB via `idb`
+- Serwist Turbopack integration for PWA support
+
+## Local Development
+
+If you are working from WSL on a Windows-mounted drive, prefer `corepack pnpm` commands.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd /mnt/d/quikcbill-project/quickbill
+corepack pnpm install
+corepack pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+For Windows `cmd.exe`:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```cmd
+cd /d D:\quikcbill-project\quickbill
+corepack pnpm install
+corepack pnpm dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Validation Commands
 
-## Learn More
+```bash
+corepack pnpm lint
+corepack pnpm exec tsc --noEmit
+corepack pnpm build
+corepack pnpm start
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Environment Variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Create `.env.local` with the environment your deployment expects:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```env
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+SUPABASE_SECRET_KEY=
+NEXT_PUBLIC_POSTHOG_KEY=
+NEXT_PUBLIC_POSTHOG_HOST=
+```
 
-## Deploy on Vercel
+PostHog is optional. Supabase-backed PDF hosting and waitlist storage require valid Supabase values.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Key Paths
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- App shell: [`src/app`](/mnt/d/quikcbill-project/quickbill/src/app)
+- Shared components: [`src/components`](/mnt/d/quikcbill-project/quickbill/src/components)
+- Shared libraries: [`src/lib`](/mnt/d/quikcbill-project/quickbill/src/lib)
+- Main implementation plan: [`documentation/Phase1_Implementation_Plan.md`](/mnt/d/quikcbill-project/quickbill/documentation/Phase1_Implementation_Plan.md)
+- Sprint 3 plan and handoff: [`docs/plans/sprint3-whatsapp-pwa-traffic.md`](/mnt/d/quikcbill-project/quickbill/docs/plans/sprint3-whatsapp-pwa-traffic.md)
