@@ -13,6 +13,8 @@ import {
 import { Footer } from '@/components/shared/footer';
 import { Header } from '@/components/shared/header';
 import { JsonLd } from '@/components/shared/json-ld';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { APP_NAME, APP_URL } from '@/lib/constants';
 
@@ -87,7 +89,7 @@ const faqs = [
 
 export default function FreeInvoiceMakerFreelancersPage() {
   return (
-    <div className="min-h-screen bg-[linear-gradient(180deg,#f6f8fb_0%,#ffffff_42%,#f8f5ef_100%)]">
+    <div className="min-h-screen bg-[linear-gradient(180deg,rgba(249,247,242,1)_0%,rgba(255,255,255,1)_42%,rgba(242,247,245,1)_100%)]">
       <JsonLd
         data={{
           '@context': 'https://schema.org',
@@ -105,42 +107,74 @@ export default function FreeInvoiceMakerFreelancersPage() {
 
       <Header />
 
-      <main className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-        <section className="rounded-[2rem] border border-stone-200 bg-white/90 p-8 shadow-[0_24px_90px_-70px_rgba(24,34,48,0.8)]">
-          <p className="text-sm font-semibold tracking-[0.24em] text-stone-500 uppercase">
-            Freelancer Invoice Tool
-          </p>
-          <h1 className="mt-4 max-w-4xl text-4xl font-bold tracking-tight text-stone-950 sm:text-5xl">
-            Free invoice maker for freelancers who want speed, not bookkeeping overhead.
-          </h1>
-          <p className="mt-5 max-w-3xl text-lg leading-8 text-stone-600">
-            {APP_NAME} keeps the workflow narrow on purpose: enter your client details, review a
-            live preview, generate a clean PDF, and move on with your client work.
-          </p>
-          <Link
-            href="/create"
-            className="bg-primary text-primary-foreground hover:bg-primary/90 mt-8 inline-flex h-11 items-center justify-center gap-2 rounded-lg px-6 text-sm font-medium shadow-sm transition-colors"
-          >
-            Create Your Free Invoice
-            <ArrowRight className="size-4" />
-          </Link>
+      <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+        <section className="overflow-hidden rounded-[2rem] border border-black/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.97),rgba(247,243,234,0.93))] p-6 shadow-[0_30px_80px_-50px_rgba(28,33,55,0.38)] sm:p-8 lg:p-10">
+          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div className="space-y-5">
+              <Badge className="rounded-full bg-primary/10 px-3 py-1 text-[11px] tracking-[0.24em] uppercase text-primary hover:bg-primary/10">
+                Freelancer Invoice Tool
+              </Badge>
+              <div className="space-y-4">
+                <h1 className="max-w-4xl text-4xl font-semibold tracking-[-0.04em] text-foreground sm:text-5xl">
+                  Free invoice maker for freelancers who want speed, not bookkeeping overhead.
+                </h1>
+                <p className="max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg">
+                  {APP_NAME} keeps the flow narrow on purpose: enter your client details, review a
+                  live preview, generate a clean PDF, and move on with the actual client work.
+                </p>
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Button asChild size="lg" className="h-12 rounded-full px-6">
+                  <Link href="/create">
+                    Create Your Free Invoice
+                    <ArrowRight className="size-4" />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="h-12 rounded-full px-6">
+                  <Link href="/history">See saved invoices</Link>
+                </Button>
+              </div>
+            </div>
+
+            <div className="rounded-[1.75rem] border border-black/10 bg-white/80 p-5 sm:p-6">
+              <p className="text-[11px] font-semibold tracking-[0.24em] text-muted-foreground uppercase">
+                Why freelancers stick with it
+              </p>
+              <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
+                <p>No setup ceremony before you can create the first invoice.</p>
+                <p>No dense back office UI when all you need is one polished PDF.</p>
+                <p>No pressure to run your whole business through a billing suite you did not ask for.</p>
+              </div>
+            </div>
+          </div>
         </section>
 
-        <section className="mt-16">
-          <h2 className="text-2xl font-bold tracking-tight text-stone-950">
-            Why freelancers choose {APP_NAME}
-          </h2>
+        <section className="mt-8">
+          <div>
+            <p className="text-[11px] font-semibold tracking-[0.24em] text-muted-foreground uppercase">
+              Why it fits freelance work
+            </p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-foreground sm:text-3xl">
+              The invoice tool is lightweight because your workflow already is.
+            </h2>
+          </div>
 
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {benefits.map((benefit) => {
               const Icon = benefit.icon;
 
               return (
-                <Card key={benefit.title} className="border border-stone-200 bg-white/90 shadow-sm">
-                  <CardHeader>
-                    <Icon className="mb-1 size-8 text-primary" />
-                    <CardTitle>{benefit.title}</CardTitle>
-                    <CardDescription>{benefit.description}</CardDescription>
+                <Card key={benefit.title} className="rounded-[1.6rem] border border-black/10 bg-white/90 py-0">
+                  <CardHeader className="gap-3 px-5 py-5">
+                    <div className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                      <Icon className="size-5" />
+                    </div>
+                    <CardTitle className="text-xl font-semibold tracking-[-0.02em]">
+                      {benefit.title}
+                    </CardTitle>
+                    <CardDescription className="text-sm leading-7">
+                      {benefit.description}
+                    </CardDescription>
                   </CardHeader>
                 </Card>
               );
@@ -148,26 +182,51 @@ export default function FreeInvoiceMakerFreelancersPage() {
           </div>
         </section>
 
-        <section className="mt-16 rounded-[1.75rem] border border-primary/10 bg-primary/5 p-8">
-          <h2 className="text-2xl font-bold tracking-tight text-stone-950">
-            Start invoicing for free
-          </h2>
-          <p className="mt-4 max-w-2xl leading-7 text-stone-600">
-            Build the invoice, generate the PDF, and deliver it without stepping into a billing
-            platform you do not actually want to manage every day.
-          </p>
+        <section className="mt-8 grid gap-4 lg:grid-cols-[1fr_1fr]">
+          <div className="rounded-[1.75rem] border border-black/10 bg-white/90 p-6">
+            <p className="text-[11px] font-semibold tracking-[0.24em] text-muted-foreground uppercase">
+              What this replaces
+            </p>
+            <p className="mt-3 text-xl font-semibold tracking-[-0.02em] text-foreground">
+              Spreadsheets, repeated templates, and awkward chat attachments.
+            </p>
+            <p className="mt-3 text-sm leading-7 text-muted-foreground">
+              QuickBill works best when you need a clean invoice fast and do not want another
+              platform to manage every detail of the business.
+            </p>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-primary/10 bg-primary/5 p-6">
+            <p className="text-[11px] font-semibold tracking-[0.24em] text-muted-foreground uppercase">
+              Start invoicing
+            </p>
+            <p className="mt-3 text-xl font-semibold tracking-[-0.02em] text-foreground">
+              Make the invoice and send it before the task slips into admin backlog.
+            </p>
+            <Button asChild size="lg" className="mt-6 h-12 rounded-full px-6">
+              <Link href="/create">
+                Start for Free
+                <ArrowRight className="size-4" />
+              </Link>
+            </Button>
+          </div>
         </section>
 
-        <section className="mt-16 space-y-8">
-          <h2 className="text-2xl font-bold tracking-tight text-stone-950">
-            Frequently asked questions
-          </h2>
+        <section className="mt-8 space-y-4">
+          <div>
+            <p className="text-[11px] font-semibold tracking-[0.24em] text-muted-foreground uppercase">
+              FAQ
+            </p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-foreground sm:text-3xl">
+              Questions freelancers usually ask first
+            </h2>
+          </div>
 
-          <div className="grid gap-6">
+          <div className="grid gap-4">
             {faqs.map((faq) => (
-              <div key={faq.question} className="rounded-2xl border border-stone-200 bg-white/90 p-6">
-                <h3 className="text-lg font-semibold text-stone-950">{faq.question}</h3>
-                <p className="mt-2 leading-7 text-stone-600">{faq.answer}</p>
+              <div key={faq.question} className="rounded-[1.5rem] border border-black/10 bg-white/90 p-5">
+                <h3 className="text-lg font-semibold text-foreground">{faq.question}</h3>
+                <p className="mt-2 text-sm leading-7 text-muted-foreground">{faq.answer}</p>
               </div>
             ))}
           </div>

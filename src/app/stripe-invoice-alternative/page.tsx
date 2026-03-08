@@ -4,6 +4,7 @@ import { ArrowRight, CheckCircle2, Clock3, XCircle } from 'lucide-react';
 
 import { Footer } from '@/components/shared/footer';
 import { Header } from '@/components/shared/header';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -41,80 +42,101 @@ const comparisonRows = [
 
 export default function StripeInvoiceAlternativePage() {
   return (
-    <div className="bg-background min-h-screen">
+    <div className="min-h-screen bg-[linear-gradient(180deg,rgba(249,247,242,1)_0%,rgba(255,255,255,1)_44%,rgba(240,247,245,1)_100%)]">
       <Header />
-      <main className="mx-auto w-full max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
-        <section className="text-center">
-          <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase">
-            Comparison
-          </p>
-          <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-            A Simpler Stripe Invoice Alternative
-          </h1>
-          <p className="text-muted-foreground mx-auto mt-4 max-w-2xl text-base leading-7">
-            If you need straightforward invoice creation and fast sharing, QuickBill removes the
-            setup friction. Create the invoice, export PDF, and send it to clients in seconds.
-          </p>
-          <div className="mt-8 flex justify-center">
-            <Button asChild size="lg">
-              <Link href="/create">
-                Try QuickBill Free
-                <ArrowRight className="size-4" />
-              </Link>
-            </Button>
+      <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+        <section className="overflow-hidden rounded-[2rem] border border-black/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.97),rgba(247,243,234,0.93))] p-6 shadow-[0_30px_80px_-50px_rgba(28,33,55,0.38)] sm:p-8 lg:p-10">
+          <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+            <div className="space-y-5">
+              <Badge className="rounded-full bg-primary/10 px-3 py-1 text-[11px] tracking-[0.24em] uppercase text-primary hover:bg-primary/10">
+                Comparison
+              </Badge>
+              <div className="space-y-4">
+                <h1 className="max-w-3xl text-4xl font-semibold tracking-[-0.04em] text-foreground sm:text-5xl">
+                  A simpler Stripe invoice alternative when the goal is just to send the invoice.
+                </h1>
+                <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
+                  If you need straightforward invoice creation and fast sharing, QuickBill removes
+                  the setup drag. Create the invoice, export the PDF, and send it in seconds.
+                </p>
+              </div>
+              <Button asChild size="lg" className="h-12 rounded-full px-6">
+                <Link href="/create">
+                  Try QuickBill Free
+                  <ArrowRight className="size-4" />
+                </Link>
+              </Button>
+            </div>
+
+            <div className="rounded-[1.75rem] border border-black/10 bg-white/80 p-5 sm:p-6">
+              <p className="text-[11px] font-semibold tracking-[0.24em] text-muted-foreground uppercase">
+                Best fit
+              </p>
+              <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
+                <p>QuickBill is for fast invoice delivery and low setup overhead.</p>
+                <p>Stripe is better when you need deeper payment automation and billing infrastructure.</p>
+                <p>The right tool depends on whether your workflow is operationally heavy or intentionally light.</p>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section className="mt-14 overflow-x-auto rounded-2xl border">
-          <table className="w-full min-w-[560px] text-left text-sm">
-            <thead>
-              <tr className="border-b bg-stone-50/70">
-                <th className="px-4 py-3 font-semibold">Feature</th>
-                <th className="px-4 py-3 font-semibold text-emerald-700">QuickBill</th>
-                <th className="px-4 py-3 font-semibold text-stone-600">Stripe</th>
-              </tr>
-            </thead>
-            <tbody>
-              {comparisonRows.map((row) => (
-                <tr key={row.feature} className="border-b last:border-0">
-                  <td className="px-4 py-3 font-medium">{row.feature}</td>
-                  <td className="px-4 py-3">
-                    <span className="inline-flex items-center gap-1.5">
-                      <CheckCircle2 className="size-4 text-emerald-600" />
-                      {row.quickbill}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-stone-600">
-                    <span className="inline-flex items-center gap-1.5">
-                      {row.stripe === 'Not built for it' ? (
-                        <XCircle className="size-4 text-rose-500" />
-                      ) : (
-                        <Clock3 className="size-4 text-amber-500" />
-                      )}
-                      {row.stripe}
-                    </span>
-                  </td>
+        <section className="mt-8 rounded-[1.9rem] border border-black/10 bg-white/95 p-3 shadow-[0_24px_60px_-45px_rgba(28,33,55,0.28)] sm:p-5">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[560px] text-left text-sm">
+              <thead>
+                <tr className="border-b border-black/10">
+                  <th className="px-4 py-4 font-semibold text-foreground">Feature</th>
+                  <th className="px-4 py-4 font-semibold text-primary">QuickBill</th>
+                  <th className="px-4 py-4 font-semibold text-muted-foreground">Stripe</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {comparisonRows.map((row) => (
+                  <tr key={row.feature} className="border-b border-black/10 last:border-0">
+                    <td className="px-4 py-4 font-medium text-foreground">{row.feature}</td>
+                    <td className="px-4 py-4">
+                      <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-primary">
+                        <CheckCircle2 className="size-4" />
+                        {row.quickbill}
+                      </span>
+                    </td>
+                    <td className="px-4 py-4 text-muted-foreground">
+                      <span className="inline-flex items-center gap-2 rounded-full bg-black/5 px-3 py-1">
+                        {row.stripe === 'Not built for it' ? (
+                          <XCircle className="size-4 text-rose-500" />
+                        ) : (
+                          <Clock3 className="size-4 text-amber-500" />
+                        )}
+                        {row.stripe}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </section>
 
-        <section className="mt-14 grid gap-4 sm:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">When QuickBill Is Better</CardTitle>
+        <section className="mt-8 grid gap-4 sm:grid-cols-2">
+          <Card className="rounded-[1.6rem] border border-black/10 bg-white/90 py-0">
+            <CardHeader className="px-5 py-5">
+              <CardTitle className="text-xl font-semibold tracking-[-0.02em]">
+                When QuickBill is better
+              </CardTitle>
             </CardHeader>
-            <CardContent className="text-muted-foreground text-sm leading-6">
+            <CardContent className="px-5 pb-5 text-sm leading-7 text-muted-foreground">
               Best for freelancers and service businesses that want fast invoicing and direct
               sharing without account setup overhead.
             </CardContent>
           </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">When Stripe Is Better</CardTitle>
+          <Card className="rounded-[1.6rem] border border-black/10 bg-white/90 py-0">
+            <CardHeader className="px-5 py-5">
+              <CardTitle className="text-xl font-semibold tracking-[-0.02em]">
+                When Stripe is better
+              </CardTitle>
             </CardHeader>
-            <CardContent className="text-muted-foreground text-sm leading-6">
+            <CardContent className="px-5 pb-5 text-sm leading-7 text-muted-foreground">
               Better fit if you need deeper payment workflows, full billing stack automation, and
               enterprise-grade integrations.
             </CardContent>

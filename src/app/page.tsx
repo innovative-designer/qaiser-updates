@@ -1,11 +1,10 @@
 import Link from 'next/link';
 import {
   ArrowRight,
-  FileCheck,
-  FileText,
-  Globe,
+  FileCheck2,
+  Globe2,
   MessageCircleMore,
-  Sparkles,
+  ReceiptText,
   WalletCards,
   Wifi,
   Zap,
@@ -19,69 +18,79 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { APP_DESCRIPTION, APP_NAME, APP_TAGLINE, APP_URL } from '@/lib/constants';
 
-const steps = [
+const workflow = [
   {
-    title: 'Fill one focused form',
-    description:
-      'Business details, client details, and line items stay on one screen so you never lose context.',
-    icon: FileText,
+    title: 'Enter the essentials',
+    description: 'Business, client, due date, and line items stay together in one calm flow.',
+    icon: ReceiptText,
   },
   {
-    title: 'Preview instantly',
-    description:
-      'The invoice updates as you type, so the document always looks polished before you send it.',
-    icon: FileCheck,
+    title: 'Preview as you type',
+    description: 'The invoice stays client-ready while totals and layout update in real time.',
+    icon: FileCheck2,
   },
   {
-    title: 'Send on WhatsApp',
-    description:
-      'Generate a professional PDF and send it directly as a WhatsApp attachment. Your client gets it instantly.',
+    title: 'Generate and send',
+    description: 'Export a polished PDF, then move it directly into WhatsApp or email.',
     icon: MessageCircleMore,
   },
 ];
 
-const features = [
+const highlights = [
   {
-    title: 'No Signup',
-    description:
-      'Open the app and make an invoice immediately. No account wall, no setup ceremony.',
+    title: 'No signup wall',
+    description: 'Start invoicing immediately instead of entering a setup funnel.',
     icon: Zap,
   },
   {
-    title: 'Professional PDFs',
-    description:
-      'Generate polished PDF invoices with a clean layout, proper currency formatting, and your business details.',
-    icon: FileCheck,
-  },
-  {
-    title: 'WhatsApp Native',
-    description:
-      'QuickBill is built around the reality of freelancers and small businesses sending invoices in chat.',
-    icon: MessageCircleMore,
-  },
-  {
-    title: 'Works Offline',
-    description:
-      'Invoices save locally in your browser with IndexedDB, so you can keep working without a backend.',
+    title: 'Works offline',
+    description: 'Invoices stay available locally in your browser, even when your connection is weak.',
     icon: Wifi,
   },
   {
-    title: 'Auto Currency',
-    description:
-      'The form detects a likely local currency up front, then still lets you switch any time.',
-    icon: Globe,
+    title: 'Auto currency',
+    description: 'QuickBill starts with a likely local currency, but you can switch at any time.',
+    icon: Globe2,
   },
   {
-    title: '100% Free',
-    description:
-      'Create and send unlimited invoices without signup fees, subscription charges, or hidden costs.',
+    title: 'Free forever core',
+    description: 'Core invoice creation, PDF generation, and sharing stay free.',
     icon: WalletCards,
   },
 ];
 
+const useCases = [
+  {
+    href: '/free-invoice-maker-freelancers',
+    title: 'For freelancers',
+    description: 'Fast invoicing without turning your client work into bookkeeping admin.',
+  },
+  {
+    href: '/send-invoice-whatsapp',
+    title: 'For WhatsApp billing',
+    description: 'Built around chat-native delivery instead of email-first invoicing habits.',
+  },
+  {
+    href: '/invoice-generator-pakistan',
+    title: 'For PKR invoices',
+    description: 'Create local-currency invoices with a mobile-friendly workflow.',
+  },
+  {
+    href: '/whatsapp-billing-uae',
+    title: 'For UAE freelancers',
+    description: 'Generate AED invoices and send them in the channels clients already use.',
+  },
+];
+
+const stats = [
+  { label: 'Time to first invoice', value: '30 sec' },
+  { label: 'Signup required', value: 'None' },
+  { label: 'Primary workflow', value: 'Phone-first' },
+];
+
 export default function Home() {
   return (
-    <div className="bg-background min-h-screen">
+    <div className="min-h-screen">
       <JsonLd
         data={{
           '@context': 'https://schema.org',
@@ -102,139 +111,159 @@ export default function Home() {
       <Header />
 
       <main>
-        <section className="relative overflow-hidden">
-          <div className="absolute inset-x-0 top-0 h-[32rem] bg-[radial-gradient(circle_at_top,oklch(0.94_0.035_255),transparent_55%)]" />
-          <div className="mx-auto grid w-full max-w-7xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)] lg:px-8 lg:py-32">
-            <div className="relative z-10 flex flex-col items-start gap-6">
-              <Badge variant="outline" className="bg-background rounded-full px-3 py-1 shadow-sm">
-                Free forever, no signup
-              </Badge>
+        <section className="app-shell section-space">
+          <div className="editorial-shell relative overflow-hidden px-5 py-6 sm:px-8 sm:py-8 lg:px-10 lg:py-10">
+            <div className="paper-grid pointer-events-none absolute inset-0 opacity-30" />
+            <div className="absolute inset-x-0 top-0 h-48 bg-[radial-gradient(circle_at_top,rgba(77,92,255,0.18),transparent_62%)]" />
 
-              <div className="space-y-4">
-                <h1 className="text-foreground max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-                  Create polished invoices in <span className="text-primary">30 seconds</span>.
-                </h1>
-                <p className="text-muted-foreground max-w-xl text-lg leading-8">
-                  {APP_TAGLINE}. Build the invoice, preview it live, and keep it saved locally in
-                  your browser with zero onboarding friction.
-                </p>
+            <div className="relative grid gap-8 lg:grid-cols-[minmax(0,1.02fr)_minmax(320px,0.98fr)] lg:items-center">
+              <div className="space-y-6">
+                <Badge variant="outline" className="rounded-full bg-white/70 px-4 py-1.5">
+                  Free forever. No signup.
+                </Badge>
+
+                <div className="space-y-4">
+                  <p className="section-kicker">Editorial Utility</p>
+                  <h1
+                    data-display="true"
+                    className="max-w-3xl text-4xl leading-[0.95] font-semibold text-foreground sm:text-5xl lg:text-6xl"
+                  >
+                    Send a polished invoice from your phone before the chat goes cold.
+                  </h1>
+                  <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
+                    {APP_TAGLINE}. Build the invoice, preview it live, generate the PDF, and send
+                    it where the client already replies.
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <Link
+                    href="/create"
+                    className="bg-primary text-primary-foreground inline-flex h-12 items-center justify-center gap-2 rounded-2xl px-5 text-sm font-medium shadow-[0_18px_36px_-22px_rgba(77,92,255,0.7)] transition hover:-translate-y-0.5"
+                  >
+                    Create Invoice
+                    <ArrowRight className="size-4" />
+                  </Link>
+                  <Link
+                    href="#workflow"
+                    className="border-border/80 bg-white/70 text-foreground inline-flex h-12 items-center justify-center rounded-2xl border px-5 text-sm font-medium transition hover:bg-white"
+                  >
+                    See the workflow
+                  </Link>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-3">
+                  {stats.map((stat) => (
+                    <div key={stat.label} className="rounded-[1.35rem] border border-white/80 bg-white/72 p-4">
+                      <p className="text-muted-foreground text-[0.72rem] tracking-[0.22em] uppercase">
+                        {stat.label}
+                      </p>
+                      <p className="mt-2 text-lg font-semibold tracking-tight text-foreground">
+                        {stat.value}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href="/create"
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-medium shadow-sm transition-colors"
-                >
-                  Create Invoice
-                  <ArrowRight className="size-4" />
-                </Link>
-                <Link
-                  href="#how-it-works"
-                  className="border-border bg-background text-foreground hover:bg-muted inline-flex h-11 items-center justify-center rounded-lg border px-5 text-sm font-medium transition-colors"
-                >
-                  See how it works
-                </Link>
-              </div>
-            </div>
-
-            <div className="relative z-10">
-              <div className="bg-card rounded-2xl border-border/40 border p-0 shadow-[0_24px_80px_-36px_rgba(15,23,42,0.28)] sm:rounded-[1.75rem] sm:border-border/80 sm:p-5">
-                <div className="bg-muted/30 rounded-2xl p-0 sm:rounded-[1.35rem] sm:border sm:border-dashed sm:border-border sm:p-6">
-                  <div className="flex min-h-[24rem] flex-col justify-between rounded-2xl bg-white p-4 sm:rounded-[1.1rem] sm:border sm:border-border/80 sm:p-6 sm:shadow-sm">
-                    <div className="border-border flex items-start justify-between gap-4 border-b border-dashed pb-5">
+              <div className="relative mx-auto w-full max-w-md lg:max-w-none">
+                <div className="mx-auto max-w-[24rem] rounded-[2.25rem] border border-[rgba(36,44,72,0.08)] bg-[linear-gradient(180deg,rgba(245,246,255,0.98),rgba(255,255,255,0.96))] p-3 shadow-[0_35px_110px_-48px_rgba(26,38,64,0.55)]">
+                  <div className="rounded-[1.85rem] border border-white/80 bg-white p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                    <div className="flex items-center justify-between pb-4">
                       <div>
-                        <p className="text-lg font-semibold tracking-tight">Your Business</p>
-                        <p className="text-muted-foreground mt-1 text-xs leading-5">
-                          hello@quickbill.app
+                        <p className="text-sm font-semibold text-foreground">Studio North</p>
+                        <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                          hello@studionorth.com
                           <br />
                           +92 300 0000000
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-primary text-xl font-bold tracking-tight uppercase">
+                        <p className="text-primary text-xl font-semibold tracking-tight uppercase">
                           Invoice
                         </p>
-                        <p className="text-muted-foreground mt-1 text-xs">Draft preview</p>
+                        <p className="text-muted-foreground mt-1 text-xs">Ready in 30 sec</p>
                       </div>
                     </div>
 
-                    <div className="grid gap-6 py-6 text-sm">
-                      <div className="grid grid-cols-[1fr_auto] gap-4">
+                    <div className="rounded-[1.4rem] bg-muted/55 p-4">
+                      <div className="flex items-start justify-between gap-4 border-b border-dashed border-border/70 pb-4">
                         <div>
-                          <p className="text-muted-foreground text-[11px] font-semibold tracking-[0.2em] uppercase">
+                          <p className="text-[0.72rem] font-semibold tracking-[0.22em] text-muted-foreground uppercase">
                             Bill To
                           </p>
-                          <p className="mt-2 font-medium">Client Name</p>
-                          <p className="text-muted-foreground text-xs leading-5">
+                          <p className="mt-2 text-sm font-medium text-foreground">Client Name</p>
+                          <p className="text-muted-foreground mt-1 text-xs leading-5">
                             Client Company
                             <br />
                             client@example.com
                           </p>
                         </div>
-                        <Badge variant="outline">Due today</Badge>
+                        <Badge variant="outline" className="rounded-full bg-white">
+                          Due today
+                        </Badge>
                       </div>
 
-                      <div className="space-y-3">
-                        <div className="border-border text-muted-foreground grid grid-cols-[1fr_80px_100px] border-b border-dashed pb-2 text-[11px] font-semibold tracking-[0.18em] uppercase">
-                          <p>Description</p>
-                          <p className="text-right">Qty</p>
-                          <p className="text-right">Amount</p>
+                      <div className="space-y-3 pt-4 text-sm">
+                        <div className="grid grid-cols-[1fr_auto] gap-3">
+                          <p className="text-foreground">Design retainer</p>
+                          <p className="font-medium text-foreground">$500.00</p>
                         </div>
-                        <div className="border-border grid grid-cols-[1fr_80px_100px] gap-2 border-b border-dashed pb-3 text-sm">
-                          <p>Design retainer</p>
-                          <p className="text-muted-foreground text-right">1</p>
-                          <p className="text-right font-medium">$500.00</p>
+                        <div className="grid grid-cols-[1fr_auto] gap-3">
+                          <p className="text-muted-foreground">WhatsApp-ready PDF</p>
+                          <p className="text-muted-foreground">$0.00</p>
                         </div>
-                        <div className="ml-auto w-full max-w-48 space-y-2">
-                          <div className="text-muted-foreground flex items-center justify-between">
-                            <span>Subtotal</span>
-                            <span>$500.00</span>
-                          </div>
-                          <div className="flex items-center justify-between font-semibold">
-                            <span>Total</span>
-                            <span className="text-primary">$500.00</span>
+                        <div className="border-t border-dashed border-border/70 pt-3">
+                          <div className="flex items-center justify-between">
+                            <span className="text-muted-foreground">Total</span>
+                            <span className="text-primary text-lg font-semibold">$500.00</span>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="border-border text-muted-foreground/70 flex items-center gap-2 border-t border-dashed pt-4 text-[11px] tracking-wide">
-                      <span className="bg-primary/10 text-primary flex size-5 items-center justify-center rounded-full">
-                        <Sparkles className="size-3" />
-                      </span>
-                      Try it now - create a real invoice in 30 seconds.
+                    <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                      <div className="rounded-[1.15rem] bg-primary px-3 py-3 text-center text-sm font-medium text-primary-foreground">
+                        Generate PDF
+                      </div>
+                      <div className="rounded-[1.15rem] bg-secondary px-3 py-3 text-center text-sm font-medium text-secondary-foreground">
+                        Send on WhatsApp
+                      </div>
                     </div>
                   </div>
+                </div>
+
+                <div className="absolute -right-1 top-8 hidden rounded-full bg-accent px-4 py-2 text-xs font-semibold text-accent-foreground shadow-lg sm:block">
+                  Live preview
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section id="how-it-works" className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className="max-w-2xl space-y-3">
-            <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase">
-              How It Works
-            </p>
-            <h2 className="text-3xl font-bold tracking-tight">
-              Built for fast invoice creation, not admin fatigue.
+        <section id="workflow" className="app-shell pb-14 sm:pb-18 lg:pb-24">
+          <div className="max-w-2xl">
+            <p className="section-kicker">Workflow</p>
+            <h2 data-display="true" className="mt-3 text-3xl font-semibold text-foreground sm:text-4xl">
+              Built for getting the invoice out, not getting lost in admin.
             </h2>
-            <p className="text-muted-foreground">
-              Every section is designed to keep the form direct and the output trustworthy.
+            <p className="text-muted-foreground mt-4 text-base leading-7">
+              QuickBill keeps the path narrow: fill the essentials, check the live output, and send
+              the finished document where the client already responds.
             </p>
           </div>
 
-          <div className="mt-10 grid gap-6 lg:grid-cols-3">
-            {steps.map((step, index) => {
+          <div className="mt-8 grid gap-4 lg:grid-cols-3">
+            {workflow.map((step, index) => {
               const Icon = step.icon;
 
               return (
                 <Card key={step.title}>
                   <CardHeader>
-                    <div className="bg-primary/10 text-primary mb-3 flex size-14 items-center justify-center rounded-full">
-                      <Icon className="size-6" />
+                    <div className="bg-primary/10 text-primary mb-2 flex size-12 items-center justify-center rounded-2xl">
+                      <Icon className="size-5" />
                     </div>
-                    <p className="text-muted-foreground text-[11px] font-semibold tracking-[0.2em] uppercase">
+                    <p className="text-muted-foreground text-[0.72rem] tracking-[0.22em] uppercase">
                       Step {index + 1}
                     </p>
                     <CardTitle>{step.title}</CardTitle>
@@ -246,54 +275,121 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className="max-w-2xl space-y-3">
-            <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase">
-              Features
-            </p>
-            <h2 className="text-3xl font-bold tracking-tight">
-              Fast invoicing, now with real PDF output.
-            </h2>
-            <p className="text-muted-foreground">
-              The workflow stays narrow on purpose: one clean form, one live preview, one dependable
-              PDF export path.
-            </p>
-          </div>
+        <section className="app-shell pb-14 sm:pb-18 lg:pb-24">
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+            <div className="editorial-panel p-6 sm:p-8">
+              <p className="section-kicker">Why it feels faster</p>
+              <h2 data-display="true" className="mt-3 text-3xl font-semibold text-foreground">
+                The product follows the way freelancers already work on mobile.
+              </h2>
+              <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground sm:text-base">
+                <p>Most invoicing tools feel like desktop billing software shrunk onto a phone.</p>
+                <p>
+                  QuickBill is narrower by design: one focused form, one trustworthy preview, one
+                  clean export path.
+                </p>
+                <p>
+                  That makes it easier to generate the invoice in the same moment you agree the work
+                  or confirm the deliverable.
+                </p>
+              </div>
+            </div>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {features.map((feature) => {
-              const Icon = feature.icon;
+            <div className="grid gap-4 sm:grid-cols-2">
+              {highlights.map((feature) => {
+                const Icon = feature.icon;
 
-              return (
-                <Card
-                  key={feature.title}
-                  className="hover:ring-primary/20 transition-colors duration-200"
-                >
-                  <CardHeader>
-                    <Icon className="text-primary mb-1 size-8" />
-                    <CardTitle>{feature.title}</CardTitle>
-                    <CardDescription>{feature.description}</CardDescription>
-                  </CardHeader>
-                </Card>
-              );
-            })}
+                return (
+                  <Card key={feature.title}>
+                    <CardHeader>
+                      <div className="bg-secondary text-secondary-foreground mb-2 flex size-12 items-center justify-center rounded-2xl">
+                        <Icon className="size-5" />
+                      </div>
+                      <CardTitle>{feature.title}</CardTitle>
+                      <CardDescription>{feature.description}</CardDescription>
+                    </CardHeader>
+                  </Card>
+                );
+              })}
+            </div>
           </div>
         </section>
 
-        <section className="px-4 py-16 sm:px-6 lg:px-8">
-          <div className="border-border/80 bg-muted/40 mx-auto max-w-4xl rounded-[2rem] border px-6 py-14 text-center shadow-sm sm:px-10">
-            <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase">
-              Pro Coming Soon
-            </p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight">
-              More features are on the way.
-            </h2>
-            <p className="text-muted-foreground mx-auto mt-4 max-w-2xl">
-              QuickBill is growing fast. WhatsApp sharing, recurring invoices, client management,
-              and a Pro plan with custom branding are all in the pipeline.
-            </p>
-            <div className="mx-auto mt-8 max-w-xl text-left">
-              <ProWaitlistBanner source="landing_page" variant="inline" />
+        <section className="app-shell pb-14 sm:pb-18 lg:pb-24">
+          <div className="editorial-shell px-5 py-6 sm:px-8 sm:py-8">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <div className="max-w-2xl">
+                <p className="section-kicker">Use Cases</p>
+                <h2 data-display="true" className="mt-3 text-3xl font-semibold text-foreground sm:text-4xl">
+                  One product language, multiple invoicing paths.
+                </h2>
+                <p className="text-muted-foreground mt-3 leading-7">
+                  Each guide and landing page now ladders back to the same mobile-first invoicing
+                  workflow.
+                </p>
+              </div>
+              <Badge className="rounded-full px-4 py-1.5">Modernized across all routes</Badge>
+            </div>
+
+            <div className="mt-8 grid gap-4 md:grid-cols-2">
+              {useCases.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="rounded-[1.5rem] border border-white/80 bg-white/75 p-5 transition hover:-translate-y-1 hover:bg-white"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="text-lg font-semibold tracking-tight text-foreground">
+                        {item.title}
+                      </h3>
+                      <p className="text-muted-foreground mt-2 text-sm leading-6">
+                        {item.description}
+                      </p>
+                    </div>
+                    <ArrowRight className="mt-1 size-4 text-primary" />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="app-shell pb-14 sm:pb-18 lg:pb-24">
+          <ProWaitlistBanner source="home" variant="banner" />
+        </section>
+
+        <section className="app-shell pb-16 sm:pb-20 lg:pb-28">
+          <div className="rounded-[2rem] bg-[linear-gradient(135deg,rgba(77,92,255,0.96),rgba(50,87,177,0.96))] px-5 py-7 text-primary-foreground shadow-[0_32px_90px_-48px_rgba(50,87,177,0.8)] sm:px-8 sm:py-10">
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+              <div className="max-w-2xl">
+                <p className="text-[0.72rem] font-semibold tracking-[0.24em] uppercase text-primary-foreground/70">
+                  Start now
+                </p>
+                <h2 data-display="true" className="mt-3 text-3xl font-semibold sm:text-4xl">
+                  Create the invoice while the project is still top of mind.
+                </h2>
+                <p className="mt-3 max-w-xl text-sm leading-7 text-primary-foreground/80 sm:text-base">
+                  No signup ceremony. No billing-suite overhead. Just a clean invoice workflow that
+                  respects how mobile freelancers actually get paid.
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/create"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl bg-white px-5 text-sm font-medium text-primary transition hover:-translate-y-0.5"
+                >
+                  Open Invoice Builder
+                  <ArrowRight className="size-4" />
+                </Link>
+                <Link
+                  href="/history"
+                  className="inline-flex h-12 items-center justify-center rounded-2xl border border-white/20 px-5 text-sm font-medium text-white/92 transition hover:bg-white/8"
+                >
+                  View Saved Invoices
+                </Link>
+              </div>
             </div>
           </div>
         </section>
