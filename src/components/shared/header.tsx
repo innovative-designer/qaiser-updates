@@ -31,12 +31,20 @@ export function Header({
           <span className="text-base">{APP_NAME}</span>
         </Link>
 
-        <Button asChild size="lg" className="shadow-sm">
-          <Link href={ctaHref}>
-            {ctaLabel}
-            <ArrowRight className="size-4" />
+        <div className="flex items-center gap-3">
+          <Link
+            href="/history"
+            className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
+          >
+            History
           </Link>
-        </Button>
+          <Button asChild size="lg" className="shadow-sm">
+            <Link href={ctaHref}>
+              {ctaLabel}
+              <ArrowRight className="size-4" />
+            </Link>
+          </Button>
+        </div>
       </div>
     </header>
   );
