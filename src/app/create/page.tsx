@@ -10,7 +10,6 @@ import {
   Eye,
   Loader2,
   Mail,
-  MessageCircle,
   Pencil,
   Plus,
   Save,
@@ -112,6 +111,8 @@ export default function CreateInvoicePage() {
     ? 'Checking saved invoices...'
     : `${invoices.length} of ${MAX_INVOICES} local slots used.`;
   const hasRemotePdf = Boolean(generatedPdfUrl && !generatedPdfUrl.startsWith('blob:'));
+  const hasValidationErrors = Object.keys(errors).length > 0;
+  const actionDisabled = isSaving || isGenerating;
 
   // Load saved business info on mount
   useEffect(() => {
@@ -322,12 +323,39 @@ export default function CreateInvoicePage() {
   }
 
   return (
-    <div className="min-h-screen bg-[linear-gradient(180deg,rgba(244,246,241,0.96)_0%,rgba(248,246,240,0.92)_36%,rgba(250,248,244,1)_100%)]">
+    <div className="min-h-screen">
       <Header ctaHref="/" ctaLabel="Back Home" />
 
-      <main className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-10">
-        <section className="relative overflow-hidden rounded-[2rem] border border-stone-200/80 bg-white/80 px-5 py-6 shadow-[0_30px_100px_-60px_rgba(24,34,48,0.55)] backdrop-blur sm:px-8 sm:py-8">
-          <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 bg-[radial-gradient(circle_at_top_right,rgba(33,69,98,0.12),transparent_55%)] lg:block" />
+      <main className="app-shell py-6 pb-32 sm:py-8 sm:pb-36 lg:py-10 lg:pb-12">
+        {/* Mobile: compact tool header — form visible immediately */}
+        <div className="flex items-center justify-between px-1 pb-4 lg:hidden">
+          <div className="flex items-center gap-3">
+            <Link
+              href="/"
+              className="text-muted-foreground hover:text-foreground flex size-9 items-center justify-center rounded-xl transition-colors"
+              aria-label="Back to home"
+            >
+              <ArrowLeft className="size-4" />
+            </Link>
+            <h1 className="text-lg font-semibold tracking-tight text-foreground">New Invoice</h1>
+          </div>
+          <div className="flex items-center gap-2">
+            <Badge
+              variant="secondary"
+              className="rounded-full px-2.5 py-0.5 text-[11px] font-medium"
+            >
+              {invoice.status === 'sent' ? 'Ready' : 'Draft'}
+            </Badge>
+            <span className="text-muted-foreground text-xs tabular-nums">
+              {invoices.length}/{MAX_INVOICES}
+            </span>
+          </div>
+        </div>
+
+        {/* Desktop: editorial hero with stat cards */}
+        <section className="editorial-shell relative hidden overflow-hidden px-5 py-6 sm:px-8 sm:py-8 lg:block">
+          <div className="paper-grid pointer-events-none absolute inset-0 opacity-30" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-1/2 bg-[radial-gradient(circle_at_top_right,rgba(77,92,255,0.14),transparent_55%)]" />
 
           <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="space-y-4">
@@ -342,51 +370,56 @@ export default function CreateInvoicePage() {
               <div className="space-y-3">
                 <Badge
                   variant="outline"
-                  className="rounded-full border-stone-300 bg-stone-50 px-3 py-1 text-[11px] tracking-[0.2em] uppercase"
+                  className="rounded-full bg-white/75 px-4 py-1.5 text-[11px] tracking-[0.2em] uppercase"
                 >
-                  Sprint 2 Workspace
+                  Mobile-first invoice workspace
                 </Badge>
                 <div>
-                  <h1 className="max-w-3xl text-3xl font-bold tracking-tight text-stone-950 sm:text-4xl">
-                    Generate a polished PDF invoice without leaving the form.
+                  <h1
+                    data-display="true"
+                    className="max-w-3xl text-4xl leading-[0.96] font-semibold text-foreground sm:text-5xl"
+                  >
+                    Generate the invoice before the payment conversation cools off.
                   </h1>
-                  <p className="mt-3 max-w-2xl text-sm leading-7 text-stone-600 sm:text-base">
-                    Fill the essentials, preview the document live, then export a client-ready PDF
-                    with the same layout and totals shown on screen.
+                  <p className="text-muted-foreground mt-3 max-w-2xl text-sm leading-7 sm:text-base">
+                    Fill the essentials, watch the preview update live, and export a client-ready
+                    PDF without bouncing between tabs or tools.
                   </p>
                 </div>
               </div>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-3 lg:min-w-[420px]">
-              <div className="rounded-2xl border border-stone-200 bg-stone-50/80 p-4">
-                <p className="text-[11px] font-semibold tracking-[0.18em] text-stone-500 uppercase">
+              <div className="rounded-[1.4rem] border border-white/75 bg-white/72 p-4">
+                <p className="text-muted-foreground text-[11px] font-semibold tracking-[0.18em] uppercase">
                   Output
                 </p>
-                <p className="mt-2 text-lg font-semibold text-stone-950">PDF + local draft</p>
-                <p className="mt-1 text-xs leading-5 text-stone-600">
+                <p className="mt-2 text-lg font-semibold text-foreground">PDF + local draft</p>
+                <p className="text-muted-foreground mt-1 text-xs leading-5">
                   Save a draft or generate the invoice immediately.
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-stone-200 bg-stone-50/80 p-4">
-                <p className="text-[11px] font-semibold tracking-[0.18em] text-stone-500 uppercase">
+              <div className="rounded-[1.4rem] border border-white/75 bg-white/72 p-4">
+                <p className="text-muted-foreground text-[11px] font-semibold tracking-[0.18em] uppercase">
                   Status
                 </p>
-                <p className="mt-2 text-lg font-semibold text-stone-950">
+                <p className="mt-2 text-lg font-semibold text-foreground">
                   {invoice.status === 'sent' ? 'Ready to share' : 'Draft in progress'}
                 </p>
-                <p className="mt-1 text-xs leading-5 text-stone-600">
-                  The live preview tracks each edit in real time.
+                <p className="text-muted-foreground mt-1 text-xs leading-5">
+                  {hasValidationErrors
+                    ? 'Some required fields still need attention.'
+                    : 'The live preview tracks each edit in real time.'}
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-stone-200 bg-stone-50/80 p-4">
-                <p className="text-[11px] font-semibold tracking-[0.18em] text-stone-500 uppercase">
+              <div className="rounded-[1.4rem] border border-white/75 bg-white/72 p-4">
+                <p className="text-muted-foreground text-[11px] font-semibold tracking-[0.18em] uppercase">
                   Storage
                 </p>
-                <p className="mt-2 text-lg font-semibold text-stone-950">{storageMessage}</p>
-                <p className="mt-1 text-xs leading-5 text-stone-600">
+                <p className="mt-2 text-lg font-semibold text-foreground">{storageMessage}</p>
+                <p className="text-muted-foreground mt-1 text-xs leading-5">
                   Generated invoices can also publish a hosted PDF when Supabase is configured.
                 </p>
               </div>
@@ -394,35 +427,19 @@ export default function CreateInvoicePage() {
           </div>
         </section>
 
-        <div className="mt-6">
+        {/* Desktop: banner after hero */}
+        <div className="mt-6 hidden lg:block">
           <ProWaitlistBanner source="banner" variant="banner" />
-        </div>
-
-        <div className="mt-6 flex items-center justify-end lg:hidden">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline" size="lg" className="bg-white">
-                <Eye className="size-4" />
-                Preview
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="bottom" className="h-[85vh] overflow-y-auto p-4">
-              <SheetHeader className="px-4 pb-0">
-                <SheetTitle>Invoice Preview</SheetTitle>
-                <SheetDescription>
-                  Live preview of the invoice as it will appear to your client.
-                </SheetDescription>
-              </SheetHeader>
-              <div className="pt-2">
-                <InvoicePreview invoice={invoice} />
-              </div>
-            </SheetContent>
-          </Sheet>
         </div>
 
         <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_420px]">
           <div className="space-y-6">
-            <Card className="border border-stone-200/90 bg-white/90 shadow-sm">
+            <Card
+              className={cn(
+                'bg-white/90',
+                errors.businessName ? 'ring-2 ring-destructive/20' : undefined
+              )}
+            >
               <CardHeader className="flex flex-row items-start justify-between gap-4">
                 <div className="space-y-1.5">
                   <CardTitle>Business Info</CardTitle>
@@ -523,7 +540,7 @@ export default function CreateInvoicePage() {
               </CardContent>
             </Card>
 
-            <Card className="border border-stone-200/90 bg-white/90 shadow-sm">
+            <Card className={cn('bg-white/90', errors.clientName ? 'ring-2 ring-destructive/20' : undefined)}>
               <CardHeader>
                 <CardTitle>Client Info</CardTitle>
                 <CardDescription>Who should receive and pay this invoice?</CardDescription>
@@ -569,13 +586,13 @@ export default function CreateInvoicePage() {
               </CardContent>
             </Card>
 
-            <Card className="border border-stone-200/90 bg-white/90 shadow-sm">
+            <Card className={cn('bg-white/90', errors.lineItems ? 'ring-2 ring-destructive/20' : undefined)}>
               <CardHeader>
                 <CardTitle>Line Items</CardTitle>
                 <CardDescription>Add the work, quantity, and rate for each charge.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="hidden grid-cols-[minmax(0,1fr)_72px_108px_108px_40px] gap-3 text-[11px] font-semibold tracking-[0.18em] text-stone-500 uppercase sm:grid">
+                <div className="text-muted-foreground hidden grid-cols-[minmax(0,1fr)_72px_108px_108px_40px] gap-3 text-[11px] font-semibold tracking-[0.18em] uppercase sm:grid">
                   <p>Description</p>
                   <p className="text-right">Qty</p>
                   <p className="text-right">Rate</p>
@@ -591,7 +608,7 @@ export default function CreateInvoicePage() {
                     return (
                       <div
                         key={item.id}
-                        className="grid gap-3 rounded-2xl border border-stone-200 bg-stone-50/70 p-3 sm:grid-cols-[minmax(0,1fr)_72px_108px_108px_40px] sm:items-end"
+                        className="grid gap-3 rounded-[1.4rem] border border-border/70 bg-muted/55 p-3 sm:grid-cols-[minmax(0,1fr)_72px_108px_108px_40px] sm:items-end"
                       >
                         <Field
                           id={`line-item-description-${index}`}
@@ -607,7 +624,7 @@ export default function CreateInvoicePage() {
                             onChange={(event) =>
                               setLineItem(index, 'description', event.target.value)
                             }
-                            className="bg-white"
+                            className="bg-background/88"
                           />
                         </Field>
 
@@ -656,7 +673,7 @@ export default function CreateInvoicePage() {
                           </Label>
                           <div
                             id={`line-item-amount-${index}`}
-                            className="flex h-8 items-center justify-end rounded-lg border border-stone-200 bg-white px-2.5 text-sm font-medium text-stone-900"
+                            className="flex h-11 items-center justify-end rounded-2xl border border-input bg-background/88 px-3.5 text-sm font-medium text-foreground"
                           >
                             {formatCurrency(item.amount, invoice.currency)}
                           </div>
@@ -691,7 +708,7 @@ export default function CreateInvoicePage() {
               </CardContent>
             </Card>
 
-            <Card className="border border-stone-200/90 bg-white/90 shadow-sm">
+            <Card className="bg-white/90">
               <CardHeader>
                 <CardTitle>Financial Summary</CardTitle>
                 <CardDescription>Fine-tune totals before saving the invoice.</CardDescription>
@@ -722,23 +739,23 @@ export default function CreateInvoicePage() {
                   </Field>
                 </div>
 
-                <div className="space-y-3 rounded-2xl border border-stone-200 bg-stone-50/80 p-4">
-                  <div className="flex items-center justify-between text-sm text-stone-600">
+                <div className="space-y-3 rounded-[1.4rem] border border-border/70 bg-muted/60 p-4">
+                  <div className="text-muted-foreground flex items-center justify-between text-sm">
                     <span>Subtotal</span>
                     <span>{formatCurrency(invoice.subtotal, invoice.currency)}</span>
                   </div>
-                  <div className="flex items-center justify-between text-sm text-stone-600">
+                  <div className="text-muted-foreground flex items-center justify-between text-sm">
                     <span>Tax Amount</span>
                     <span>{formatCurrency(invoice.taxAmount, invoice.currency)}</span>
                   </div>
                   {invoice.discount > 0 ? (
-                    <div className="flex items-center justify-between text-sm text-stone-600">
+                    <div className="text-muted-foreground flex items-center justify-between text-sm">
                       <span>Discount ({invoice.discount}%)</span>
                       <span>-{formatCurrency(invoice.discountAmount, invoice.currency)}</span>
                     </div>
                   ) : null}
                   <Separator />
-                  <div className="flex items-center justify-between text-lg font-bold tracking-tight text-stone-950">
+                  <div className="flex items-center justify-between text-lg font-bold tracking-tight text-foreground">
                     <span>Total</span>
                     <span className="text-primary">
                       {formatCurrency(invoice.total, invoice.currency)}
@@ -748,7 +765,7 @@ export default function CreateInvoicePage() {
               </CardContent>
             </Card>
 
-            <Card className="border border-stone-200/90 bg-white/90 shadow-sm">
+            <Card className={cn('bg-white/90', errors.dueDate ? 'ring-2 ring-destructive/20' : undefined)}>
               <CardHeader>
                 <CardTitle>Details</CardTitle>
                 <CardDescription>
@@ -758,7 +775,7 @@ export default function CreateInvoicePage() {
               <CardContent className="grid gap-4 sm:grid-cols-2">
                 <Field id="currency" label="Currency">
                   <Select value={invoice.currency} onValueChange={setCurrency}>
-                    <SelectTrigger id="currency" className="w-full bg-white">
+                    <SelectTrigger id="currency" className="w-full bg-background/88">
                       <SelectValue placeholder="Select currency" />
                     </SelectTrigger>
                     <SelectContent>
@@ -799,8 +816,8 @@ export default function CreateInvoicePage() {
                   type="button"
                   size="lg"
                   variant="outline"
-                  className="bg-white shadow-sm"
-                  disabled={isSaving || isGenerating}
+                  className="bg-background/90"
+                  disabled={actionDisabled}
                   onClick={handleSaveInvoice}
                 >
                   {isSaving ? 'Saving draft...' : 'Save Draft'}
@@ -809,8 +826,7 @@ export default function CreateInvoicePage() {
                 <Button
                   type="button"
                   size="lg"
-                  className="shadow-sm"
-                  disabled={isSaving || isGenerating}
+                  disabled={actionDisabled}
                   onClick={handleGenerateInvoice}
                 >
                   {isGenerating ? (
@@ -827,11 +843,16 @@ export default function CreateInvoicePage() {
                 </Button>
               </div>
 
-              <p className="text-center text-xs text-stone-500">{storageMessage}</p>
+              <p className="text-muted-foreground text-center text-xs">{storageMessage}</p>
+            </div>
+
+            {/* Mobile: banner after form, before results */}
+            <div className="lg:hidden">
+              <ProWaitlistBanner source="banner" variant="banner" />
             </div>
 
             {generatedPdfUrl ? (
-              <Card className="border border-emerald-200 bg-[linear-gradient(180deg,rgba(236,253,245,0.88),rgba(255,255,255,0.94))] shadow-sm">
+              <Card className="border border-emerald-200 bg-[linear-gradient(180deg,rgba(236,253,245,0.88),rgba(255,255,255,0.94))]">
                 <CardHeader>
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="mt-0.5 size-6 text-emerald-600" />
@@ -844,31 +865,53 @@ export default function CreateInvoicePage() {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="grid gap-2 sm:grid-cols-2">
-                    <Button className="shadow-sm" onClick={handleShareWhatsApp}>
-                      <MessageCircle className="size-4" />
-                      Send on WhatsApp
-                    </Button>
-                    <Button variant="outline" className="bg-white" onClick={handleDownloadPdf}>
+                <CardContent className="space-y-4">
+                  {/* Primary: WhatsApp — light bg, green icon, native share-sheet feel */}
+                  <Button
+                    size="lg"
+                    className="w-full border border-input bg-background/88 font-semibold text-[#075E54] shadow-sm hover:bg-accent"
+                    onClick={handleShareWhatsApp}
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="size-5"
+                      aria-hidden="true"
+                    >
+                      <path
+                        fill="#25D366"
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                      />
+                    </svg>
+                    Send on WhatsApp
+                  </Button>
+
+                  {/* Secondary actions — 2-col grid */}
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button
+                      variant="outline"
+                      className="bg-background/88"
+                      onClick={handleDownloadPdf}
+                    >
                       <Download className="size-4" />
-                      Download PDF
+                      Download
                     </Button>
-                  </div>
-
-                  <div className="grid gap-2 sm:grid-cols-2">
-                    <Button variant="outline" className="bg-white" onClick={handleShareEmail}>
+                    <Button
+                      variant="outline"
+                      className="bg-background/88"
+                      onClick={handleShareEmail}
+                    >
                       <Mail className="size-4" />
-                      Email Invoice
+                      Email
                     </Button>
-                    <Button variant="outline" className="bg-white" onClick={handleCopyCaption}>
+                    <Button
+                      variant="outline"
+                      className="bg-background/88"
+                      onClick={handleCopyCaption}
+                    >
                       <Copy className="size-4" />
-                      Copy Caption
+                      Copy Text
                     </Button>
-                  </div>
-
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <Button asChild variant="outline" className="bg-white">
+                    <Button asChild variant="outline" className="bg-background/88">
                       <a href={generatedPdfUrl} target="_blank" rel="noreferrer">
                         <Eye className="size-4" />
                         Open PDF
@@ -876,13 +919,17 @@ export default function CreateInvoicePage() {
                     </Button>
                   </div>
 
-                  <div className="rounded-2xl border border-emerald-200/80 bg-white/80 p-3 text-xs leading-6 text-stone-600">
+                  <div className="rounded-[1.4rem] border border-emerald-200/80 bg-white/80 p-3 text-xs leading-6 text-muted-foreground">
                     {hasRemotePdf
                       ? 'Supabase storage is configured, so this invoice now has a hosted PDF URL.'
                       : 'Supabase storage is not configured yet, so this PDF is available as a direct browser download for this session.'}
                   </div>
 
-                  <Button variant="ghost" className="w-full" onClick={handleCreateAnotherInvoice}>
+                  <Button
+                    variant="ghost"
+                    className="text-muted-foreground w-full"
+                    onClick={handleCreateAnotherInvoice}
+                  >
                     Create Another Invoice
                   </Button>
                 </CardContent>
@@ -892,30 +939,95 @@ export default function CreateInvoicePage() {
 
           <aside className="hidden lg:block">
             <div className="sticky top-6 space-y-4">
-              <div className="rounded-[1.75rem] border border-stone-200 bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(246,243,236,0.9))] p-4 shadow-[0_30px_90px_-70px_rgba(24,34,48,0.85)]">
-                <div className="flex items-start justify-between gap-4 border-b border-dashed border-stone-200 pb-4">
+              <div className="rounded-[1.75rem] border border-white/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(248,245,238,0.9))] p-4 shadow-[0_30px_90px_-70px_rgba(24,34,48,0.85)]">
+                <div className="flex items-start justify-between gap-4 border-b border-dashed border-border/70 pb-4">
                   <div>
-                    <p className="text-sm font-semibold text-stone-950">Live Preview</p>
-                    <p className="mt-1 text-xs leading-5 text-stone-600">
+                    <p className="text-sm font-semibold text-foreground">Live Preview</p>
+                    <p className="text-muted-foreground mt-1 text-xs leading-5">
                       The layout below mirrors the invoice data used for PDF generation.
                     </p>
                   </div>
                   <Badge
                     variant="outline"
-                    className="rounded-full border-stone-300 bg-white px-3 py-1 text-[11px] tracking-[0.18em] uppercase"
+                    className="rounded-full bg-white px-3 py-1 text-[11px] tracking-[0.18em] uppercase"
                   >
                     {invoice.status}
                   </Badge>
                 </div>
 
                 <div className="mt-4">
-                  <InvoicePreview invoice={invoice} className="border-stone-200 shadow-none" />
+                  <InvoicePreview invoice={invoice} className="border-white/80 shadow-none" />
                 </div>
               </div>
             </div>
           </aside>
         </div>
       </main>
+
+      <div className="safe-bottom fixed inset-x-0 bottom-0 z-30 border-t border-border/70 bg-background/92 px-4 py-3 backdrop-blur-xl lg:hidden">
+        <div className="app-shell px-0">
+          <div className="editorial-panel flex items-center gap-2 px-2 py-2">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline" className="flex-1">
+                  <Eye className="size-4" />
+                  Preview
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="bottom" className="h-[85vh] overflow-y-auto p-4">
+                <SheetHeader className="px-4 pb-0">
+                  <SheetTitle>Invoice Preview</SheetTitle>
+                  <SheetDescription>
+                    Live preview of the invoice as it will appear to your client.
+                  </SheetDescription>
+                </SheetHeader>
+                <div className="pt-2">
+                  <InvoicePreview invoice={invoice} />
+                </div>
+              </SheetContent>
+            </Sheet>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="flex-1"
+              disabled={actionDisabled}
+              onClick={handleSaveInvoice}
+            >
+              {isSaving ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" />
+                  Saving
+                </>
+              ) : (
+                <>
+                  <Save className="size-4" />
+                  Save
+                </>
+              )}
+            </Button>
+
+            <Button
+              type="button"
+              className="flex-[1.15]"
+              disabled={actionDisabled}
+              onClick={handleGenerateInvoice}
+            >
+              {isGenerating ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" />
+                  Generating
+                </>
+              ) : (
+                <>
+                  <Sparkles className="size-4" />
+                  Generate
+                </>
+              )}
+            </Button>
+          </div>
+        </div>
+      </div>
 
       <Footer />
     </div>

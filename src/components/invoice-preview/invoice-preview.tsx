@@ -46,7 +46,7 @@ export function InvoicePreview({ invoice, className }: InvoicePreviewProps) {
   return (
     <div
       className={cn(
-        'rounded-xl border bg-white p-6 shadow-sm lg:max-h-[calc(100vh-3rem)] lg:overflow-y-auto',
+        'rounded-[1.65rem] border border-white/80 bg-white/92 p-6 shadow-[0_20px_60px_-45px_rgba(26,38,64,0.35)] lg:max-h-[calc(100vh-3rem)] lg:overflow-y-auto',
         className
       )}
     >
@@ -66,12 +66,12 @@ export function InvoicePreview({ invoice, className }: InvoicePreviewProps) {
           </div>
 
           <div className="space-y-2 sm:text-right">
-            <p className="text-primary text-xl font-bold tracking-tight uppercase">Invoice</p>
+            <p className="text-primary text-xl font-semibold tracking-tight uppercase">Invoice</p>
             <div className="text-muted-foreground space-y-1 text-xs" suppressHydrationWarning>
               <p suppressHydrationWarning>Invoice ID: {invoice.id || 'Draft'}</p>
               <p suppressHydrationWarning>Issued: {formatDate(invoice.createdAt)}</p>
             </div>
-            <Badge variant="outline" className="mt-1">
+            <Badge variant="outline" className="mt-1 rounded-full bg-background/80">
               Due {formatDate(invoice.dueDate)}
             </Badge>
           </div>
@@ -96,7 +96,7 @@ export function InvoicePreview({ invoice, className }: InvoicePreviewProps) {
             <p className="text-muted-foreground text-xs font-semibold tracking-[0.2em] uppercase">
               Status
             </p>
-            <Badge variant="secondary" className="capitalize">
+            <Badge variant="secondary" className="rounded-full capitalize">
               {invoice.status}
             </Badge>
           </div>
@@ -135,7 +135,7 @@ export function InvoicePreview({ invoice, className }: InvoicePreviewProps) {
           </div>
         </div>
 
-        <div className="ml-auto w-full max-w-56 space-y-2 text-sm">
+        <div className="ml-auto w-full max-w-56 space-y-2 rounded-[1.35rem] bg-muted/45 p-4 text-sm">
           <div className="text-muted-foreground flex items-center justify-between">
             <span>Subtotal</span>
             <span>{formatCurrency(invoice.subtotal, invoice.currency)}</span>

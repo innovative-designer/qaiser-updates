@@ -4,6 +4,7 @@ import { ArrowRight, CheckCircle2, FileText, Smartphone } from 'lucide-react';
 
 import { Footer } from '@/components/shared/footer';
 import { Header } from '@/components/shared/header';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -35,68 +36,126 @@ const faqs = [
 
 export default function InvoiceGeneratorPakistanPage() {
   return (
-    <div className="bg-background min-h-screen">
+    <div className="min-h-screen bg-[linear-gradient(180deg,rgba(249,247,242,1)_0%,rgba(255,255,255,1)_42%,rgba(241,247,245,1)_100%)]">
       <Header />
-      <main className="mx-auto w-full max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
-        <section className="text-center">
-          <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase">
-            Pakistan Freelancers
-          </p>
-          <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-            Free Invoice Generator for Pakistan
-          </h1>
-          <p className="text-muted-foreground mx-auto mt-4 max-w-2xl text-base leading-7">
-            Create client-ready PKR invoices without spreadsheets or templates. Generate PDF, share
-            on WhatsApp, and keep a local record in your browser.
-          </p>
-          <div className="mt-8 flex justify-center">
-            <Button asChild size="lg">
+      <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+        <section className="overflow-hidden rounded-[2rem] border border-black/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.97),rgba(247,243,234,0.93))] p-6 shadow-[0_30px_80px_-50px_rgba(28,33,55,0.38)] sm:p-8 lg:p-10">
+          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div className="space-y-5">
+              <Badge className="rounded-full bg-primary/10 px-3 py-1 text-[11px] tracking-[0.24em] uppercase text-primary hover:bg-primary/10">
+                Pakistan Freelancers
+              </Badge>
+              <div className="space-y-4">
+                <h1 className="max-w-3xl text-4xl font-semibold tracking-[-0.04em] text-foreground sm:text-5xl">
+                  Make polished PKR invoices on your phone without spreadsheets or signup screens.
+                </h1>
+                <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
+                  Build a client-ready invoice, generate the PDF, and send it in seconds. QuickBill
+                  keeps the workflow lean for freelancers and small businesses in Pakistan.
+                </p>
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Button asChild size="lg" className="h-12 rounded-full px-6">
+                  <Link href="/create">
+                    Start Creating Invoice
+                    <ArrowRight className="size-4" />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="h-12 rounded-full px-6">
+                  <Link href="/send-invoice-whatsapp">See the WhatsApp workflow</Link>
+                </Button>
+              </div>
+            </div>
+
+            <div className="rounded-[1.75rem] border border-black/10 bg-white/80 p-5 sm:p-6">
+              <p className="text-[11px] font-semibold tracking-[0.24em] text-muted-foreground uppercase">
+                Built for the real workflow
+              </p>
+              <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
+                <p>Freelancers often share invoices from chat, not from a finance dashboard.</p>
+                <p>PKR support is already included, so you do not need to fight the currency setup.</p>
+                <p>Your invoice can look finished before your client asks where to send payment.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-8 grid gap-4 sm:grid-cols-3">
+          <Card className="rounded-[1.5rem] border border-black/10 bg-white/90 py-0">
+            <CardHeader className="px-5 py-5">
+              <FileText className="size-6 text-primary" />
+              <CardTitle className="mt-4 text-lg font-semibold">Professional PDFs</CardTitle>
+            </CardHeader>
+            <CardContent className="px-5 pb-5 text-sm leading-6 text-muted-foreground">
+              Clean totals, line items, due date, and notes in a format that feels client-ready.
+            </CardContent>
+          </Card>
+          <Card className="rounded-[1.5rem] border border-black/10 bg-white/90 py-0">
+            <CardHeader className="px-5 py-5">
+              <Smartphone className="size-6 text-primary" />
+              <CardTitle className="mt-4 text-lg font-semibold">Mobile friendly</CardTitle>
+            </CardHeader>
+            <CardContent className="px-5 pb-5 text-sm leading-6 text-muted-foreground">
+              Designed for people invoicing between calls, rides, and client chats from their phones.
+            </CardContent>
+          </Card>
+          <Card className="rounded-[1.5rem] border border-black/10 bg-white/90 py-0">
+            <CardHeader className="px-5 py-5">
+              <CheckCircle2 className="size-6 text-primary" />
+              <CardTitle className="mt-4 text-lg font-semibold">Simple workflow</CardTitle>
+            </CardHeader>
+            <CardContent className="px-5 pb-5 text-sm leading-6 text-muted-foreground">
+              Fill, preview, generate, send. No billing suite overhead and no account wall.
+            </CardContent>
+          </Card>
+        </section>
+
+        <section className="mt-8 grid gap-4 lg:grid-cols-[1fr_1fr]">
+          <div className="rounded-[1.75rem] border border-black/10 bg-white/90 p-6">
+            <p className="text-[11px] font-semibold tracking-[0.24em] text-muted-foreground uppercase">
+              Why Pakistan users use it
+            </p>
+            <p className="mt-3 text-xl font-semibold tracking-[-0.02em] text-foreground">
+              Quick invoice output without adopting a full bookkeeping tool.
+            </p>
+            <p className="mt-3 text-sm leading-7 text-muted-foreground">
+              If the goal is to send the invoice, get the PDF, and keep moving, this workflow is
+              intentionally lighter than a traditional accounting platform.
+            </p>
+          </div>
+          <div className="rounded-[1.75rem] border border-primary/10 bg-primary/5 p-6">
+            <p className="text-[11px] font-semibold tracking-[0.24em] text-muted-foreground uppercase">
+              Start now
+            </p>
+            <p className="mt-3 text-xl font-semibold tracking-[-0.02em] text-foreground">
+              Create a PKR invoice in under a minute.
+            </p>
+            <Button asChild size="lg" className="mt-6 h-12 rounded-full px-6">
               <Link href="/create">
-                Start Creating Invoice
+                Open Invoice Builder
                 <ArrowRight className="size-4" />
               </Link>
             </Button>
           </div>
         </section>
 
-        <section className="mt-14 grid gap-4 sm:grid-cols-3">
-          <Card>
-            <CardHeader>
-              <FileText className="text-primary size-6" />
-              <CardTitle className="text-lg">Professional PDFs</CardTitle>
-            </CardHeader>
-            <CardContent className="text-muted-foreground text-sm">
-              Clean layout with invoice totals, due date, line items, and notes ready to send.
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <Smartphone className="text-primary size-6" />
-              <CardTitle className="text-lg">Mobile Friendly</CardTitle>
-            </CardHeader>
-            <CardContent className="text-muted-foreground text-sm">
-              Works great on mobile for freelancers who handle billing directly from phone.
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CheckCircle2 className="text-primary size-6" />
-              <CardTitle className="text-lg">Simple Workflow</CardTitle>
-            </CardHeader>
-            <CardContent className="text-muted-foreground text-sm">
-              Fill details once, preview live, then download or share with one click.
-            </CardContent>
-          </Card>
-        </section>
-
-        <section className="mt-14 space-y-5">
-          <h2 className="text-2xl font-bold tracking-tight">Frequently Asked Questions</h2>
-          {faqs.map((faq) => (
-            <div key={faq.question} className="rounded-xl border p-4">
-              <h3 className="font-semibold">{faq.question}</h3>
-              <p className="text-muted-foreground mt-2 text-sm leading-6">{faq.answer}</p>
-            </div>
-          ))}
+        <section className="mt-8 space-y-4">
+          <div>
+            <p className="text-[11px] font-semibold tracking-[0.24em] text-muted-foreground uppercase">
+              FAQ
+            </p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-foreground sm:text-3xl">
+              Common questions from Pakistan-based users
+            </h2>
+          </div>
+          <div className="grid gap-4">
+            {faqs.map((faq) => (
+              <div key={faq.question} className="rounded-[1.5rem] border border-black/10 bg-white/90 p-5">
+                <h3 className="text-lg font-semibold text-foreground">{faq.question}</h3>
+                <p className="mt-2 text-sm leading-7 text-muted-foreground">{faq.answer}</p>
+              </div>
+            ))}
+          </div>
         </section>
       </main>
       <Footer />
