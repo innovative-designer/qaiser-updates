@@ -3,11 +3,11 @@ import { withSerwist } from '@serwist/turbopack';
 
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://us.i.posthog.com",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://us.i.posthog.com https://us-assets.i.posthog.com",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
-  "connect-src 'self' https://*.supabase.co https://ipapi.co https://us.i.posthog.com",
+  "connect-src 'self' https://*.supabase.co https://ipapi.co https://us.i.posthog.com https://us-assets.i.posthog.com",
   "worker-src 'self' blob:",
   "frame-ancestors 'none'",
 ].join('; ');
