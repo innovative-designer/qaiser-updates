@@ -35,17 +35,14 @@ const COUNTRY_TO_CURRENCY: Record<string, string> = {
 };
 
 interface GeoResponse {
-  country_code?: string;
+  countryCode?: string;
   currency?: string;
 }
 
 export async function GET() {
   try {
-    const response = await fetch('https://ipapi.co/json/', {
+    const response = await fetch('http://ip-api.com/json/?fields=countryCode,currency', {
       signal: AbortSignal.timeout(3000),
-      headers: {
-        'User-Agent': 'QuickBill/1.0',
-      },
       cache: 'no-store',
     });
 
@@ -55,13 +52,13 @@ export async function GET() {
 
     const data = (await response.json()) as GeoResponse;
     const currency =
-      (data.country_code ? COUNTRY_TO_CURRENCY[data.country_code] : undefined) ||
+      (data.countryCode ? COUNTRY_TO_CURRENCY[data.countryCode] : undefined) ||
       data.currency ||
       DEFAULT_CURRENCY;
 
     return NextResponse.json({
       currency,
-      country: data.country_code || null,
+      country: data.countryCode || null,
     });
   } catch {
     return NextResponse.json({ currency: DEFAULT_CURRENCY, country: null });
