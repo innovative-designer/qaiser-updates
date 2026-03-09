@@ -9,7 +9,6 @@ import {
   Download,
   Eye,
   Loader2,
-  Mail,
   Pencil,
   Plus,
   Save,
@@ -35,21 +34,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { useInvoiceForm, type ValidationErrors } from '@/hooks/use-invoice-form';
 import { useLocalInvoices } from '@/hooks/use-local-invoices';
 import { CURRENCIES, formatCurrency } from '@/lib/currencies';
 import { MAX_INVOICES } from '@/lib/constants';
-import { copyCaptionText, downloadPdf, shareOnWhatsApp, shareViaEmail } from '@/lib/share';
+import { downloadPdf, shareOnWhatsApp } from '@/lib/share';
 import { cn } from '@/lib/utils';
 
 function getNumberValue(value: string) {
@@ -308,19 +299,6 @@ export default function CreateInvoicePage() {
     toast.success('PDF downloaded.');
   }
 
-  async function handleShareEmail() {
-    await shareViaEmail(getInvoiceForSharing());
-    toast.info('Email client opened.');
-  }
-
-  async function handleCopyCaption() {
-    try {
-      await copyCaptionText(getInvoiceForSharing());
-      toast.success('Caption copied to clipboard.');
-    } catch {
-      toast.error('Could not copy caption. Please try again.');
-    }
-  }
 
   return (
     <div className="min-h-screen">
@@ -420,7 +398,7 @@ export default function CreateInvoicePage() {
                 </p>
                 <p className="mt-2 text-lg font-semibold text-foreground">{storageMessage}</p>
                 <p className="text-muted-foreground mt-1 text-xs leading-5">
-                  Generated invoices can also publish a hosted PDF when Supabase is configured.
+                  Generated invoices can be shared via a link or downloaded directly.
                 </p>
               </div>
             </div>
@@ -885,7 +863,7 @@ export default function CreateInvoicePage() {
                     Send on WhatsApp
                   </Button>
 
-                  {/* Secondary actions — 2-col grid */}
+                  {/* Secondary actions */}
                   <div className="grid grid-cols-2 gap-2">
                     <Button
                       variant="outline"
@@ -895,22 +873,6 @@ export default function CreateInvoicePage() {
                       <Download className="size-4" />
                       Download
                     </Button>
-                    <Button
-                      variant="outline"
-                      className="bg-background/88"
-                      onClick={handleShareEmail}
-                    >
-                      <Mail className="size-4" />
-                      Email
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="bg-background/88"
-                      onClick={handleCopyCaption}
-                    >
-                      <Copy className="size-4" />
-                      Copy Text
-                    </Button>
                     <Button asChild variant="outline" className="bg-background/88">
                       <a href={generatedPdfUrl} target="_blank" rel="noreferrer">
                         <Eye className="size-4" />
@@ -919,11 +881,19 @@ export default function CreateInvoicePage() {
                     </Button>
                   </div>
 
-                  <div className="rounded-[1.4rem] border border-emerald-200/80 bg-white/80 p-3 text-xs leading-6 text-muted-foreground">
-                    {hasRemotePdf
-                      ? 'Supabase storage is configured, so this invoice now has a hosted PDF URL.'
-                      : 'Supabase storage is not configured yet, so this PDF is available as a direct browser download for this session.'}
-                  </div>
+                  {hasRemotePdf && (
+                    <Button
+                      variant="outline"
+                      className="w-full bg-background/88"
+                      onClick={() => {
+                        navigator.clipboard.writeText(generatedPdfUrl!);
+                        toast.success('Link copied to clipboard.');
+                      }}
+                    >
+                      <Copy className="size-4" />
+                      Copy Link
+                    </Button>
+                  )}
 
                   <Button
                     variant="ghost"
@@ -967,26 +937,6 @@ export default function CreateInvoicePage() {
       <div className="safe-bottom fixed inset-x-0 bottom-0 z-30 border-t border-border/70 bg-background/92 px-4 py-3 backdrop-blur-xl lg:hidden">
         <div className="app-shell px-0">
           <div className="editorial-panel flex items-center gap-2 px-2 py-2">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline" className="flex-1">
-                  <Eye className="size-4" />
-                  Preview
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="bottom" className="h-[85vh] overflow-y-auto p-4">
-                <SheetHeader className="px-4 pb-0">
-                  <SheetTitle>Invoice Preview</SheetTitle>
-                  <SheetDescription>
-                    Live preview of the invoice as it will appear to your client.
-                  </SheetDescription>
-                </SheetHeader>
-                <div className="pt-2">
-                  <InvoicePreview invoice={invoice} />
-                </div>
-              </SheetContent>
-            </Sheet>
-
             <Button
               type="button"
               variant="outline"

@@ -40,21 +40,6 @@ async function markAsSent(invoice: InvoiceData, via: ShareMethod): Promise<void>
   });
 }
 
-async function fallbackWhatsAppShare(invoice: InvoiceData, caption: string): Promise<'fallback'> {
-  const encodedCaption = encodeURIComponent(`${caption}\n\nPlease attach the PDF invoice.`);
-  window.open(`https://web.whatsapp.com/send?text=${encodedCaption}`, '_blank', 'noopener,noreferrer');
-
-  if (invoice.pdfUrl) {
-    await downloadFile(invoice.pdfUrl, `invoice-${invoice.id}.pdf`);
-  }
-
-  await markAsSent(invoice, 'whatsapp');
-  return 'fallback';
-}
-
-function isWindowsDesktop(): boolean {
-  return /Windows/.test(navigator.userAgent);
-}
 
 export async function shareOnWhatsApp(invoice: InvoiceData): Promise<WhatsAppShareResult> {
   if (!invoice.pdfUrl) {
@@ -63,11 +48,6 @@ export async function shareOnWhatsApp(invoice: InvoiceData): Promise<WhatsAppSha
 
   const caption = buildCaption(invoice);
 
-  if (isWindowsDesktop()) {
-    return fallbackWhatsAppShare(invoice, caption);
-  }
-
-  // Mac and mobile: use native Web Share API with file attachment
   try {
     const response = await fetch(invoice.pdfUrl);
     const blob = await response.blob();
@@ -84,13 +64,18 @@ export async function shareOnWhatsApp(invoice: InvoiceData): Promise<WhatsAppSha
       return 'shared';
     }
 
-    return fallbackWhatsAppShare(invoice, caption);
+    // Browser doesn't support file sharing — download the PDF as fallback
+    await downloadFile(invoice.pdfUrl, `invoice-${invoice.id}.pdf`);
+    await markAsSent(invoice, 'whatsapp');
+    return 'fallback';
   } catch (error) {
     if (error instanceof DOMException && error.name === 'AbortError') {
       return 'cancelled';
     }
 
-    return fallbackWhatsAppShare(invoice, caption);
+    await downloadFile(invoice.pdfUrl, `invoice-${invoice.id}.pdf`);
+    await markAsSent(invoice, 'whatsapp');
+    return 'fallback';
   }
 }
 
