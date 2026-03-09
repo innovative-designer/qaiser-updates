@@ -95,7 +95,7 @@ export default function CreateInvoicePage() {
   const [hasSavedBusiness, setHasSavedBusiness] = useState(false);
   const [businessEditable, setBusinessEditable] = useState(true);
 
-  const BUSINESS_STORAGE_KEY = 'quickbill_business_info';
+  const BUSINESS_STORAGE_KEY = 'freeinvoicekit_business_info';
 
   const today = useMemo(() => new Date().toISOString().split('T')[0] ?? '', []);
   const storageMessage = loading

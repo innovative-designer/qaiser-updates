@@ -3,22 +3,22 @@ import { openDB, type DBSchema, type IDBPDatabase } from 'idb';
 import { MAX_INVOICES } from '@/lib/constants';
 import type { InvoiceData } from '@/types/invoice';
 
-const DB_NAME = 'quickbill';
+const DB_NAME = 'freeinvoicekit';
 const DB_VERSION = 1;
 const STORE_NAME = 'invoices';
 
-interface QuickBillDatabase extends DBSchema {
+interface InvoiceKitDatabase extends DBSchema {
   invoices: {
     key: string;
     value: InvoiceData;
   };
 }
 
-let dbPromise: Promise<IDBPDatabase<QuickBillDatabase>> | null = null;
+let dbPromise: Promise<IDBPDatabase<InvoiceKitDatabase>> | null = null;
 
-function getDB(): Promise<IDBPDatabase<QuickBillDatabase>> {
+function getDB(): Promise<IDBPDatabase<InvoiceKitDatabase>> {
   if (!dbPromise) {
-    dbPromise = openDB<QuickBillDatabase>(DB_NAME, DB_VERSION, {
+    dbPromise = openDB<InvoiceKitDatabase>(DB_NAME, DB_VERSION, {
       upgrade(db) {
         if (!db.objectStoreNames.contains(STORE_NAME)) {
           db.createObjectStore(STORE_NAME, { keyPath: 'id' });

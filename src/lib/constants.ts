@@ -1,5 +1,5 @@
-export const APP_NAME = 'QuickBill';
-export const APP_URL = 'https://quickbill.app';
+export const APP_NAME = 'Free Invoice Kit';
+export const APP_URL = 'https://www.freeinvoicekit.com';
 export const APP_TAGLINE = 'Free invoicing on WhatsApp';
 export const APP_DESCRIPTION =
   'Create professional PDF invoices and send them on WhatsApp in 30 seconds. No signup required. Free forever.';

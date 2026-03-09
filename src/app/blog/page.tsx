@@ -10,7 +10,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/ca
 import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
-  title: 'Blog — QuickBill',
+  title: 'Blog — Free Invoice Kit',
   description: 'Tips and guides on invoicing, freelancing, and getting paid faster.',
 };
 

@@ -11,9 +11,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 export const metadata: Metadata = {
   title: 'WhatsApp Billing UAE | Free Invoice Generator for UAE Freelancers',
   description:
-    'Create professional invoices in AED and share on WhatsApp in seconds. QuickBill is free and works great for UAE freelancers and small businesses.',
+    'Create professional invoices in AED and share on WhatsApp in seconds. Free Invoice Kit is free and works great for UAE freelancers and small businesses.',
   alternates: {
-    canonical: 'https://quickbill.app/whatsapp-billing-uae',
+    canonical: 'https://www.freeinvoicekit.com/whatsapp-billing-uae',
   },
 };
 
@@ -40,7 +40,7 @@ export default function WhatsAppBillingUaePage() {
                   Create AED invoices and send them on WhatsApp without leaving the client flow.
                 </h1>
                 <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-                  QuickBill is built for UAE freelancers and small service businesses that want
+                  Free Invoice Kit is built for UAE freelancers and small service businesses that want
                   clean invoice PDFs, quick sharing, and almost no setup overhead.
                 </p>
               </div>

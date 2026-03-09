@@ -82,7 +82,7 @@ export default function HistoryPage() {
                 Your invoice history will appear here.
               </h2>
               <p className="text-muted-foreground mx-auto mt-3 max-w-lg text-sm leading-7 sm:text-base">
-                Create the first invoice, generate the PDF, and QuickBill will keep a local record
+                Create the first invoice, generate the PDF, and Free Invoice Kit will keep a local record
                 so you can resend it later.
               </p>
               <Button asChild size="lg" className="mt-6">

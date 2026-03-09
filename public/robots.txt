@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://quickbill.app/sitemap.xml
+Sitemap: https://www.freeinvoicekit.com/sitemap.xml

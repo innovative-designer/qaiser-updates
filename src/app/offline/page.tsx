@@ -27,7 +27,7 @@ export default function OfflinePage() {
               You&apos;re offline right now
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-              QuickBill cached the app shell, but this page still needs a connection. Once
+              Free Invoice Kit cached the app shell, but this page still needs a connection. Once
               you&apos;re back online, refresh and continue invoicing where you left off.
             </p>
 

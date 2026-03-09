@@ -13,7 +13,7 @@ export function Footer({ className }: FooterProps) {
       <div className="app-shell py-8 sm:py-10">
         <div className="editorial-shell flex flex-col gap-6 px-5 py-6 sm:px-8 sm:py-7 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-xl">
-            <p className="section-kicker">QuickBill</p>
+            <p className="section-kicker">Free Invoice Kit</p>
             <p className="mt-3 text-lg font-semibold tracking-tight text-foreground">
               Fast, chat-native invoicing for freelancers and small businesses.
             </p>

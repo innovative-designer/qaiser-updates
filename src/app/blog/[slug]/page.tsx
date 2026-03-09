@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = getPostBySlug(slug);
   if (!post) return {};
   return {
-    title: `${post.title} — QuickBill`,
+    title: `${post.title} — Free Invoice Kit`,
     description: post.description,
     openGraph: {
       title: post.title,
@@ -54,7 +54,7 @@ export default async function BlogPostPage({ params }: Props) {
 
           <div className="mt-4 space-y-5">
             <Badge className="rounded-full bg-primary/10 px-3 py-1 text-[11px] tracking-[0.24em] uppercase text-primary hover:bg-primary/10">
-              QuickBill Journal
+              Free Invoice Kit Journal
             </Badge>
             <div className="space-y-3">
               <h1 className="max-w-4xl text-4xl font-semibold tracking-[-0.04em] text-foreground sm:text-5xl">
@@ -86,7 +86,7 @@ export default async function BlogPostPage({ params }: Props) {
               Why this matters
             </p>
             <p className="mt-3 text-base leading-7 text-muted-foreground">
-              QuickBill is built around short, clear billing flows. The same idea applies to the
+              Free Invoice Kit is built around short, clear billing flows. The same idea applies to the
               advice here: fewer steps, fewer delays, better follow-through.
             </p>
           </div>
