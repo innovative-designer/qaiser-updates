@@ -44,7 +44,7 @@ export default async function BlogPostPage({ params }: Props) {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(65,95,196,0.18),transparent_32%),radial-gradient(circle_at_bottom_left,rgba(13,148,136,0.12),transparent_28%)]" />
 
         <div className="relative mx-auto max-w-5xl space-y-8">
-          <section className="rounded-[2rem] border border-black/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.97),rgba(247,243,234,0.93))] p-6 shadow-[0_30px_80px_-50px_rgba(28,33,55,0.38)] sm:p-8 lg:p-10">
+          <section className="rounded-[2rem] border border-black/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.97),rgba(247,243,234,0.93))] p-6 shadow-[0_30px_80px_-50px_rgba(28,33,55,0.38)] dark:border-white/10 dark:bg-[linear-gradient(160deg,rgba(28,34,48,0.94),rgba(17,21,31,0.98))] dark:shadow-[0_30px_80px_-50px_rgba(0,0,0,0.68)] sm:p-8 lg:p-10">
           <Button variant="ghost" asChild size="sm" className="-ml-2 h-11 rounded-full px-4">
             <Link href="/blog">
               <ArrowLeft className="size-4" />
@@ -76,12 +76,12 @@ export default async function BlogPostPage({ params }: Props) {
           </section>
 
           <article
-            className="prose prose-neutral max-w-none rounded-[2rem] border border-black/10 bg-white/95 px-5 py-8 text-[15px] leading-8 shadow-[0_24px_60px_-45px_rgba(28,33,55,0.28)] sm:px-8 lg:px-12 lg:py-12 [&_h2]:mt-10 [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:tracking-[-0.03em] [&_h3]:text-xl [&_h3]:font-semibold [&_blockquote]:rounded-r-2xl [&_blockquote]:border-l-4 [&_blockquote]:border-primary/40 [&_blockquote]:bg-primary/5 [&_blockquote]:px-5 [&_blockquote]:py-3 [&_ul>li]:marker:text-primary"
+            className="prose prose-neutral max-w-none rounded-[2rem] border border-black/10 bg-white/95 px-5 py-8 text-[15px] leading-8 shadow-[0_24px_60px_-45px_rgba(28,33,55,0.28)] dark:prose-invert dark:border-white/10 dark:bg-card/95 dark:shadow-[0_24px_60px_-45px_rgba(0,0,0,0.68)] sm:px-8 lg:px-12 lg:py-12 [&_h2]:mt-10 [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:tracking-[-0.03em] [&_h3]:text-xl [&_h3]:font-semibold [&_blockquote]:rounded-r-2xl [&_blockquote]:border-l-4 [&_blockquote]:border-primary/40 [&_blockquote]:bg-primary/5 [&_blockquote]:px-5 [&_blockquote]:py-3 [&_ul>li]:marker:text-primary"
             dangerouslySetInnerHTML={{ __html: post.html }}
           />
 
           <section className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="rounded-[1.75rem] border border-black/10 bg-white/90 p-6">
+          <div className="rounded-[1.75rem] border border-black/10 bg-white/90 p-6 dark:border-white/10 dark:bg-card/90">
             <p className="text-[11px] font-semibold tracking-[0.24em] text-muted-foreground uppercase">
               Why this matters
             </p>

@@ -348,7 +348,7 @@ export default function CreateInvoicePage() {
               <div className="space-y-3">
                 <Badge
                   variant="outline"
-                  className="rounded-full bg-white/75 px-4 py-1.5 text-[11px] tracking-[0.2em] uppercase"
+                  className="rounded-full bg-white/75 px-4 py-1.5 text-[11px] tracking-[0.2em] uppercase dark:bg-card/80"
                 >
                   Mobile-first invoice workspace
                 </Badge>
@@ -368,7 +368,7 @@ export default function CreateInvoicePage() {
             </div>
 
             <div className="grid gap-3 sm:grid-cols-3 lg:min-w-[420px]">
-              <div className="rounded-[1.4rem] border border-white/75 bg-white/72 p-4">
+              <div className="rounded-[1.4rem] border border-white/75 bg-white/72 p-4 dark:border-white/10 dark:bg-card/82">
                 <p className="text-muted-foreground text-[11px] font-semibold tracking-[0.18em] uppercase">
                   Output
                 </p>
@@ -378,7 +378,7 @@ export default function CreateInvoicePage() {
                 </p>
               </div>
 
-              <div className="rounded-[1.4rem] border border-white/75 bg-white/72 p-4">
+              <div className="rounded-[1.4rem] border border-white/75 bg-white/72 p-4 dark:border-white/10 dark:bg-card/82">
                 <p className="text-muted-foreground text-[11px] font-semibold tracking-[0.18em] uppercase">
                   Status
                 </p>
@@ -392,7 +392,7 @@ export default function CreateInvoicePage() {
                 </p>
               </div>
 
-              <div className="rounded-[1.4rem] border border-white/75 bg-white/72 p-4">
+              <div className="rounded-[1.4rem] border border-white/75 bg-white/72 p-4 dark:border-white/10 dark:bg-card/82">
                 <p className="text-muted-foreground text-[11px] font-semibold tracking-[0.18em] uppercase">
                   Storage
                 </p>
@@ -414,7 +414,7 @@ export default function CreateInvoicePage() {
           <div className="space-y-6">
             <Card
               className={cn(
-                'bg-white/90',
+                'bg-white/90 dark:bg-card/90',
                 errors.businessName ? 'ring-2 ring-destructive/20' : undefined
               )}
             >
@@ -518,7 +518,7 @@ export default function CreateInvoicePage() {
               </CardContent>
             </Card>
 
-            <Card className={cn('bg-white/90', errors.clientName ? 'ring-2 ring-destructive/20' : undefined)}>
+            <Card className={cn('bg-white/90 dark:bg-card/90', errors.clientName ? 'ring-2 ring-destructive/20' : undefined)}>
               <CardHeader>
                 <CardTitle>Client Info</CardTitle>
                 <CardDescription>Who should receive and pay this invoice?</CardDescription>
@@ -564,7 +564,7 @@ export default function CreateInvoicePage() {
               </CardContent>
             </Card>
 
-            <Card className={cn('bg-white/90', errors.lineItems ? 'ring-2 ring-destructive/20' : undefined)}>
+            <Card className={cn('bg-white/90 dark:bg-card/90', errors.lineItems ? 'ring-2 ring-destructive/20' : undefined)}>
               <CardHeader>
                 <CardTitle>Line Items</CardTitle>
                 <CardDescription>Add the work, quantity, and rate for each charge.</CardDescription>
@@ -686,7 +686,7 @@ export default function CreateInvoicePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white/90">
+            <Card className="bg-white/90 dark:bg-card/90">
               <CardHeader>
                 <CardTitle>Financial Summary</CardTitle>
                 <CardDescription>Fine-tune totals before saving the invoice.</CardDescription>
@@ -743,7 +743,7 @@ export default function CreateInvoicePage() {
               </CardContent>
             </Card>
 
-            <Card className={cn('bg-white/90', errors.dueDate ? 'ring-2 ring-destructive/20' : undefined)}>
+            <Card className={cn('bg-white/90 dark:bg-card/90', errors.dueDate ? 'ring-2 ring-destructive/20' : undefined)}>
               <CardHeader>
                 <CardTitle>Details</CardTitle>
                 <CardDescription>
@@ -909,7 +909,7 @@ export default function CreateInvoicePage() {
 
           <aside className="hidden lg:block">
             <div className="sticky top-6 space-y-4">
-              <div className="rounded-[1.75rem] border border-white/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(248,245,238,0.9))] p-4 shadow-[0_30px_90px_-70px_rgba(24,34,48,0.85)]">
+              <div className="rounded-[1.75rem] border border-white/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(248,245,238,0.9))] p-4 shadow-[0_30px_90px_-70px_rgba(24,34,48,0.85)] dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(31,38,53,0.94),rgba(20,25,37,0.96))] dark:shadow-[0_30px_90px_-70px_rgba(0,0,0,0.85)]">
                 <div className="flex items-start justify-between gap-4 border-b border-dashed border-border/70 pb-4">
                   <div>
                     <p className="text-sm font-semibold text-foreground">Live Preview</p>
@@ -919,14 +919,14 @@ export default function CreateInvoicePage() {
                   </div>
                   <Badge
                     variant="outline"
-                    className="rounded-full bg-white px-3 py-1 text-[11px] tracking-[0.18em] uppercase"
+                    className="rounded-full bg-white px-3 py-1 text-[11px] tracking-[0.18em] uppercase dark:bg-card/85"
                   >
                     {invoice.status}
                   </Badge>
                 </div>
 
                 <div className="mt-4">
-                  <InvoicePreview invoice={invoice} className="border-white/80 shadow-none" />
+                  <InvoicePreview invoice={invoice} className="border-white/80 shadow-none dark:border-white/10" />
                 </div>
               </div>
             </div>

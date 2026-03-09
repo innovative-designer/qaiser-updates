@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight, Clock3, Zap } from 'lucide-react';
 
+import { ThemeToggle } from '@/components/shared/theme-toggle';
 import { Button } from '@/components/ui/button';
 import { APP_NAME } from '@/lib/constants';
 import { cn } from '@/lib/utils';
@@ -53,6 +54,7 @@ export function Header({
           >
             <Clock3 className="size-4" />
           </Link>
+          <ThemeToggle />
           <Button asChild size="lg">
             <Link href={ctaHref}>
               {ctaLabel}

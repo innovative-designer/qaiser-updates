@@ -9,7 +9,7 @@ interface FooterProps {
 
 export function Footer({ className }: FooterProps) {
   return (
-    <footer className={cn('border-border/60 mt-12 border-t bg-white/35', className)}>
+    <footer className={cn('border-border/60 mt-12 border-t bg-white/35 dark:bg-background/40', className)}>
       <div className="app-shell py-8 sm:py-10">
         <div className="editorial-shell flex flex-col gap-6 px-5 py-6 sm:px-8 sm:py-7 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-xl">

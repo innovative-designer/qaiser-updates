@@ -88,7 +88,7 @@ export function ProWaitlistBanner({
 
   if (signedUp) {
     return (
-      <div className="rounded-[1.4rem] border border-emerald-200 bg-emerald-50/80 px-4 py-3.5 text-sm text-emerald-800 shadow-[0_18px_50px_-38px_rgba(16,185,129,0.45)]">
+      <div className="rounded-[1.4rem] border border-emerald-200 bg-emerald-50/80 px-4 py-3.5 text-sm text-emerald-800 shadow-[0_18px_50px_-38px_rgba(16,185,129,0.45)] dark:border-emerald-500/25 dark:bg-emerald-500/12 dark:text-emerald-100">
         <div className="flex items-center gap-2">
           <CheckCircle2 className="size-4" />
           <span>You&apos;re on the Pro waitlist. We&apos;ll notify you when it launches.</span>
@@ -99,8 +99,8 @@ export function ProWaitlistBanner({
 
   const wrapperClassName =
     variant === 'banner'
-      ? 'rounded-[1.75rem] border border-white/75 bg-white/85 p-4 shadow-[0_24px_80px_-50px_rgba(26,38,64,0.4)] sm:p-5'
-      : 'rounded-[1.5rem] border border-white/70 bg-white/80 p-4 shadow-[0_18px_60px_-44px_rgba(26,38,64,0.32)] sm:p-5';
+      ? 'rounded-[1.75rem] border border-white/75 bg-white/85 p-4 shadow-[0_24px_80px_-50px_rgba(26,38,64,0.4)] sm:p-5 dark:border-white/10 dark:bg-card/82 dark:shadow-[0_24px_80px_-50px_rgba(0,0,0,0.72)]'
+      : 'rounded-[1.5rem] border border-white/70 bg-white/80 p-4 shadow-[0_18px_60px_-44px_rgba(26,38,64,0.32)] sm:p-5 dark:border-white/10 dark:bg-card/80 dark:shadow-[0_18px_60px_-44px_rgba(0,0,0,0.68)]';
 
   return (
     <div className={wrapperClassName}>

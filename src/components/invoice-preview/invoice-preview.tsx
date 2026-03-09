@@ -46,7 +46,7 @@ export function InvoicePreview({ invoice, className }: InvoicePreviewProps) {
   return (
     <div
       className={cn(
-        'rounded-[1.65rem] border border-white/80 bg-white/92 p-6 shadow-[0_20px_60px_-45px_rgba(26,38,64,0.35)] lg:max-h-[calc(100vh-3rem)] lg:overflow-y-auto',
+        'rounded-[1.65rem] border border-white/80 bg-white/92 p-6 shadow-[0_20px_60px_-45px_rgba(26,38,64,0.35)] dark:border-white/10 dark:bg-card/94 dark:shadow-[0_20px_60px_-45px_rgba(0,0,0,0.75)] lg:max-h-[calc(100vh-3rem)] lg:overflow-y-auto',
         className
       )}
     >

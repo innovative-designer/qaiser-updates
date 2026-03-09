@@ -25,7 +25,7 @@ export default function BlogIndexPage() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(65,95,196,0.18),transparent_38%),radial-gradient(circle_at_bottom_right,rgba(13,148,136,0.12),transparent_30%)]" />
 
         <div className="relative mx-auto max-w-6xl space-y-10">
-          <section className="overflow-hidden rounded-[2rem] border border-black/10 bg-[linear-gradient(155deg,rgba(255,255,255,0.97),rgba(246,242,233,0.93))] p-6 shadow-[0_30px_80px_-50px_rgba(28,33,55,0.38)] sm:p-8 lg:p-10">
+          <section className="overflow-hidden rounded-[2rem] border border-black/10 bg-[linear-gradient(155deg,rgba(255,255,255,0.97),rgba(246,242,233,0.93))] p-6 shadow-[0_30px_80px_-50px_rgba(28,33,55,0.38)] dark:border-white/10 dark:bg-[linear-gradient(160deg,rgba(28,34,48,0.94),rgba(17,21,31,0.98))] dark:shadow-[0_30px_80px_-50px_rgba(0,0,0,0.68)] sm:p-8 lg:p-10">
           <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
             <div className="space-y-5">
               <Badge className="rounded-full bg-primary/10 px-3 py-1 text-[11px] tracking-[0.24em] uppercase text-primary hover:bg-primary/10">
@@ -54,7 +54,7 @@ export default function BlogIndexPage() {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-              <div className="rounded-[1.6rem] border border-black/10 bg-white/80 p-5">
+              <div className="rounded-[1.6rem] border border-black/10 bg-white/80 p-5 dark:border-white/10 dark:bg-card/80">
                 <p className="text-[11px] font-semibold tracking-[0.24em] text-muted-foreground uppercase">
                   Tone
                 </p>
@@ -78,21 +78,21 @@ export default function BlogIndexPage() {
           </section>
 
           <section className="grid gap-4 sm:grid-cols-3">
-          <div className="rounded-[1.5rem] border border-black/10 bg-white/90 p-5 shadow-[0_20px_50px_-40px_rgba(28,33,55,0.35)]">
+          <div className="rounded-[1.5rem] border border-black/10 bg-white/90 p-5 shadow-[0_20px_50px_-40px_rgba(28,33,55,0.35)] dark:border-white/10 dark:bg-card/90 dark:shadow-[0_20px_50px_-40px_rgba(0,0,0,0.68)]">
             <Sparkles className="size-5 text-primary" />
             <p className="mt-4 text-lg font-semibold text-foreground">Actionable writing</p>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
               Focused guidance for real invoicing situations, not generic business filler.
             </p>
           </div>
-          <div className="rounded-[1.5rem] border border-black/10 bg-white/90 p-5 shadow-[0_20px_50px_-40px_rgba(28,33,55,0.35)]">
+          <div className="rounded-[1.5rem] border border-black/10 bg-white/90 p-5 shadow-[0_20px_50px_-40px_rgba(28,33,55,0.35)] dark:border-white/10 dark:bg-card/90 dark:shadow-[0_20px_50px_-40px_rgba(0,0,0,0.68)]">
             <Clock3 className="size-5 text-primary" />
             <p className="mt-4 text-lg font-semibold text-foreground">Quick to scan</p>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
               Built for people reading between calls, chats, and client work on their phones.
             </p>
           </div>
-          <div className="rounded-[1.5rem] border border-black/10 bg-white/90 p-5 shadow-[0_20px_50px_-40px_rgba(28,33,55,0.35)]">
+          <div className="rounded-[1.5rem] border border-black/10 bg-white/90 p-5 shadow-[0_20px_50px_-40px_rgba(28,33,55,0.35)] dark:border-white/10 dark:bg-card/90 dark:shadow-[0_20px_50px_-40px_rgba(0,0,0,0.68)]">
             <ArrowRight className="size-5 text-primary" />
             <p className="mt-4 text-lg font-semibold text-foreground">Linked back to action</p>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
@@ -116,7 +116,7 @@ export default function BlogIndexPage() {
           <div className="grid gap-4">
             {posts.map((post, index) => (
               <Link key={post.slug} href={`/blog/${post.slug}`} className="block">
-                <Card className="rounded-[1.75rem] border border-black/10 bg-white/90 py-0 transition-transform duration-200 hover:-translate-y-0.5">
+                <Card className="rounded-[1.75rem] border border-black/10 bg-white/90 py-0 transition-transform duration-200 hover:-translate-y-0.5 dark:border-white/10 dark:bg-card/90">
                   <CardHeader className="gap-3 px-5 py-5 sm:px-6 sm:py-6">
                     <div className="flex flex-wrap items-center gap-2">
                       <Badge
