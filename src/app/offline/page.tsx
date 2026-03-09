@@ -10,16 +10,16 @@ import { Button } from '@/components/ui/button';
 
 export default function OfflinePage() {
   return (
-    <div className="min-h-screen bg-[linear-gradient(180deg,rgba(249,247,242,1)_0%,rgba(255,255,255,1)_42%,rgba(240,247,245,1)_100%)]">
+    <div className="min-h-screen bg-[linear-gradient(180deg,rgba(249,247,242,1)_0%,rgba(255,255,255,1)_42%,rgba(240,247,245,1)_100%)] dark:bg-[linear-gradient(180deg,rgba(16,20,30,1)_0%,rgba(19,24,36,1)_44%,rgba(14,20,30,1)_100%)]">
       <Header />
 
       <main className="mx-auto flex min-h-[calc(100vh-12rem)] w-full max-w-5xl items-center px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
-        <section className="w-full overflow-hidden rounded-[2rem] border border-black/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.97),rgba(247,243,234,0.93))] p-6 shadow-[0_30px_80px_-50px_rgba(28,33,55,0.38)] sm:p-8 lg:p-10">
+        <section className="w-full overflow-hidden rounded-[2rem] border border-black/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.97),rgba(247,243,234,0.93))] p-6 shadow-[0_30px_80px_-50px_rgba(28,33,55,0.38)] dark:border-white/10 dark:bg-[linear-gradient(160deg,rgba(28,34,48,0.94),rgba(17,21,31,0.98))] dark:shadow-[0_30px_80px_-50px_rgba(0,0,0,0.68)] sm:p-8 lg:p-10">
           <div className="mx-auto max-w-3xl text-center">
             <Badge className="rounded-full bg-primary/10 px-3 py-1 text-[11px] tracking-[0.24em] uppercase text-primary hover:bg-primary/10">
               Offline Mode
             </Badge>
-            <div className="mx-auto mt-6 flex size-18 items-center justify-center rounded-[1.5rem] bg-white/80 text-primary shadow-[0_18px_40px_-30px_rgba(28,33,55,0.35)]">
+            <div className="mx-auto mt-6 flex size-18 items-center justify-center rounded-[1.5rem] bg-white/80 text-primary shadow-[0_18px_40px_-30px_rgba(28,33,55,0.35)] dark:bg-card/85 dark:shadow-[0_18px_40px_-30px_rgba(0,0,0,0.68)]">
               <WifiOff className="size-8" />
             </div>
 

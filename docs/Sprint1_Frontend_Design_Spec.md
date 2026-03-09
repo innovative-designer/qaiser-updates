@@ -239,7 +239,7 @@ Add a subtle paper-like quality:
 **Watermark footer:**
 - `text-xs text-muted-foreground/60` — deliberately light
 - Lucide `Zap` icon at `size-3`
-- Text: "Created with QuickBill — Free invoicing on WhatsApp → www.freeinvoicekit.com"
+- Text: "Created with Free Invoice Kit — Free invoicing on WhatsApp → www.freeinvoicekit.com"
 - **BRANDING PLUG-IN:** Replace icon with `<Image src="/logo.svg" />` when available
 
 ### Desktop Behavior

@@ -86,7 +86,7 @@ git commit -m "feat: add invoice TypeScript types"
 **Step 1: Create the constants file**
 
 ```typescript
-export const APP_NAME = 'QuickBill';
+export const APP_NAME = 'Free Invoice Kit';
 export const APP_URL = 'https://www.freeinvoicekit.com';
 export const APP_TAGLINE = 'Free invoicing on WhatsApp';
 export const APP_DESCRIPTION =
@@ -1607,7 +1607,7 @@ When brand assets are ready, follow this checklist. No code restructuring needed
 | 1   | `src/lib/constants.ts`                               | Update `APP_URL` if domain changes                                                                   |
 | 2   | `src/app/globals.css`                                | Replace `--primary` and `--accent` oklch values in `:root` and `.dark`                               |
 | 3   | `src/app/layout.tsx`                                 | Swap `Geist` font import for brand font. Add `metadata.icons` for new icon files                     |
-| 4   | `src/components/shared/header.tsx`                   | Replace `<Zap /> QuickBill` with `<Image src="/logo.svg" alt="QuickBill" width={120} height={32} />` |
+| 4   | `src/components/shared/header.tsx`                   | Replace `<Zap /> Free Invoice Kit` with `<Image src="/logo.svg" alt="Free Invoice Kit" width={120} height={32} />` |
 | 5   | `src/components/invoice-preview/invoice-preview.tsx` | Replace `<Zap />` in watermark footer with `<img src="/logo.svg" />`                                 |
 | 6   | `src/app/page.tsx`                                   | Replace hero placeholder `<div>` with `<Image src="/demo.gif" />` or screenshot                      |
 

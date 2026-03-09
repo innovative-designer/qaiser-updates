@@ -118,7 +118,7 @@ export default function Home() {
 
             <div className="relative grid gap-8 lg:grid-cols-[minmax(0,1.02fr)_minmax(320px,0.98fr)] lg:items-center">
               <div className="space-y-6">
-                <Badge variant="outline" className="rounded-full bg-white/70 px-4 py-1.5">
+                <Badge variant="outline" className="rounded-full bg-white/70 px-4 py-1.5 dark:bg-card/80">
                   Free forever. No signup.
                 </Badge>
 
@@ -146,7 +146,7 @@ export default function Home() {
                   </Link>
                   <Link
                     href="#workflow"
-                    className="border-border/80 bg-white/70 text-foreground inline-flex h-12 items-center justify-center rounded-2xl border px-5 text-sm font-medium transition hover:bg-white"
+                    className="border-border/80 bg-white/70 text-foreground inline-flex h-12 items-center justify-center rounded-2xl border px-5 text-sm font-medium transition hover:bg-white dark:bg-card/80 dark:hover:bg-card"
                   >
                     See the workflow
                   </Link>
@@ -154,7 +154,7 @@ export default function Home() {
 
                 <div className="grid gap-3 sm:grid-cols-3">
                   {stats.map((stat) => (
-                    <div key={stat.label} className="rounded-[1.35rem] border border-white/80 bg-white/72 p-4">
+                    <div key={stat.label} className="rounded-[1.35rem] border border-white/80 bg-white/72 p-4 dark:border-white/10 dark:bg-card/82">
                       <p className="text-muted-foreground text-[0.72rem] tracking-[0.22em] uppercase">
                         {stat.label}
                       </p>
@@ -167,8 +167,8 @@ export default function Home() {
               </div>
 
               <div className="relative mx-auto w-full max-w-md lg:max-w-none">
-                <div className="mx-auto max-w-[24rem] rounded-[2.25rem] border border-[rgba(36,44,72,0.08)] bg-[linear-gradient(180deg,rgba(245,246,255,0.98),rgba(255,255,255,0.96))] p-3 shadow-[0_35px_110px_-48px_rgba(26,38,64,0.55)]">
-                  <div className="rounded-[1.85rem] border border-white/80 bg-white p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                <div className="mx-auto max-w-[24rem] rounded-[2.25rem] border border-[rgba(36,44,72,0.08)] bg-[linear-gradient(180deg,rgba(245,246,255,0.98),rgba(255,255,255,0.96))] p-3 shadow-[0_35px_110px_-48px_rgba(26,38,64,0.55)] dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(27,34,48,0.96),rgba(18,23,34,0.96))] dark:shadow-[0_35px_110px_-48px_rgba(0,0,0,0.75)]">
+                  <div className="rounded-[1.85rem] border border-white/80 bg-white p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] dark:border-white/10 dark:bg-card dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
                     <div className="flex items-center justify-between pb-4">
                       <div>
                         <p className="text-sm font-semibold text-foreground">Studio North</p>
@@ -199,7 +199,7 @@ export default function Home() {
                             client@example.com
                           </p>
                         </div>
-                        <Badge variant="outline" className="rounded-full bg-white">
+                        <Badge variant="outline" className="rounded-full bg-white dark:bg-card/85">
                           Due today
                         </Badge>
                       </div>
@@ -336,7 +336,7 @@ export default function Home() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="rounded-[1.5rem] border border-white/80 bg-white/75 p-5 transition hover:-translate-y-1 hover:bg-white"
+                  className="rounded-[1.5rem] border border-white/80 bg-white/75 p-5 transition hover:-translate-y-1 hover:bg-white dark:border-white/10 dark:bg-card/78 dark:hover:bg-card"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
@@ -378,7 +378,7 @@ export default function Home() {
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Link
                   href="/create"
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl bg-white px-5 text-sm font-medium text-primary transition hover:-translate-y-0.5"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl bg-white px-5 text-sm font-medium text-primary transition hover:-translate-y-0.5 dark:bg-white/92 dark:text-primary"
                 >
                   Open Invoice Builder
                   <ArrowRight className="size-4" />

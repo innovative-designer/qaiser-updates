@@ -1,4 +1,4 @@
-# QuickBill — WhatsApp Invoice PWA: Complete Launch Blueprint
+# Free Invoice Kit — WhatsApp Invoice PWA: Complete Launch Blueprint
 
 **Prepared by: Product Manager | Market Analyst | Technical CTO**
 **Date: February 2026**
@@ -8,18 +8,18 @@
 
 ## Executive Summary
 
-This document is a comprehensive, research-backed launch plan for **QuickBill** — a Progressive Web App (PWA) that enables freelancers, small businesses, and solopreneurs to create professional PDF invoices and share them directly on WhatsApp as attachments. No links, no extra clicks for the client — just a clean PDF landing in their chat. Internal invoice links are retained within the app for the user's own record-keeping and dashboard.
+This document is a comprehensive, research-backed launch plan for **Free Invoice Kit** — a Progressive Web App (PWA) that enables freelancers, small businesses, and solopreneurs to create professional PDF invoices and share them directly on WhatsApp as attachments. No links, no extra clicks for the client — just a clean PDF landing in their chat. Internal invoice links are retained within the app for the user's own record-keeping and dashboard.
 
 ### The Core Philosophy: Traffic First, Monetize Last
 
-Most SaaS founders build payments before they build an audience. Then they wonder why they have a beautiful Stripe integration and zero users. **QuickBill inverts this.** The plan is structured in four waves:
+Most SaaS founders build payments before they build an audience. Then they wonder why they have a beautiful Stripe integration and zero users. **Free Invoice Kit inverts this.** The plan is structured in four waves:
 
 1. **Wave 1 — Ship & Spread (Weeks 1–7):** Build a fully functional free PDF invoicer with a branded watermark. No signup wall. No feature gates. Pour all energy into traffic acquisition. Every PDF sent is a marketing impression.
 2. **Wave 2 — Capture & Grow (Weeks 8–10):** Add signup, dashboard, and client management. Start collecting emails. Double down on SEO, community, and content. The product is still fully free.
 3. **Wave 3 — Launch Event (Weeks 11–12):** Product Hunt, press, and a coordinated community blitz. Maximum visibility with a proven, polished product.
 4. **Wave 4 — Monetize the Base (Weeks 13–16):** Only now — with 1,000+ active users and real usage data — add Stripe Connect, the Pro plan, and feature gates. You know what to charge for because users have shown you.
 
-The watermark ("Created with QuickBill") is present from Day 1. It is not a "constraint added later" — it is the growth engine. Removing it is the most natural Pro upgrade.
+The watermark ("Created with Free Invoice Kit") is present from Day 1. It is not a "constraint added later" — it is the growth engine. Removing it is the most natural Pro upgrade.
 
 ---
 
@@ -62,10 +62,10 @@ No existing player combines **all four** of these in a single, lightweight PWA:
 
 1. **Zero-auth first invoice** (value before signup)
 2. **PDF-direct WhatsApp delivery** — the client receives a professional PDF attachment in their chat, not a link they have to click. This feels like a real document, not a marketing message.
-3. **Branded watermark from Day 1** — every PDF carries "Created with QuickBill" in the footer, turning every invoice into a marketing impression. This is the viral loop.
-4. **Internal dashboard with history & tracking** — links and invoice records stay inside QuickBill for the user's own reference, search, and analytics.
+3. **Branded watermark from Day 1** — every PDF carries "Created with Free Invoice Kit" in the footer, turning every invoice into a marketing impression. This is the viral loop.
+4. **Internal dashboard with history & tracking** — links and invoice records stay inside Free Invoice Kit for the user's own reference, search, and analytics.
 
-This is the gap QuickBill fills. The key differentiator is **PDF-as-attachment via WhatsApp** — it's tangible, professional, and works even if the client is offline after receiving it. Every competitor either sends a link (which feels like spam) or requires the client to visit a website. A PDF in the chat is instantly trusted.
+This is the gap Free Invoice Kit fills. The key differentiator is **PDF-as-attachment via WhatsApp** — it's tangible, professional, and works even if the client is offline after receiving it. Every competitor either sends a link (which feels like spam) or requires the client to visit a website. A PDF in the chat is instantly trusted.
 
 ### 1.5 Feasibility Verdict
 
@@ -87,8 +87,8 @@ This is the gap QuickBill fills. The key differentiator is **PDF-as-attachment v
 
 1. **30-Second Value**: User creates and shares their first invoice PDF on WhatsApp in under 30 seconds. No signup.
 2. **PDF-First, Not Link-First**: The client receives an actual PDF document in their WhatsApp chat — tangible, professional, and accessible offline. No links to click, no websites to visit.
-3. **Watermark = Growth Engine**: Every free PDF includes a footer: _"Created with QuickBill — Free invoicing on WhatsApp → www.freeinvoicekit.com"_. This is not a punishment — it's the viral loop. It's there from Day 1 so users never feel it was "taken away."
-4. **Links Stay Internal**: Hosted invoice URLs exist only inside the QuickBill dashboard for the user's own record-keeping, search, and history.
+3. **Watermark = Growth Engine**: Every free PDF includes a footer: _"Created with Free Invoice Kit — Free invoicing on WhatsApp → www.freeinvoicekit.com"_. This is not a punishment — it's the viral loop. It's there from Day 1 so users never feel it was "taken away."
+4. **Links Stay Internal**: Hosted invoice URLs exist only inside the Free Invoice Kit dashboard for the user's own record-keeping, search, and history.
 5. **Traffic Before Revenue**: The entire product and development sequence is optimized to maximize users and PDFs sent before introducing any payment gates.
 
 ### 2.2 Feature Specification (Phased by Traffic-First Strategy)
@@ -100,14 +100,14 @@ Everything the user needs to create and send a real invoice. No signup. No limit
 - **No-Auth Invoice Creator**: Single-page form with Business Name, Client Name, Line Items (description, quantity, rate), Tax %, Discount, Notes, and Due Date.
 - **Auto-Detection**: Detect user country via IP geolocation; auto-set currency (USD, EUR, AED, PKR, etc.) and date format.
 - **PDF Generation**: Server-side PDF rendering with a clean, professional template. Footer area reserved for future QR code/payment URL (blank placeholder for now — no Stripe integration yet).
-- **Branded Watermark (Day 1)**: Every PDF includes a subtle but visible footer: _"Created with QuickBill — Free invoicing on WhatsApp → www.freeinvoicekit.com"_. This is the viral loop.
+- **Branded Watermark (Day 1)**: Every PDF includes a subtle but visible footer: _"Created with Free Invoice Kit — Free invoicing on WhatsApp → www.freeinvoicekit.com"_. This is the viral loop.
 - **Share PDF on WhatsApp**: Web Share API triggers native share sheet to send PDF as document attachment. Pre-filled caption: `Hi [Client], please find attached your invoice for [Amount]. — [Business Name]`.
 - **Alternative Share**: "Download PDF," "Share via Email," "Copy Caption Text."
 - **Browser Storage**: Save up to 10 invoices locally in IndexedDB. No signup needed.
 - **PWA Shell**: Installable on mobile. Offline-capable for viewing saved invoices and re-sharing previously generated PDFs.
 - **Landing Page with SEO**: Hero section, 3-step "How It Works," social proof area, embedded demo GIF, and CTA. SSR-rendered for SEO.
 - **5 SEO Landing Pages**: Geo/niche-specific pages (see Traffic section) built and indexed from Day 1.
-- **"Pro Coming Soon" Teaser**: A small, non-intrusive banner in the app: _"QuickBill Pro — Remove watermark, add your logo, auto-recurring invoices. Coming soon. [Notify me]"_. This collects emails and signals that a paid tier is planned, so users are never surprised when it arrives.
+- **"Pro Coming Soon" Teaser**: A small, non-intrusive banner in the app: _"Free Invoice Kit Pro — Remove watermark, add your logo, auto-recurring invoices. Coming soon. [Notify me]"_. This collects emails and signals that a paid tier is planned, so users are never surprised when it arrives.
 
 #### Phase 2 — Account Layer + Traffic Capture (Weeks 8–10)
 
@@ -126,12 +126,12 @@ The product is still fully free. The goal is to convert anonymous users into kno
 
 #### Phase 4 — Monetization Layer (Weeks 13–16, AFTER launch and traffic validation)
 
-Only built after QuickBill has 500+ weekly active users and validated demand via the "Pro Notify Me" list.
+Only built after Free Invoice Kit has 500+ weekly active users and validated demand via the "Pro Notify Me" list.
 
 - **Stripe Connect Integration**: Users connect their Stripe account. A unique payment link is generated for each invoice.
 - **Payment Info Embedded in PDF**: QR code and short "Pay Now" URL (e.g., `www.freeinvoicekit.com/pay/abc123`) printed on the PDF footer. Clients scan to pay via Card/Apple Pay/Google Pay.
-- **Payment Landing Page** (`/pay/[shortId]`): Minimal branded page with invoice summary + Stripe payment form. Includes "Create your own invoices for free → QuickBill" CTA.
-- **Application Fee**: QuickBill collects 0.5–1% on each transaction processed.
+- **Payment Landing Page** (`/pay/[shortId]`): Minimal branded page with invoice summary + Stripe payment form. Includes "Create your own invoices for free → Free Invoice Kit" CTA.
+- **Application Fee**: Free Invoice Kit collects 0.5–1% on each transaction processed.
 - **"Business Pro" Subscription ($9/mo)**:
   - Remove watermark from PDFs
   - Upload custom logo on invoices
@@ -219,7 +219,7 @@ Only built after QuickBill has 500+ weekly active users and validated demand via
     └───────────┘    └────────────┘    └──────────────┘
 ```
 
-**Key Flow**: User creates invoice → PDF is generated server-side with watermark → PDF is downloaded to user's device → User taps "Send on WhatsApp" → Native share sheet opens → PDF (with QuickBill branding) is sent as a document attachment in the client's WhatsApp chat.
+**Key Flow**: User creates invoice → PDF is generated server-side with watermark → PDF is downloaded to user's device → User taps "Send on WhatsApp" → Native share sheet opens → PDF (with Free Invoice Kit branding) is sent as a document attachment in the client's WhatsApp chat.
 
 ### 3.3 Database Schema (Core Tables)
 
@@ -350,7 +350,7 @@ Development is not just about building features. In this plan, every sprint incl
 | Legal Documents       | PM    | Draft Privacy Policy, Terms of Service, and Cookie Policy (Termly or iubenda templates).                                                         |
 | Brand Kit             | PM    | Logo, color palette, typography. Keep it minimal and professional. This is also used in the PDF watermark.                                       |
 | Google Search Console | PM    | Verify domain ownership. Submit initial sitemap.                                                                                                 |
-| **Twitter/X account** | PM    | **Create @quickbillapp. Post first "building in public" update. Day 1.**                                                                         |
+| **Twitter/X account** | PM    | **Create @freeinvoicekit. Post first "building in public" update. Day 1.**                                                                       |
 
 **Milestone: Empty app deployed to `www.freeinvoicekit.com`. Analytics live. Build-in-public started.**
 
@@ -379,7 +379,7 @@ Development is not just about building features. In this plan, every sprint incl
 | ------------------------------------------------------------------------------------------------------------------------------ | -------- | ------------ | ----------- |
 | Server-side PDF generation API route (`/api/invoice/[id]/pdf`) using `@react-pdf/renderer`                                     | P0       | 2 days       | Product     |
 | Design professional PDF template: clean header (business info), line items table, totals section, notes                        | P0       | 1.5 days     | Product     |
-| **Watermark footer on every PDF**: _"Created with QuickBill — Free invoicing on WhatsApp → www.freeinvoicekit.com"_ with QuickBill logo | **P0**   | **0.5 day**  | **Traffic** |
+| **Watermark footer on every PDF**: _"Created with Free Invoice Kit — Free invoicing on WhatsApp → www.freeinvoicekit.com"_ with Free Invoice Kit logo | **P0**   | **0.5 day**  | **Traffic** |
 | Reserve footer area for future QR code + payment URL (blank placeholder now — "Pay online: coming soon")                       | P1       | 0.5 day      | Product     |
 | Store generated PDFs in Supabase Storage (for future re-download/re-share)                                                     | P0       | 1 day        | Product     |
 | Generate unique short IDs for invoices (nanoid, 8 chars)                                                                       | P0       | 0.5 day      | Product     |
@@ -415,7 +415,7 @@ Development is not just about building features. In this plan, every sprint incl
 | **Submit to 10+ directories**: AlternativeTo, BetaList, Free-for-Dev, SaaSHub, Launching Next, IndieHackers, ToolPilot, SideProjectors, StartupStash, MicroSaaS HQ | **P0**   | **1 day**   | **Traffic** |
 | **Write and publish first blog post**: "How to Send a Professional Invoice on WhatsApp in 30 Seconds"                                                              | **P0**   | **0.5 day** | **Traffic** |
 | **Share MVP with personal network**: 50–100 direct messages to freelancers and small business owners on WhatsApp & LinkedIn                                        | **P0**   | **0.5 day** | **Traffic** |
-| **Twitter/X: "I just launched QuickBill. Free PDF invoices on WhatsApp. No signup. Here's the story."**                                                            | **P0**   | **—**       | **Traffic** |
+| **Twitter/X: "I just launched Free Invoice Kit. Free PDF invoices on WhatsApp. No signup. Here's the story."**                                                      | **P0**   | **—**       | **Traffic** |
 
 **🚀 MILESTONE — MVP SOFT LAUNCH (Day 42):**
 A user can create an invoice, generate a professional branded PDF, and share it directly as an attachment on WhatsApp — all without signing up. The watermark is live. 5 SEO pages are indexed. 10+ directories list the product. Blog has 1 post. Build-in-public audience is growing.
@@ -501,12 +501,12 @@ This is a coordinated, platform-by-platform outreach campaign. Every post is cra
 | 70  | **Twitter/X**                                                                             | Metrics thread: "Day 5 after launch. Here are the real numbers."                                | Transparent, data-driven             |
 | 71  | **YouTube**                                                                               | 3-minute tutorial: "How to Send an Invoice on WhatsApp in 30 Seconds"                           | SEO-optimized tutorial               |
 | 72  | **WhatsApp Groups** (20–30 business/freelancer groups, especially UAE, Pakistan, Nigeria) | Share the tool directly with a personal message                                                 | Peer recommendation                  |
-| 73  | **Hacker News**                                                                           | "Show HN: QuickBill – Free PWA to create and send PDF invoices via WhatsApp"                    | Technical, understated               |
+| 73  | **Hacker News**                                                                           | "Show HN: Free Invoice Kit - Free PWA to create and send PDF invoices via WhatsApp"             | Technical, understated               |
 | 74  | **Dev.to / Hashnode**                                                                     | "Building a PDF-First WhatsApp Invoice PWA with Next.js + Supabase"                             | Developer audience                   |
 | 75  | **Twitter/X**                                                                             | Week 2 metrics thread: "10 days post-launch. What's working, what's not."                       | Honest numbers                       |
 | 76  | **Blog post #5**: "The Best Free Invoice Generators in 2026 (Compared)"                   | SEO play — comparison/list post                                                                 | SEO + social                         |
 | 77  | **Reddit: r/webdev**                                                                      | "I used Next.js + Supabase + @react-pdf to build a free WhatsApp invoice tool. AMA."            | Technical community                  |
-| 78  | **Blog post #6**: "How I Built QuickBill: A Solo Founder's 65-Day Journey"                | IndieHackers, HN, Twitter                                                                       | Story post                           |
+| 78  | **Blog post #6**: "How I Built Free Invoice Kit: A Solo Founder's 65-Day Journey"         | IndieHackers, HN, Twitter                                                                       | Story post                           |
 | 79  | **Quora**                                                                                 | Answer 5–10 questions about "how to invoice on whatsapp," "best free invoice tool," etc.        | Helpful answers with link            |
 | 80  | **Twitter/X**                                                                             | "2 weeks of launch. Lessons learned" thread                                                     | Retrospective with metrics           |
 
@@ -517,12 +517,12 @@ This is the highest-ROI, lowest-cost traffic channel. Set up daily alerts (Googl
 | Keyword to Monitor                                 | Platform                | Response Strategy                                                                                                                       |
 | -------------------------------------------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | "how to send invoice on whatsapp"                  | Reddit, Twitter, Quora  | "I built a free tool that does exactly this — generates a PDF and lets you share it as a WhatsApp attachment. No signup needed: [link]" |
-| "invoice tool for freelancers"                     | Reddit, Twitter         | "If you use WhatsApp with clients, check out QuickBill — free PWA, creates PDF invoices you share directly in the chat."                |
+| "invoice tool for freelancers"                     | Reddit, Twitter         | "If you use WhatsApp with clients, check out Free Invoice Kit — free PWA, creates PDF invoices you share directly in the chat."         |
 | "stripe invoice expensive" / "stripe invoice fees" | Reddit, Twitter         | "I switched to a lightweight free tool for simple invoices and only use Stripe for the actual payment processing. [link]"               |
 | "invoice app recommendation"                       | Reddit, Facebook Groups | Contextual recommendation with a personal touch.                                                                                        |
-| "how to bill clients on whatsapp"                  | Quora, Reddit           | Detailed answer explaining the PDF-sharing approach, with QuickBill as one option.                                                      |
-| "free invoice generator"                           | Reddit, Twitter         | "I use QuickBill — it's a PWA, no signup, generates PDFs and sends them on WhatsApp in 30 seconds."                                     |
-| "clients don't pay invoices"                       | Reddit, Twitter         | Advice post about following up, with QuickBill's "Nudge" feature as a practical tip.                                                    |
+| "how to bill clients on whatsapp"                  | Quora, Reddit           | Detailed answer explaining the PDF-sharing approach, with Free Invoice Kit as one option.                                                |
+| "free invoice generator"                           | Reddit, Twitter         | "I use Free Invoice Kit — it's a PWA, no signup, generates PDFs and sends them on WhatsApp in 30 seconds."                              |
+| "clients don't pay invoices"                       | Reddit, Twitter         | Advice post about following up, with Free Invoice Kit's "Nudge" feature as a practical tip.                                             |
 
 **🚀 MILESTONE — LAUNCH SPIKE (Day 80):**
 Target: 3,000–8,000 website visitors in 15 days. 500+ invoices created. 300+ signups. 100+ Pro waitlist emails. Product Hunt Top 10 (ideally Top 5).
@@ -546,7 +546,7 @@ If the metrics aren't there, spend more time on traffic (repeat the community bl
 | Application fee collection: 0.5–1% per transaction via Stripe Connect                                   | P0       | 1 day       | Product     |
 | Webhook handler: payment events → mark invoice as "Paid" → record `paid_at` → notify user               | P0       | 1 day       | Product     |
 | Payment confirmation page + email receipt to client                                                     | P1       | 1 day       | Product     |
-| Payment page CTA: "Create your own invoices for free → QuickBill" (viral loop on payment page)          | P1       | 0.5 day     | Traffic     |
+| Payment page CTA: "Create your own invoices for free → Free Invoice Kit" (viral loop on payment page)   | P1       | 0.5 day     | Traffic     |
 | End-to-end testing of payment flows (QR scan → payment page → Stripe → webhook → status update)         | P0       | 1.5 days    | QA          |
 | **Blog post #7**: "How to Accept Online Payments on WhatsApp Invoices"                                  | **P1**   | **0.5 day** | **Traffic** |
 
@@ -556,7 +556,7 @@ If the metrics aren't there, spend more time on traffic (repeat the community bl
 | -------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------- | ----------- |
 | Stripe Billing integration for $9/mo "Business Pro" subscription                                                                             | P0       | 1.5 days    | Product     |
 | Pro feature gates — unlock on subscription:                                                                                                  | P0       | 1.5 days    | Product     |
-| — Remove QuickBill watermark from PDFs                                                                                                       |          |             |             |
+| — Remove Free Invoice Kit watermark from PDFs                                                                                                |          |             |             |
 | — Upload custom logo on invoices                                                                                                             |          |             |             |
 | — Recurring invoice scheduling (auto-generate PDF monthly)                                                                                   |          |             |             |
 | Recurring invoice scheduler (Vercel Cron or Supabase Edge Functions): auto-generates new PDF + notifies user with one-tap "Send on WhatsApp" | P1       | 2 days      | Product     |
@@ -564,7 +564,7 @@ If the metrics aren't there, spend more time on traffic (repeat the community bl
 | Stripe Tax integration for automatic sales tax calculation                                                                                   | P2       | 1 day       | Product     |
 | End-to-end testing of subscription + recurring invoice flows                                                                                 | P0       | 1.5 days    | QA          |
 | **Email the Pro waitlist**: "Pro is live! You're the first to know. Here's your 3-month free trial."                                         | **P0**   | **0.5 day** | **Traffic** |
-| **Blog post #8**: "QuickBill Pro is Here — What You Get and Why We Built It"                                                                 | **P1**   | **0.5 day** | **Traffic** |
+| **Blog post #8**: "Free Invoice Kit Pro is Here — What You Get and Why We Built It"                                                          | **P1**   | **0.5 day** | **Traffic** |
 | **Twitter/X announcement thread**                                                                                                            | **P0**   | **—**       | **Traffic** |
 | **Product Hunt update**: Comment on original launch with Pro announcement                                                                    | **P1**   | **—**       | **Traffic** |
 
@@ -579,16 +579,16 @@ This is the most important section of the entire plan. A great product with no t
 
 ### 5.1 The Traffic Flywheel
 
-QuickBill has a rare structural advantage: **the product itself generates traffic.** Here's how:
+Free Invoice Kit has a rare structural advantage: **the product itself generates traffic.** Here's how:
 
 ```
 User creates invoice
         ↓
-PDF is generated with QuickBill watermark
+PDF is generated with Free Invoice Kit watermark
         ↓
 PDF is sent to a client on WhatsApp
         ↓
-Client sees "Created with QuickBill → www.freeinvoicekit.com"
+Client sees "Created with Free Invoice Kit → www.freeinvoicekit.com"
         ↓
 Client (who also sends invoices) visits www.freeinvoicekit.com
         ↓
@@ -655,15 +655,15 @@ The blog serves two purposes: SEO traffic and social shareability. Every post sh
 | 9    | "Why Your Clients Ignore Email Invoices (And What to Do Instead)" | "clients don't pay invoices"       | r/smallbusiness, Facebook groups |
 | 9    | "WhatsApp for Business: The 2026 Guide for Freelancers"           | "whatsapp for business guide"      | LinkedIn, IndieHackers           |
 | 11   | "The Best Free Invoice Generators in 2026 (Compared)"             | "best free invoice generator 2026" | SEO play — list post             |
-| 11   | "How I Built QuickBill: A Solo Founder's 65-Day Journey"          | — (social play)                    | IndieHackers, HN, Twitter        |
+| 11   | "How I Built Free Invoice Kit: A Solo Founder's 65-Day Journey"   | — (social play)                    | IndieHackers, HN, Twitter        |
 | 13   | "How to Accept Online Payments on WhatsApp Invoices"              | "accept payment whatsapp"          | Reddit, LinkedIn                 |
-| 14   | "QuickBill Pro is Here — What You Get"                            | — (announcement)                   | Email list, Twitter, PH          |
+| 14   | "Free Invoice Kit Pro is Here — What You Get"                     | — (announcement)                   | Email list, Twitter, PH          |
 | 15   | "How to Set Up Recurring Invoices for Monthly Clients"            | "recurring invoice setup"          | r/freelance, Twitter             |
 | 16   | "Invoice Tax Guide for US Freelancers (2026)"                     | "freelancer invoice tax"           | SEO play, r/tax                  |
 
 #### YouTube (Month 3+)
 
-- 3-minute tutorials: "How to Send an Invoice on WhatsApp," "How to Accept Payments with QuickBill."
+- 3-minute tutorials: "How to Send an Invoice on WhatsApp," "How to Accept Payments with Free Invoice Kit."
 - YouTube Shorts: 30-second clips showing the 3-tap invoice creation flow.
 - Optimize titles and descriptions for search.
 
@@ -695,7 +695,7 @@ Join 20–30 active WhatsApp groups in your target markets:
 - Digital agency groups
 - Tech startup groups
 
-Share QuickBill as a peer recommendation, not an ad: "Hey, I've been using this free tool to send invoices to clients — just makes a PDF and sends it on WhatsApp. Pretty handy: [link]."
+Share Free Invoice Kit as a peer recommendation, not an ad: "Hey, I've been using this free tool to send invoices to clients — just makes a PDF and sends it on WhatsApp. Pretty handy: [link]."
 
 #### Directory Submissions (Week 6, One-Time)
 
@@ -926,7 +926,7 @@ WEEK 18+ ████████ Programmatic SEO (50+ pages by Month 4)
 
 ## Conclusion
 
-QuickBill sits at a genuine intersection of demand (freelancers need invoicing), distribution (WhatsApp has 3B+ users with 95%+ open rates), and viral mechanics (every PDF is a marketing impression).
+Free Invoice Kit sits at a genuine intersection of demand (freelancers need invoicing), distribution (WhatsApp has 3B+ users with 95%+ open rates), and viral mechanics (every PDF is a marketing impression).
 
 **The strategy is simple: give away a great free tool, brand every output, and let the product market itself.**
 

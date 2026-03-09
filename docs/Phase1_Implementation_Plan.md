@@ -1,4 +1,4 @@
-# QuickBill — Phase 1: The Free Invoicer + Viral Loop
+# Free Invoice Kit — Phase 1: The Free Invoicer + Viral Loop
 
 ## Detailed Implementation Plan (Weeks 1–7 / Days 1–42)
 
@@ -33,7 +33,7 @@
 A fully functional, **no-signup-required** Progressive Web App (PWA) that lets any user:
 
 1. Fill out an invoice form (business info, client info, line items, tax, discount, notes, due date)
-2. Generate a professional PDF with a branded QuickBill watermark in the footer
+2. Generate a professional PDF with a branded Free Invoice Kit watermark in the footer
 3. Share that PDF directly as a WhatsApp attachment (or download / email it)
 4. Save up to 10 invoices locally in the browser (IndexedDB)
 
@@ -111,7 +111,7 @@ Every developer on the team needs the following installed **before** starting an
 | Supabase Project      | Team Lead      | Storage bucket for PDFs (Phase 1 uses storage only, no auth/DB yet) | https://supabase.com                     | Free tier. Create a project, note the Project URL + publishable key |
 | PostHog Account       | Team Lead      | Analytics                                                           | https://posthog.com                      | Cloud free tier. Get the project API key                            |
 | Google Search Console | PM             | SEO indexing                                                        | https://search.google.com/search-console | Verify domain ownership via Cloudflare DNS TXT record               |
-| Twitter/X Account     | PM             | Build-in-public                                                     | https://twitter.com                      | Handle: @quickbillapp (or closest available)                        |
+| Twitter/X Account     | PM             | Build-in-public                                                     | https://twitter.com                      | Handle: @freeinvoicekit (or closest available)                      |
 | ipapi.co              | —              | Geolocation API                                                     | https://ipapi.co                         | No signup needed for free tier (1000 req/day)                       |
 
 ---
@@ -457,8 +457,8 @@ Set up the project skeleton, deploy an empty app, configure all infrastructure, 
 4. **Favicon** — `favicon.ico` (32×32), `icon.png` (512×512)
 5. **OpenGraph image** — 1200×630 PNG for social sharing
 6. **Watermark design** — The exact text/logo treatment for the PDF footer:
-   _"Created with QuickBill — Free invoicing on WhatsApp → www.freeinvoicekit.com"_
-   Include the QuickBill logo mark (small) alongside the text
+   _"Created with Free Invoice Kit — Free invoicing on WhatsApp → www.freeinvoicekit.com"_
+   Include the Free Invoice Kit logo mark (small) alongside the text
 
 **Where to place files:**
 
@@ -482,13 +482,13 @@ public/
 | **Type**         | ⚠️ MANUAL                                                           |
 | **Effort**       | 30 minutes                                                          |
 | **Dependencies** | None                                                                |
-| **Outcome**      | @quickbillapp account created, first build-in-public post published |
+| **Outcome**      | @freeinvoicekit account created, first build-in-public post published |
 
 **Subtasks:**
 
-1. Create Twitter/X account with handle `@quickbillapp` (or closest available)
+1. Create Twitter/X account with handle `@freeinvoicekit` (or closest available)
 2. Set profile photo (logo), header image, bio: "Free PDF invoices on WhatsApp. No signup. Building in public. 🚀"
-3. Publish first post: "Day 1 of building QuickBill — a free tool to create PDF invoices and send them on WhatsApp in 30 seconds. No signup. No fees. Following the journey? #buildinpublic #indiehackers"
+3. Publish first post: "Day 1 of building Free Invoice Kit — a free tool to create PDF invoices and send them on WhatsApp in 30 seconds. No signup. No fees. Following the journey? #buildinpublic #indiehackers"
 
 ---
 
@@ -780,7 +780,7 @@ export interface CurrencyInfo {
    - Totals: Subtotal, Tax, Discount, **Total**
    - Notes section (if provided)
    - Due Date badge
-   - **Footer: Watermark text** — "Created with QuickBill — Free invoicing on WhatsApp → www.freeinvoicekit.com" in a muted color
+   - **Footer: Watermark text** — "Created with Free Invoice Kit — Free invoicing on WhatsApp → www.freeinvoicekit.com" in a muted color
 
 2. **Styling** — use a white card with subtle shadow and border to look like a paper document. Scale down on mobile (80% width).
 
@@ -901,10 +901,10 @@ export interface CurrencyInfo {
    - "Auto Currency Detection" — Detects your country automatically
    - "100% Free" — No hidden fees, no credit card
 
-5. **Social Proof Area** — placeholder for future testimonials. For now: "Join 0 freelancers already using QuickBill" (update the number as real users arrive — or hide until you have some)
+5. **Social Proof Area** — placeholder for future testimonials. For now: "Join 0 freelancers already using Free Invoice Kit" (update the number as real users arrive — or hide until you have some)
 
 6. **Pro Coming Soon Teaser** — a subtle banner:
-   - "QuickBill Pro — Remove watermark, add your logo, auto-recurring invoices. Coming soon."
+   - "Free Invoice Kit Pro — Remove watermark, add your logo, auto-recurring invoices. Coming soon."
    - "Notify me" button → opens a small email input form
    - On submit, capture interest only as teaser UI during Sprint 1. The actual waitlist backend is implemented later in Sprint 3 using Supabase `pro_waitlist`.
 
@@ -915,11 +915,11 @@ export interface CurrencyInfo {
 - Set metadata in `src/app/layout.tsx` and `src/app/page.tsx` using Next.js `metadata` export:
   ```typescript
   export const metadata: Metadata = {
-    title: 'QuickBill — Free Invoice Maker for WhatsApp | Send PDF Invoices',
+    title: 'Free Invoice Kit — Free Invoice Maker for WhatsApp | Send PDF Invoices',
     description:
       'Create professional PDF invoices and send them on WhatsApp in 30 seconds. No signup required. Free forever.',
     openGraph: {
-      title: 'QuickBill — Free Invoice Maker for WhatsApp',
+      title: 'Free Invoice Kit — Free Invoice Maker for WhatsApp',
       description:
         'Create and send professional PDF invoices on WhatsApp in 30 seconds. No signup. No fees.',
       images: ['/og-image.png'],
@@ -927,7 +927,7 @@ export interface CurrencyInfo {
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'QuickBill — Free Invoice Maker for WhatsApp',
+      title: 'Free Invoice Kit — Free Invoice Maker for WhatsApp',
       description: 'Send professional PDF invoices on WhatsApp in 30 seconds.',
       images: ['/og-image.png'],
     },
@@ -956,7 +956,7 @@ export interface CurrencyInfo {
      const jsonLd = {
        '@context': 'https://schema.org',
        '@type': 'SoftwareApplication',
-       name: 'QuickBill',
+       name: 'Free Invoice Kit',
        applicationCategory: 'BusinessApplication',
        operatingSystem: 'Web',
        offers: {
@@ -1126,7 +1126,7 @@ Build the server-side PDF generation engine, add the branded watermark, store PD
    │  [Reserved area for future QR code]     │
    │  "Pay online: coming soon"              │
    ├─────────────────────────────────────────┤
-   │  ♦ Created with QuickBill               │
+   │  ♦ Created with Free Invoice Kit        │
    │  Free invoicing on WhatsApp             │
    │  → www.freeinvoicekit.com                        │
    └─────────────────────────────────────────┘
@@ -1145,8 +1145,8 @@ Build the server-side PDF generation engine, add the branded watermark, store PD
 4. **Color scheme** — use the brand colors from Task 0.7. Keep it professional: dark text on white background, primary color for headers and the total line.
 
 5. **Watermark footer** — this is CRITICAL. The footer must appear on every page and contain:
-   - QuickBill logo (small, embedded as base64 or loaded from public URL)
-   - Text: "Created with QuickBill — Free invoicing on WhatsApp → www.freeinvoicekit.com"
+   - Free Invoice Kit logo (small, embedded as base64 or loaded from public URL)
+   - Text: "Created with Free Invoice Kit — Free invoicing on WhatsApp → www.freeinvoicekit.com"
    - Muted color (gray) so it's visible but not intrusive
    - This footer is the entire viral loop — do not skip it
 
@@ -1339,7 +1339,7 @@ This ID is:
 1. **H1:** "How to Send an Invoice on WhatsApp (Free, No App Required)"
 2. **Intro paragraph** (100 words): Explain the problem — clients ignore email invoices, WhatsApp has 95%+ open rates
 3. **Step-by-step guide** with screenshots/illustrations:
-   - Step 1: Open QuickBill (no signup)
+   - Step 1: Open Free Invoice Kit (no signup)
    - Step 2: Fill in your invoice details
    - Step 3: Click "Generate PDF"
    - Step 4: Tap "Send on WhatsApp" → PDF attachment lands in client's chat
@@ -1351,7 +1351,7 @@ This ID is:
 
 ```typescript
 export const metadata: Metadata = {
-  title: 'How to Send an Invoice on WhatsApp — Free PDF Invoice Maker | QuickBill',
+  title: 'How to Send an Invoice on WhatsApp — Free PDF Invoice Maker | Free Invoice Kit',
   description:
     'Send professional PDF invoices on WhatsApp in 30 seconds. No signup needed. Free forever. Create, generate, and share invoices as WhatsApp attachments.',
   alternates: { canonical: 'https://www.freeinvoicekit.com/send-invoice-whatsapp' },
@@ -1567,7 +1567,7 @@ export function shareViaEmail(
 ): void {
   const subject = encodeURIComponent(`Invoice from ${businessName}`);
   const body = encodeURIComponent(
-    `Hi ${clientName},\n\nPlease find attached your invoice for ${amount}.\n\nBest regards,\n${businessName}\n\n---\nInvoice created with QuickBill — www.freeinvoicekit.com`
+    `Hi ${clientName},\n\nPlease find attached your invoice for ${amount}.\n\nBest regards,\n${businessName}\n\n---\nInvoice created with Free Invoice Kit — www.freeinvoicekit.com`
   );
   window.open(`mailto:${clientEmail}?subject=${subject}&body=${body}`, '_self');
 }
@@ -1643,8 +1643,8 @@ await saveInvoice(invoice);
 
    ```json
    {
-     "name": "QuickBill — Free Invoice Maker for WhatsApp",
-     "short_name": "QuickBill",
+     "name": "Free Invoice Kit — Free Invoice Maker for WhatsApp",
+     "short_name": "Free Invoice Kit",
      "description": "Create and send PDF invoices on WhatsApp. Free. No signup.",
      "start_url": "/create",
      "display": "standalone",
@@ -1697,7 +1697,7 @@ await saveInvoice(invoice);
 
 **Placement:** Show a small banner at the top or bottom of the `/create` page (dismissable, remembers dismissal in localStorage):
 
-_"QuickBill Pro — Remove watermark, add your logo, auto-recurring invoices. Coming soon. [Notify me]"_
+_"Free Invoice Kit Pro — Remove watermark, add your logo, auto-recurring invoices. Coming soon. [Notify me]"_
 
 **"Notify me" flow:**
 
@@ -1731,7 +1731,7 @@ _"QuickBill Pro — Remove watermark, add your logo, auto-recurring invoices. Co
    - 300–500 words + CTA + FAQ
 
 3. **`/stripe-invoice-alternative`** — Target: "stripe invoice alternative" (1,200 searches/mo)
-   - Content angle: Stripe invoicing is expensive/complex for simple needs, QuickBill is free, comparison table
+   - Content angle: Stripe invoicing is expensive/complex for simple needs, Free Invoice Kit is free, comparison table
    - 300–500 words + CTA + FAQ
 
 Each page must have:
@@ -1840,7 +1840,7 @@ For each: verify PDF arrives correctly in the recipient's WhatsApp chat as a doc
 
 1. Use a screen recorder (e.g., Kap on Mac, ShareX on Windows, or a mobile screen recorder)
 2. Record on a real mobile device for authenticity
-3. Flow: Open QuickBill → fill form quickly (pre-fill some fields) → tap "Generate" → tap "Send on WhatsApp" → show the PDF arriving in a WhatsApp chat
+3. Flow: Open Free Invoice Kit → fill form quickly (pre-fill some fields) → tap "Generate" → tap "Send on WhatsApp" → show the PDF arriving in a WhatsApp chat
 4. Keep it under 30 seconds
 5. Convert to GIF (or use MP4 — GIFs are large). Optimized GIF < 5MB.
 6. Add to the landing page hero section (Task 1.6)
@@ -2001,7 +2001,7 @@ Performance optimization, security hardening, cross-browser testing, bug fixes, 
 | **Type**         | ⚠️ MANUAL                                   |
 | **Effort**       | 1 day                                       |
 | **Dependencies** | App is functional and deployed              |
-| **Outcome**      | QuickBill listed on 10+ startup directories |
+| **Outcome**      | Free Invoice Kit listed on 10+ startup directories |
 
 **Directories to submit to:**
 
@@ -2021,7 +2021,7 @@ Performance optimization, security hardening, cross-browser testing, bug fixes, 
 
 **For each submission, prepare:**
 
-- Product name: QuickBill
+- Product name: Free Invoice Kit
 - Tagline: "Free PDF invoices on WhatsApp. No signup."
 - Description (100–200 words)
 - URL: https://www.freeinvoicekit.com
@@ -2066,7 +2066,7 @@ Performance optimization, security hardening, cross-browser testing, bug fixes, 
 | **Type**         | ⚠️ MANUAL                              |
 | **Effort**       | 0.5 days                               |
 | **Dependencies** | App is fully functional                |
-| **Outcome**      | 50–100 people notified about QuickBill |
+| **Outcome**      | 50–100 people notified about Free Invoice Kit |
 
 **Actions:**
 
@@ -2076,7 +2076,7 @@ Performance optimization, security hardening, cross-browser testing, bug fixes, 
 
 **Message template:**
 
-> "Hey [Name]! I just launched a free tool called QuickBill — you can create a PDF invoice and send it on WhatsApp in 30 seconds, no signup needed. Would love your feedback: www.freeinvoicekit.com"
+> "Hey [Name]! I just launched a free tool called Free Invoice Kit — you can create a PDF invoice and send it on WhatsApp in 30 seconds, no signup needed. Would love your feedback: www.freeinvoicekit.com"
 
 ---
 
@@ -2092,7 +2092,7 @@ Performance optimization, security hardening, cross-browser testing, bug fixes, 
 
 **Post:**
 
-> "I just launched QuickBill. Free PDF invoices on WhatsApp. No signup.
+> "I just launched Free Invoice Kit. Free PDF invoices on WhatsApp. No signup.
 >
 > → Create an invoice in 30 seconds
 > → Generate a professional PDF
@@ -2280,7 +2280,7 @@ These actions **cannot be performed by code or automation**. A human must do the
 | 3   | PDF generation slow (> 5s) on Vercel serverless                | Low        | Medium | Optimize template complexity. Consider edge function if needed. Monitor via logging.                     | Dev A     |
 | 4   | Supabase Storage free tier bandwidth exceeded                  | Low        | Low    | Free tier: 2GB bandwidth. At 300KB/PDF, that's ~6,600 PDFs/month. Sufficient for Phase 1. Monitor usage. | Team Lead |
 | 5   | ipapi.co rate limit (1000/day free)                            | Medium     | Low    | Cache geolocation result in localStorage. Only call once per user. Fallback to USD.                      | Dev A     |
-| 6   | Domain name `www.freeinvoicekit.com` not available                      | Low        | Medium | Alternatives: quickbill.io, quickbill.co, getwww.freeinvoicekit.com                                               | PM        |
+| 6   | Domain name `www.freeinvoicekit.com` not available                      | Low        | Medium | Alternatives: freeinvoicekit.app, freeinvoicekit.co, getfreeinvoicekit.com                                         | PM        |
 | 7   | Scope creep delays Sprint 4 soft launch                        | High       | High   | Strict rule: Phase 1 = form + PDF + share + watermark + landing. Nothing else.                           | PM        |
 | 8   | Brand assets (logo/design) take too long                       | Medium     | Medium | Use a simple text logo initially. Iterate later. Don't block development.                                | PM        |
 | 9   | PDF appears different in WhatsApp viewer vs Chrome             | Medium     | Medium | Test early and often (Task 2.5, Task 3.11). Stick to simple layouts and common fonts.                    | QA        |

@@ -65,7 +65,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#1e3a5f',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f3eee3' },
+    { media: '(prefers-color-scheme: dark)', color: '#151b26' },
+  ],
 };
 
 export default function RootLayout({
@@ -92,7 +95,7 @@ posthog.init(${JSON.stringify(posthogKey)}, { api_host: ${JSON.stringify(posthog
       ) : null}
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <SerwistProvider>
-          <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light">
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <Suspense fallback={null}>
               <PostHogPageview />
             </Suspense>

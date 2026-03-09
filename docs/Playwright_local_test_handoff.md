@@ -63,7 +63,7 @@ Navigate to `/`.
 
 Verify:
 
-- Header shows `QuickBill`
+- Header shows `Free Invoice Kit`
 - Main CTA `Create Invoice` is visible
 - Secondary CTA `See how it works` is visible
 - Hero headline includes `Create polished invoices in 30 seconds.`
@@ -251,7 +251,7 @@ Verify inside the sheet:
 - `Studio North`
 - `Amina Yusuf`
 - `Consulting`
-- watermark text starting `Created with QuickBill`
+- watermark text starting `Created with Free Invoice Kit`
 
 ### 11. SEO Surface Checks
 
@@ -276,7 +276,7 @@ Do not fail on harmless dev-server noise unless it is user-impacting.
 - "Pro Coming Soon" has no email input in Sprint 1.
 - Save action stores locally only; it does not generate a PDF.
 - Currency may vary by environment because geolocation can fallback or detect differently.
-- Preview watermark is text-based and should include `Created with QuickBill`.
+- Preview watermark is text-based and should include `Created with Free Invoice Kit`.
 
 ## Suggested Pass Criteria
 

@@ -96,7 +96,7 @@ export default function HistoryPage() {
           <section className="py-8 sm:py-10">
             <div className="grid gap-4 lg:grid-cols-2">
               {invoices.map((invoice) => (
-                <Card key={invoice.id} className="bg-white/88">
+                <Card key={invoice.id} className="bg-white/88 dark:bg-card/90">
                   <CardHeader>
                     <div className="flex items-start justify-between gap-4">
                       <div>
@@ -130,12 +130,12 @@ export default function HistoryPage() {
                         </span>
                       </div>
                       <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted-foreground">
-                        <span className="rounded-full bg-white/80 px-3 py-1">{invoice.currency}</span>
-                        <span className="rounded-full bg-white/80 px-3 py-1">
+                        <span className="rounded-full bg-white/80 px-3 py-1 dark:bg-card/80">{invoice.currency}</span>
+                        <span className="rounded-full bg-white/80 px-3 py-1 dark:bg-card/80">
                           {invoice.lineItems.length} line item
                           {invoice.lineItems.length === 1 ? '' : 's'}
                         </span>
-                        <span className="rounded-full bg-white/80 px-3 py-1">
+                        <span className="rounded-full bg-white/80 px-3 py-1 dark:bg-card/80">
                           ID {invoice.id}
                         </span>
                       </div>

@@ -89,7 +89,7 @@ const faqs = [
 
 export default function FreeInvoiceMakerFreelancersPage() {
   return (
-    <div className="min-h-screen bg-[linear-gradient(180deg,rgba(249,247,242,1)_0%,rgba(255,255,255,1)_42%,rgba(242,247,245,1)_100%)]">
+    <div className="min-h-screen bg-[linear-gradient(180deg,rgba(249,247,242,1)_0%,rgba(255,255,255,1)_42%,rgba(242,247,245,1)_100%)] dark:bg-[linear-gradient(180deg,rgba(16,20,30,1)_0%,rgba(19,24,36,1)_44%,rgba(14,20,30,1)_100%)]">
       <JsonLd
         data={{
           '@context': 'https://schema.org',
@@ -108,7 +108,7 @@ export default function FreeInvoiceMakerFreelancersPage() {
       <Header />
 
       <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
-        <section className="overflow-hidden rounded-[2rem] border border-black/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.97),rgba(247,243,234,0.93))] p-6 shadow-[0_30px_80px_-50px_rgba(28,33,55,0.38)] sm:p-8 lg:p-10">
+        <section className="overflow-hidden rounded-[2rem] border border-black/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.97),rgba(247,243,234,0.93))] p-6 shadow-[0_30px_80px_-50px_rgba(28,33,55,0.38)] dark:border-white/10 dark:bg-[linear-gradient(160deg,rgba(28,34,48,0.94),rgba(17,21,31,0.98))] dark:shadow-[0_30px_80px_-50px_rgba(0,0,0,0.68)] sm:p-8 lg:p-10">
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div className="space-y-5">
               <Badge className="rounded-full bg-primary/10 px-3 py-1 text-[11px] tracking-[0.24em] uppercase text-primary hover:bg-primary/10">
@@ -136,7 +136,7 @@ export default function FreeInvoiceMakerFreelancersPage() {
               </div>
             </div>
 
-            <div className="rounded-[1.75rem] border border-black/10 bg-white/80 p-5 sm:p-6">
+            <div className="rounded-[1.75rem] border border-black/10 bg-white/80 p-5 dark:border-white/10 dark:bg-card/80 sm:p-6">
               <p className="text-[11px] font-semibold tracking-[0.24em] text-muted-foreground uppercase">
                 Why freelancers stick with it
               </p>
@@ -164,7 +164,7 @@ export default function FreeInvoiceMakerFreelancersPage() {
               const Icon = benefit.icon;
 
               return (
-                <Card key={benefit.title} className="rounded-[1.6rem] border border-black/10 bg-white/90 py-0">
+                <Card key={benefit.title} className="rounded-[1.6rem] border border-black/10 bg-white/90 py-0 dark:border-white/10 dark:bg-card/90">
                   <CardHeader className="gap-3 px-5 py-5">
                     <div className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                       <Icon className="size-5" />
@@ -183,7 +183,7 @@ export default function FreeInvoiceMakerFreelancersPage() {
         </section>
 
         <section className="mt-8 grid gap-4 lg:grid-cols-[1fr_1fr]">
-          <div className="rounded-[1.75rem] border border-black/10 bg-white/90 p-6">
+          <div className="rounded-[1.75rem] border border-black/10 bg-white/90 p-6 dark:border-white/10 dark:bg-card/90">
             <p className="text-[11px] font-semibold tracking-[0.24em] text-muted-foreground uppercase">
               What this replaces
             </p>
@@ -224,7 +224,7 @@ export default function FreeInvoiceMakerFreelancersPage() {
 
           <div className="grid gap-4">
             {faqs.map((faq) => (
-              <div key={faq.question} className="rounded-[1.5rem] border border-black/10 bg-white/90 p-5">
+              <div key={faq.question} className="rounded-[1.5rem] border border-black/10 bg-white/90 p-5 dark:border-white/10 dark:bg-card/90">
                 <h3 className="text-lg font-semibold text-foreground">{faq.question}</h3>
                 <p className="mt-2 text-sm leading-7 text-muted-foreground">{faq.answer}</p>
               </div>
