@@ -6,8 +6,8 @@ import { CheckCircle2, Loader2, Sparkles, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-const DISMISSED_KEY = 'quickbill-pro-banner-dismissed';
-const SIGNED_UP_KEY = 'quickbill-pro-waitlist-signed-up';
+const DISMISSED_KEY = 'freeinvoicekit-pro-banner-dismissed';
+const SIGNED_UP_KEY = 'freeinvoicekit-pro-waitlist-signed-up';
 
 interface ProWaitlistBannerProps {
   source?: string;

@@ -11,9 +11,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 export const metadata: Metadata = {
   title: 'Invoice Generator Pakistan | Free PKR Invoice Maker',
   description:
-    'Make professional PKR invoices online for free. QuickBill helps Pakistani freelancers and small businesses create and share invoice PDFs in seconds.',
+    'Make professional PKR invoices online for free. Free Invoice Kit helps Pakistani freelancers and small businesses create and share invoice PDFs in seconds.',
   alternates: {
-    canonical: 'https://quickbill.app/invoice-generator-pakistan',
+    canonical: 'https://www.freeinvoicekit.com/invoice-generator-pakistan',
   },
 };
 
@@ -21,7 +21,7 @@ const faqs = [
   {
     question: 'Is this invoice generator free?',
     answer:
-      'Yes. QuickBill core invoicing is free: create invoice, generate PDF, and share through WhatsApp or email.',
+      'Yes. Free Invoice Kit core invoicing is free: create invoice, generate PDF, and share through WhatsApp or email.',
   },
   {
     question: 'Can I use PKR currency?',
@@ -50,7 +50,7 @@ export default function InvoiceGeneratorPakistanPage() {
                   Make polished PKR invoices on your phone without spreadsheets or signup screens.
                 </h1>
                 <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-                  Build a client-ready invoice, generate the PDF, and send it in seconds. QuickBill
+                  Build a client-ready invoice, generate the PDF, and send it in seconds. Free Invoice Kit
                   keeps the workflow lean for freelancers and small businesses in Pakistan.
                 </p>
               </div>

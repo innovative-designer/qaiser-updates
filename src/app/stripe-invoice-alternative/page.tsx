@@ -9,33 +9,33 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export const metadata: Metadata = {
-  title: 'Free Stripe Invoice Alternative | QuickBill',
+  title: 'Free Stripe Invoice Alternative | Free Invoice Kit',
   description:
-    'Looking for a Stripe invoice alternative? QuickBill is free, no-signup, and optimized for fast invoice PDF creation and WhatsApp sharing.',
+    'Looking for a Stripe invoice alternative? Free Invoice Kit is free, no-signup, and optimized for fast invoice PDF creation and WhatsApp sharing.',
   alternates: {
-    canonical: 'https://quickbill.app/stripe-invoice-alternative',
+    canonical: 'https://www.freeinvoicekit.com/stripe-invoice-alternative',
   },
 };
 
 const comparisonRows = [
   {
     feature: 'Signup required',
-    quickbill: 'No',
+    freeInvoiceKit: 'No',
     stripe: 'Yes',
   },
   {
     feature: 'Time to first invoice',
-    quickbill: 'Under 1 minute',
+    freeInvoiceKit: 'Under 1 minute',
     stripe: 'Longer setup',
   },
   {
     feature: 'WhatsApp sharing flow',
-    quickbill: 'Built in',
+    freeInvoiceKit: 'Built in',
     stripe: 'Not built for it',
   },
   {
     feature: 'Core invoicing price',
-    quickbill: 'Free',
+    freeInvoiceKit: 'Free',
     stripe: 'Depends on workflow',
   },
 ];
@@ -56,13 +56,13 @@ export default function StripeInvoiceAlternativePage() {
                   A simpler Stripe invoice alternative when the goal is just to send the invoice.
                 </h1>
                 <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-                  If you need straightforward invoice creation and fast sharing, QuickBill removes
+                  If you need straightforward invoice creation and fast sharing, Free Invoice Kit removes
                   the setup drag. Create the invoice, export the PDF, and send it in seconds.
                 </p>
               </div>
               <Button asChild size="lg" className="h-12 rounded-full px-6">
                 <Link href="/create">
-                  Try QuickBill Free
+                  Try Free Invoice Kit Free
                   <ArrowRight className="size-4" />
                 </Link>
               </Button>
@@ -73,7 +73,7 @@ export default function StripeInvoiceAlternativePage() {
                 Best fit
               </p>
               <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
-                <p>QuickBill is for fast invoice delivery and low setup overhead.</p>
+                <p>Free Invoice Kit is for fast invoice delivery and low setup overhead.</p>
                 <p>Stripe is better when you need deeper payment automation and billing infrastructure.</p>
                 <p>The right tool depends on whether your workflow is operationally heavy or intentionally light.</p>
               </div>
@@ -87,7 +87,7 @@ export default function StripeInvoiceAlternativePage() {
               <thead>
                 <tr className="border-b border-black/10">
                   <th className="px-4 py-4 font-semibold text-foreground">Feature</th>
-                  <th className="px-4 py-4 font-semibold text-primary">QuickBill</th>
+                  <th className="px-4 py-4 font-semibold text-primary">Free Invoice Kit</th>
                   <th className="px-4 py-4 font-semibold text-muted-foreground">Stripe</th>
                 </tr>
               </thead>
@@ -98,7 +98,7 @@ export default function StripeInvoiceAlternativePage() {
                     <td className="px-4 py-4">
                       <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-primary">
                         <CheckCircle2 className="size-4" />
-                        {row.quickbill}
+                        {row.freeInvoiceKit}
                       </span>
                     </td>
                     <td className="px-4 py-4 text-muted-foreground">
@@ -122,7 +122,7 @@ export default function StripeInvoiceAlternativePage() {
           <Card className="rounded-[1.6rem] border border-black/10 bg-white/90 py-0">
             <CardHeader className="px-5 py-5">
               <CardTitle className="text-xl font-semibold tracking-[-0.02em]">
-                When QuickBill is better
+                When Free Invoice Kit is better
               </CardTitle>
             </CardHeader>
             <CardContent className="px-5 pb-5 text-sm leading-7 text-muted-foreground">

@@ -296,7 +296,7 @@ export function InvoiceDocument({ invoice }: InvoiceDocumentProps) {
                 </Text>
               ))
             ) : (
-              <Text style={styles.businessLine}>Add your business details in QuickBill.</Text>
+              <Text style={styles.businessLine}>Add your business details in Free Invoice Kit.</Text>
             )}
           </View>
 
@@ -348,7 +348,7 @@ export function InvoiceDocument({ invoice }: InvoiceDocumentProps) {
             <View key={item.id} style={styles.tableRow}>
               <View style={styles.descriptionCol}>
                 <Text style={styles.itemTitle}>{item.description}</Text>
-                <Text style={styles.itemSubtle}>Prepared with QuickBill</Text>
+                <Text style={styles.itemSubtle}>Prepared with Free Invoice Kit</Text>
               </View>
               <Text style={[styles.itemValue, styles.qtyCol]}>{item.quantity}</Text>
               <Text style={[styles.itemValue, styles.rateCol]}>

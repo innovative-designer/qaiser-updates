@@ -49,7 +49,7 @@ const highlights = [
   },
   {
     title: 'Auto currency',
-    description: 'QuickBill starts with a likely local currency, but you can switch at any time.',
+    description: 'Free Invoice Kit starts with a likely local currency, but you can switch at any time.',
     icon: Globe2,
   },
   {
@@ -248,7 +248,7 @@ export default function Home() {
               Built for getting the invoice out, not getting lost in admin.
             </h2>
             <p className="text-muted-foreground mt-4 text-base leading-7">
-              QuickBill keeps the path narrow: fill the essentials, check the live output, and send
+              Free Invoice Kit keeps the path narrow: fill the essentials, check the live output, and send
               the finished document where the client already responds.
             </p>
           </div>
@@ -285,7 +285,7 @@ export default function Home() {
               <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground sm:text-base">
                 <p>Most invoicing tools feel like desktop billing software shrunk onto a phone.</p>
                 <p>
-                  QuickBill is narrower by design: one focused form, one trustworthy preview, one
+                  Free Invoice Kit is narrower by design: one focused form, one trustworthy preview, one
                   clean export path.
                 </p>
                 <p>

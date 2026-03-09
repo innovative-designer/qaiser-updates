@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 
 const steps = [
   {
-    title: 'Open QuickBill',
+    title: 'Open Free Invoice Kit',
     description:
       'No signup, no account creation. Open the app and start filling in your invoice immediately.',
     icon: Smartphone,
@@ -48,7 +48,7 @@ const faqs = [
   {
     question: 'Is it really free to send invoices on WhatsApp?',
     answer:
-      'Yes. QuickBill is free with no signup required. You can create invoices and share the PDF on WhatsApp without paying anything.',
+      'Yes. Free Invoice Kit is free with no signup required. You can create invoices and share the PDF on WhatsApp without paying anything.',
   },
   {
     question: 'Do my clients need to install an app?',

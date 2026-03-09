@@ -1,6 +1,6 @@
-# QuickBill
+# Free Invoice Kit
 
-QuickBill is a Next.js 16 invoice app for creating professional PDF invoices, saving them locally, and sharing them through WhatsApp, email, download, or copied captions. The product is optimized for fast mobile workflows and includes SEO landing pages, a Pro waitlist, and installable PWA support.
+Free Invoice Kit is a Next.js 16 invoice app for creating professional PDF invoices, saving them locally, and sharing them through WhatsApp, email, download, or copied captions. The product is optimized for fast mobile workflows and includes SEO landing pages, a Pro waitlist, and installable PWA support.
 
 ## Status
 

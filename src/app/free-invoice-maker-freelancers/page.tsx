@@ -29,7 +29,7 @@ const benefits = [
   {
     title: 'No monthly fees',
     description:
-      'QuickBill is free, not a trial. Create invoices without chasing a subscription decision first.',
+      'Free Invoice Kit is free, not a trial. Create invoices without chasing a subscription decision first.',
     icon: WalletCards,
   },
   {
@@ -47,7 +47,7 @@ const benefits = [
   {
     title: 'WhatsApp-first delivery',
     description:
-      'Most freelancer conversations already happen in chat. QuickBill keeps the invoice flow close to that reality.',
+      'Most freelancer conversations already happen in chat. Free Invoice Kit keeps the invoice flow close to that reality.',
     icon: Smartphone,
   },
   {
@@ -66,7 +66,7 @@ const benefits = [
 
 const faqs = [
   {
-    question: 'Is QuickBill really free for freelancers?',
+    question: 'Is Free Invoice Kit really free for freelancers?',
     answer:
       'Yes. There are no hidden subscription charges in the current invoice workflow. The core invoicing flow is free.',
   },
@@ -83,7 +83,7 @@ const faqs = [
   {
     question: 'What currencies are supported?',
     answer:
-      'QuickBill supports multiple commonly used currencies including USD, EUR, GBP, AED, PKR, INR, NGN, and more.',
+      'Free Invoice Kit supports multiple commonly used currencies including USD, EUR, GBP, AED, PKR, INR, NGN, and more.',
   },
 ];
 
@@ -191,7 +191,7 @@ export default function FreeInvoiceMakerFreelancersPage() {
               Spreadsheets, repeated templates, and awkward chat attachments.
             </p>
             <p className="mt-3 text-sm leading-7 text-muted-foreground">
-              QuickBill works best when you need a clean invoice fast and do not want another
+              Free Invoice Kit works best when you need a clean invoice fast and do not want another
               platform to manage every detail of the business.
             </p>
           </div>

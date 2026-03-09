@@ -1,6 +1,6 @@
 {
-  "name": "QuickBill — Free Invoice Maker for WhatsApp",
-  "short_name": "QuickBill",
+  "name": "Free Invoice Kit — Free Invoice Maker for WhatsApp",
+  "short_name": "Free Invoice Kit",
   "description": "Create and send PDF invoices on WhatsApp. Free. No signup.",
   "start_url": "/create",
   "display": "standalone",
