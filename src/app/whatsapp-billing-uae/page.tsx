@@ -4,6 +4,9 @@ import { ArrowRight, CheckCircle2, MessageCircleMore, Zap } from 'lucide-react';
 
 import { Footer } from '@/components/shared/footer';
 import { Header } from '@/components/shared/header';
+import { InfoPanel } from '@/components/shared/info-panel';
+import { PageHero } from '@/components/shared/page-hero';
+import { PageSection } from '@/components/shared/page-section';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -26,25 +29,23 @@ const highlights = [
 
 export default function WhatsAppBillingUaePage() {
   return (
-    <div className="min-h-screen bg-[linear-gradient(180deg,rgba(249,247,242,1)_0%,rgba(255,255,255,1)_42%,rgba(241,247,245,1)_100%)] dark:bg-[linear-gradient(180deg,rgba(16,20,30,1)_0%,rgba(19,24,36,1)_44%,rgba(14,20,30,1)_100%)]">
+    <div className="min-h-screen">
       <Header />
-      <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
-        <section className="overflow-hidden rounded-[2rem] border border-black/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.97),rgba(247,243,234,0.93))] p-6 shadow-[0_30px_80px_-50px_rgba(28,33,55,0.38)] dark:border-white/10 dark:bg-[linear-gradient(160deg,rgba(28,34,48,0.94),rgba(17,21,31,0.98))] dark:shadow-[0_30px_80px_-50px_rgba(0,0,0,0.68)] sm:p-8 lg:p-10">
-          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+      <main className="py-8 sm:py-10 lg:py-12">
+        <PageSection width="wide" spacing="compact">
+          <PageHero gridClassName="lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div className="space-y-5">
-              <Badge className="rounded-full bg-primary/10 px-3 py-1 text-[11px] tracking-[0.24em] uppercase text-primary hover:bg-primary/10">
-                UAE Invoicing
-              </Badge>
+              <Badge>UAE Invoicing</Badge>
               <div className="space-y-4">
-                <h1 className="max-w-3xl text-4xl font-semibold tracking-[-0.04em] text-foreground sm:text-5xl">
+                <h1 className="text-foreground max-w-3xl">
                   Create AED invoices and send them on WhatsApp without leaving the client flow.
                 </h1>
-                <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-                  Free Invoice Kit is built for UAE freelancers and small service businesses that want
-                  clean invoice PDFs, quick sharing, and almost no setup overhead.
+                <p className="text-muted-foreground max-w-2xl text-base leading-7 sm:text-lg">
+                  Free Invoice Kit is built for UAE freelancers and small service businesses that
+                  want clean invoice PDFs, quick sharing, and almost no setup overhead.
                 </p>
               </div>
-              <Button asChild size="lg" className="h-12 rounded-full px-6">
+              <Button asChild size="lg">
                 <Link href="/create">
                   Create Invoice in AED
                   <ArrowRight className="size-4" />
@@ -52,59 +53,67 @@ export default function WhatsAppBillingUaePage() {
               </Button>
             </div>
 
-            <div className="rounded-[1.75rem] border border-black/10 bg-white/80 p-5 dark:border-white/10 dark:bg-card/80 sm:p-6">
-              <p className="text-[11px] font-semibold tracking-[0.24em] text-muted-foreground uppercase">
+            <InfoPanel tone="quiet">
+              <p className="text-muted-foreground text-[11px] font-semibold tracking-[0.24em] uppercase">
                 Why it fits UAE workflows
               </p>
-              <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
+              <div className="text-muted-foreground mt-5 space-y-4 text-sm leading-7">
                 <p>A lot of client communication already happens in WhatsApp.</p>
-                <p>AED invoice output reduces friction when you need to send something immediately.</p>
-                <p>The product stays useful even if you do not want to adopt a full billing platform.</p>
+                <p>
+                  AED invoice output reduces friction when you need to send something immediately.
+                </p>
+                <p>
+                  The product stays useful even if you do not want to adopt a full billing platform.
+                </p>
               </div>
-            </div>
-          </div>
-        </section>
+            </InfoPanel>
+          </PageHero>
+        </PageSection>
 
-        <section className="mt-8 grid gap-4 sm:grid-cols-2">
-          {highlights.map((highlight) => (
-            <Card key={highlight} className="rounded-[1.5rem] border border-black/10 bg-white/90 py-0 dark:border-white/10 dark:bg-card/90">
-              <CardContent className="flex items-center gap-3 px-5 py-5 text-sm leading-6 text-foreground">
-                <CheckCircle2 className="size-5 shrink-0 text-primary" />
-                <p>{highlight}</p>
+        <PageSection width="wide" spacing="compact">
+          <div className="grid gap-4 sm:grid-cols-2">
+            {highlights.map((highlight) => (
+              <Card key={highlight} className="py-0">
+                <CardContent className="text-foreground flex items-center gap-3 px-5 py-5 text-sm leading-6">
+                  <CheckCircle2 className="text-primary size-5 shrink-0" />
+                  <p>{highlight}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </PageSection>
+
+        <PageSection width="wide" spacing="compact">
+          <div className="grid gap-4 sm:grid-cols-3">
+            <Card className="py-0">
+              <CardHeader className="px-5 py-5">
+                <MessageCircleMore className="text-primary size-6" />
+                <CardTitle className="mt-4 text-lg font-semibold">WhatsApp first</CardTitle>
+              </CardHeader>
+              <CardContent className="text-muted-foreground px-5 pb-5 text-sm leading-6">
+                Built around the real workflow in the UAE: send invoice PDFs directly in chat.
               </CardContent>
             </Card>
-          ))}
-        </section>
-
-        <section className="mt-8 grid gap-4 sm:grid-cols-3">
-          <Card className="rounded-[1.6rem] border border-black/10 bg-white/90 py-0 dark:border-white/10 dark:bg-card/90">
-            <CardHeader className="px-5 py-5">
-              <MessageCircleMore className="size-6 text-primary" />
-              <CardTitle className="mt-4 text-lg font-semibold">WhatsApp first</CardTitle>
-            </CardHeader>
-            <CardContent className="px-5 pb-5 text-sm leading-6 text-muted-foreground">
-              Built around the real workflow in the UAE: send invoice PDFs directly in chat.
-            </CardContent>
-          </Card>
-          <Card className="rounded-[1.6rem] border border-black/10 bg-white/90 py-0 dark:border-white/10 dark:bg-card/90">
-            <CardHeader className="px-5 py-5">
-              <Zap className="size-6 text-primary" />
-              <CardTitle className="mt-4 text-lg font-semibold">30-second setup</CardTitle>
-            </CardHeader>
-            <CardContent className="px-5 pb-5 text-sm leading-6 text-muted-foreground">
-              Fill one form, preview live, and export. No onboarding funnel or account wall.
-            </CardContent>
-          </Card>
-          <Card className="rounded-[1.6rem] border border-black/10 bg-white/90 py-0 dark:border-white/10 dark:bg-card/90">
-            <CardHeader className="px-5 py-5">
-              <CheckCircle2 className="size-6 text-primary" />
-              <CardTitle className="mt-4 text-lg font-semibold">Free forever core</CardTitle>
-            </CardHeader>
-            <CardContent className="px-5 pb-5 text-sm leading-6 text-muted-foreground">
-              Core invoice creation, PDF generation, and sharing stay free for everyone.
-            </CardContent>
-          </Card>
-        </section>
+            <Card className="py-0">
+              <CardHeader className="px-5 py-5">
+                <Zap className="text-primary size-6" />
+                <CardTitle className="mt-4 text-lg font-semibold">30-second setup</CardTitle>
+              </CardHeader>
+              <CardContent className="text-muted-foreground px-5 pb-5 text-sm leading-6">
+                Fill one form, generate the PDF, and export. No onboarding funnel or account wall.
+              </CardContent>
+            </Card>
+            <Card className="py-0">
+              <CardHeader className="px-5 py-5">
+                <CheckCircle2 className="text-primary size-6" />
+                <CardTitle className="mt-4 text-lg font-semibold">Free forever core</CardTitle>
+              </CardHeader>
+              <CardContent className="text-muted-foreground px-5 pb-5 text-sm leading-6">
+                Core invoice creation, PDF generation, and sharing stay free for everyone.
+              </CardContent>
+            </Card>
+          </div>
+        </PageSection>
       </main>
       <Footer />
     </div>
