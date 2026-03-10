@@ -553,7 +553,7 @@ export default function CreateInvoicePage() {
                           aria-label="Description"
                           aria-invalid={rowInvalid && !item.description.trim()}
                           onChange={(event) => setLineItem(index, 'description', event.target.value)}
-                          className="h-11 min-w-0 flex-1 border-0 bg-transparent pl-1 pr-0 text-base shadow-none focus-visible:ring-0 lg:border lg:bg-(--surface-field) lg:px-3 lg:shadow-sm"
+                          className="h-11 min-w-0 flex-1 text-base"
                         />
                       </div>
 
