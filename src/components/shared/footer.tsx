@@ -1,47 +1,55 @@
 import Link from 'next/link';
 
 import { APP_NAME } from '@/lib/constants';
+import { LEGAL_PAGE_PATHS, SUPPORT_EMAIL } from '@/lib/site';
 import { cn } from '@/lib/utils';
 
 interface FooterProps {
   className?: string;
 }
 
+const allLinks = [
+  { href: LEGAL_PAGE_PATHS.about, label: 'About' },
+  { href: LEGAL_PAGE_PATHS.contact, label: 'Contact' },
+  { href: LEGAL_PAGE_PATHS.faq, label: 'FAQ' },
+  { href: '/blog', label: 'Blog' },
+  { href: LEGAL_PAGE_PATHS.privacy, label: 'Privacy' },
+  { href: LEGAL_PAGE_PATHS.terms, label: 'Terms' },
+  { href: LEGAL_PAGE_PATHS.cookies, label: 'Cookies' },
+];
+
 export function Footer({ className }: FooterProps) {
   return (
     <footer className={cn('border-border/60 mt-12 border-t bg-transparent', className)}>
-      <div className="app-shell py-8 sm:py-10">
-        <div className="editorial-shell hero-wash flex flex-col gap-6 px-5 py-6 sm:px-8 sm:py-7 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-xl">
-            <p className="section-kicker">Free Invoice Kit</p>
-            <p className="text-foreground mt-3 text-lg font-semibold tracking-tight">
-              Fast, chat-native invoicing for freelancers and small businesses.
+      <div className="app-shell py-6">
+        <div className="editorial-shell hero-wash px-5 py-5 sm:px-8">
+          {/* Single row: copyright · links · email */}
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-muted-foreground text-sm">
+              © {new Date().getFullYear()} {APP_NAME}
             </p>
-            <p className="text-muted-foreground mt-2 text-sm leading-6">
-              © {new Date().getFullYear()} {APP_NAME}. Create polished invoice PDFs, save locally,
-              and send them without billing-platform overhead.
-            </p>
-          </div>
 
-          <div className="flex flex-wrap items-center gap-3 text-sm">
-            <Link
-              href="#"
-              className="surface-field inline-flex rounded-[var(--radius-button)] border px-4 py-2.5 transition-colors hover:bg-[var(--surface-hover)]"
+            <nav aria-label="Footer navigation">
+              <ul className="flex flex-wrap items-center gap-x-5 gap-y-1.5">
+                {allLinks.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <a
+              href={`mailto:${SUPPORT_EMAIL}`}
+              className="text-muted-foreground hover:text-foreground text-sm transition-colors"
             >
-              Privacy
-            </Link>
-            <Link
-              href="#"
-              className="surface-field inline-flex rounded-[var(--radius-button)] border px-4 py-2.5 transition-colors hover:bg-[var(--surface-hover)]"
-            >
-              Terms
-            </Link>
-            <Link
-              href="#"
-              className="surface-field inline-flex rounded-[var(--radius-button)] border px-4 py-2.5 transition-colors hover:bg-[var(--surface-hover)]"
-            >
-              Twitter
-            </Link>
+              {SUPPORT_EMAIL}
+            </a>
           </div>
         </div>
       </div>
