@@ -6,6 +6,10 @@ import { toast } from 'sonner';
 
 import { Footer } from '@/components/shared/footer';
 import { Header } from '@/components/shared/header';
+import { InfoPanel } from '@/components/shared/info-panel';
+import { PageHero } from '@/components/shared/page-hero';
+import { PageSection } from '@/components/shared/page-section';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLocalInvoices } from '@/hooks/use-local-invoices';
@@ -41,62 +45,62 @@ export default function HistoryPage() {
     <div className="min-h-screen">
       <Header />
 
-      <main className="app-shell py-8 sm:py-10 lg:py-12">
-        <section className="editorial-shell overflow-hidden px-5 py-6 sm:px-8 sm:py-8">
-          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
-            <div className="space-y-4">
-              <p className="section-kicker">History</p>
-              <div>
-                <h1 data-display="true" className="text-4xl font-semibold text-foreground sm:text-5xl">
-                  Saved invoices, ready to resend.
-                </h1>
-                <p className="text-muted-foreground mt-3 max-w-2xl text-sm leading-7 sm:text-base">
-                  Reopen the invoices you already generated, then share, download, or clean up old
-                  drafts from one touch-friendly history view.
-                </p>
+      <main className="py-8 sm:py-10 lg:py-12">
+        <PageSection spacing="compact">
+          <PageHero withGrid={false}>
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+              <div className="space-y-4">
+                <p className="section-kicker">History</p>
+                <div>
+                  <h1 data-display="true" className="text-foreground">
+                    Saved invoices, ready to resend.
+                  </h1>
+                  <p className="text-muted-foreground mt-3 max-w-2xl text-sm leading-7 sm:text-base">
+                    Reopen the invoices you already generated, then share, download, or clean up old
+                    drafts from one touch-friendly history view.
+                  </p>
+                </div>
               </div>
-            </div>
 
-            <Button asChild size="lg">
-              <Link href="/create">
-                <Plus className="size-4" />
-                New Invoice
-              </Link>
-            </Button>
-          </div>
-        </section>
+              <Button asChild size="lg">
+                <Link href="/create">
+                  <Plus className="size-4" />
+                  New Invoice
+                </Link>
+              </Button>
+            </div>
+          </PageHero>
+        </PageSection>
 
         {loading ? (
-          <section className="py-14">
-            <div className="editorial-panel p-8 text-center text-muted-foreground">
-              Loading invoices…
-            </div>
-          </section>
+          <PageSection>
+            <InfoPanel className="text-muted-foreground text-center">Loading invoices…</InfoPanel>
+          </PageSection>
         ) : null}
 
         {!loading && invoices.length === 0 ? (
-          <section className="py-14">
-            <div className="editorial-panel p-8 text-center sm:p-12">
+          <PageSection>
+            <InfoPanel className="text-center sm:p-12">
               <p className="section-kicker">No saved drafts yet</p>
-              <h2 data-display="true" className="mt-3 text-3xl font-semibold text-foreground">
+              <h2 data-display="true" className="text-foreground mt-3">
                 Your invoice history will appear here.
               </h2>
               <p className="text-muted-foreground mx-auto mt-3 max-w-lg text-sm leading-7 sm:text-base">
-                Create the first invoice, generate the PDF, and Free Invoice Kit will keep a local record
-                so you can resend it later.
+                Create the first invoice, generate the PDF, and Free Invoice Kit will keep a local
+                record so you can resend it later.
               </p>
               <Button asChild size="lg" className="mt-6">
                 <Link href="/create">Create your first invoice</Link>
               </Button>
-            </div>
-          </section>
+            </InfoPanel>
+          </PageSection>
         ) : null}
 
         {!loading && invoices.length > 0 ? (
-          <section className="py-8 sm:py-10">
+          <PageSection spacing="compact">
             <div className="grid gap-4 lg:grid-cols-2">
               {invoices.map((invoice) => (
-                <Card key={invoice.id} className="bg-white/88 dark:bg-card/90">
+                <Card key={invoice.id}>
                   <CardHeader>
                     <div className="flex items-start justify-between gap-4">
                       <div>
@@ -113,7 +117,7 @@ export default function HistoryPage() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="shrink-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+                        className="text-destructive hover:text-destructive hover:bg-destructive/10 shrink-0"
                         onClick={() => handleDelete(invoice.id)}
                         aria-label="Delete invoice"
                       >
@@ -122,28 +126,31 @@ export default function HistoryPage() {
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-5">
-                    <div className="rounded-[1.25rem] bg-muted/70 p-4">
+                    <InfoPanel tone="quiet" className="p-4">
                       <div className="flex items-center justify-between gap-3">
                         <span className="text-muted-foreground text-sm">Invoice total</span>
-                        <span className="text-primary text-xl font-semibold tracking-tight">
+                        <span className="text-primary text-xl font-semibold tracking-tight tabular-nums">
                           {formatCurrency(invoice.total, invoice.currency)}
                         </span>
                       </div>
-                      <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted-foreground">
-                        <span className="rounded-full bg-white/80 px-3 py-1 dark:bg-card/80">{invoice.currency}</span>
-                        <span className="rounded-full bg-white/80 px-3 py-1 dark:bg-card/80">
+                      <div className="text-muted-foreground mt-3 flex flex-wrap gap-2 text-xs">
+                        <Badge variant="outline" className="bg-background/75">
+                          {invoice.currency}
+                        </Badge>
+                        <Badge variant="outline" className="bg-background/75">
                           {invoice.lineItems.length} line item
                           {invoice.lineItems.length === 1 ? '' : 's'}
-                        </span>
-                        <span className="rounded-full bg-white/80 px-3 py-1 dark:bg-card/80">
+                        </Badge>
+                        <Badge variant="outline" className="bg-background/75">
                           ID {invoice.id}
-                        </span>
+                        </Badge>
                       </div>
-                    </div>
+                    </InfoPanel>
 
                     <div className="grid grid-cols-2 gap-2">
                       <Button
-                        className="border border-input bg-background/88 font-semibold text-[#075E54] shadow-sm hover:bg-accent"
+                        variant="outline"
+                        className="font-semibold text-[#075E54]"
                         onClick={() => handleWhatsApp(invoice)}
                       >
                         <svg viewBox="0 0 24 24" className="size-4" aria-hidden="true">
@@ -154,15 +161,11 @@ export default function HistoryPage() {
                         </svg>
                         WhatsApp
                       </Button>
-                      <Button
-                        variant="outline"
-                        className="bg-background/88"
-                        onClick={() => handleDownload(invoice)}
-                      >
+                      <Button variant="outline" onClick={() => handleDownload(invoice)}>
                         <Download className="size-4" />
                         Download
                       </Button>
-                      <Button asChild variant="outline" className="bg-background/88">
+                      <Button asChild variant="outline">
                         <a href={invoice.pdfUrl ?? '#'} target="_blank" rel="noreferrer">
                           <Eye className="size-4" />
                           Open PDF
@@ -170,7 +173,6 @@ export default function HistoryPage() {
                       </Button>
                       <Button
                         variant="outline"
-                        className="bg-background/88"
                         disabled={!invoice.pdfUrl || invoice.pdfUrl.startsWith('blob:')}
                         onClick={() => {
                           navigator.clipboard.writeText(invoice.pdfUrl!);
@@ -185,7 +187,7 @@ export default function HistoryPage() {
                 </Card>
               ))}
             </div>
-          </section>
+          </PageSection>
         ) : null}
       </main>
 

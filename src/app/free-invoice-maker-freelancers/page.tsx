@@ -1,18 +1,13 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import {
-  ArrowRight,
-  Clock,
-  FileCheck,
-  Globe,
-  Smartphone,
-  WalletCards,
-  Zap,
-} from 'lucide-react';
+import { ArrowRight, Clock, FileCheck, Globe, Smartphone, WalletCards, Zap } from 'lucide-react';
 
 import { Footer } from '@/components/shared/footer';
 import { Header } from '@/components/shared/header';
+import { InfoPanel } from '@/components/shared/info-panel';
 import { JsonLd } from '@/components/shared/json-ld';
+import { PageHero } from '@/components/shared/page-hero';
+import { PageSection } from '@/components/shared/page-section';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -58,8 +53,7 @@ const benefits = [
   },
   {
     title: 'Ready in 30 seconds',
-    description:
-      'One focused screen, one preview, one generate action. Less setup, faster invoicing.',
+    description: 'One focused screen, one generate action, less setup, faster invoicing.',
     icon: Clock,
   },
 ];
@@ -89,7 +83,7 @@ const faqs = [
 
 export default function FreeInvoiceMakerFreelancersPage() {
   return (
-    <div className="min-h-screen bg-[linear-gradient(180deg,rgba(249,247,242,1)_0%,rgba(255,255,255,1)_42%,rgba(242,247,245,1)_100%)] dark:bg-[linear-gradient(180deg,rgba(16,20,30,1)_0%,rgba(19,24,36,1)_44%,rgba(14,20,30,1)_100%)]">
+    <div className="min-h-screen">
       <JsonLd
         data={{
           '@context': 'https://schema.org',
@@ -107,54 +101,56 @@ export default function FreeInvoiceMakerFreelancersPage() {
 
       <Header />
 
-      <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
-        <section className="overflow-hidden rounded-[2rem] border border-black/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.97),rgba(247,243,234,0.93))] p-6 shadow-[0_30px_80px_-50px_rgba(28,33,55,0.38)] dark:border-white/10 dark:bg-[linear-gradient(160deg,rgba(28,34,48,0.94),rgba(17,21,31,0.98))] dark:shadow-[0_30px_80px_-50px_rgba(0,0,0,0.68)] sm:p-8 lg:p-10">
-          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+      <main className="py-8 sm:py-10 lg:py-12">
+        <PageSection width="wide" spacing="compact">
+          <PageHero gridClassName="lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div className="space-y-5">
-              <Badge className="rounded-full bg-primary/10 px-3 py-1 text-[11px] tracking-[0.24em] uppercase text-primary hover:bg-primary/10">
-                Freelancer Invoice Tool
-              </Badge>
+              <Badge>Freelancer Invoice Tool</Badge>
               <div className="space-y-4">
-                <h1 className="max-w-4xl text-4xl font-semibold tracking-[-0.04em] text-foreground sm:text-5xl">
+                <h1 className="text-foreground max-w-4xl">
                   Free invoice maker for freelancers who want speed, not bookkeeping overhead.
                 </h1>
-                <p className="max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg">
-                  {APP_NAME} keeps the flow narrow on purpose: enter your client details, review a
-                  live preview, generate a clean PDF, and move on with the actual client work.
+                <p className="text-muted-foreground max-w-3xl text-base leading-7 sm:text-lg">
+                  {APP_NAME} keeps the flow narrow on purpose: enter your client details, tune the
+                  invoice on one focused screen, generate a clean PDF, and move on with the actual
+                  client work.
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row">
-                <Button asChild size="lg" className="h-12 rounded-full px-6">
+                <Button asChild size="lg">
                   <Link href="/create">
                     Create Your Free Invoice
                     <ArrowRight className="size-4" />
                   </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="h-12 rounded-full px-6">
+                <Button asChild variant="outline" size="lg">
                   <Link href="/history">See saved invoices</Link>
                 </Button>
               </div>
             </div>
 
-            <div className="rounded-[1.75rem] border border-black/10 bg-white/80 p-5 dark:border-white/10 dark:bg-card/80 sm:p-6">
-              <p className="text-[11px] font-semibold tracking-[0.24em] text-muted-foreground uppercase">
+            <InfoPanel tone="quiet">
+              <p className="text-muted-foreground text-[11px] font-semibold tracking-[0.24em] uppercase">
                 Why freelancers stick with it
               </p>
-              <div className="mt-5 space-y-4 text-sm leading-7 text-muted-foreground">
+              <div className="text-muted-foreground mt-5 space-y-4 text-sm leading-7">
                 <p>No setup ceremony before you can create the first invoice.</p>
                 <p>No dense back office UI when all you need is one polished PDF.</p>
-                <p>No pressure to run your whole business through a billing suite you did not ask for.</p>
+                <p>
+                  No pressure to run your whole business through a billing suite you did not ask
+                  for.
+                </p>
               </div>
-            </div>
-          </div>
-        </section>
+            </InfoPanel>
+          </PageHero>
+        </PageSection>
 
-        <section className="mt-8">
+        <PageSection width="wide" spacing="compact">
           <div>
-            <p className="text-[11px] font-semibold tracking-[0.24em] text-muted-foreground uppercase">
+            <p className="text-muted-foreground text-[11px] font-semibold tracking-[0.24em] uppercase">
               Why it fits freelance work
             </p>
-            <h2 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-foreground sm:text-3xl">
+            <h2 className="text-foreground mt-2 text-2xl font-semibold tracking-[-0.03em] sm:text-3xl">
               The invoice tool is lightweight because your workflow already is.
             </h2>
           </div>
@@ -164,9 +160,9 @@ export default function FreeInvoiceMakerFreelancersPage() {
               const Icon = benefit.icon;
 
               return (
-                <Card key={benefit.title} className="rounded-[1.6rem] border border-black/10 bg-white/90 py-0 dark:border-white/10 dark:bg-card/90">
+                <Card key={benefit.title} className="py-0">
                   <CardHeader className="gap-3 px-5 py-5">
-                    <div className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                    <div className="bg-primary/10 text-primary flex size-12 items-center justify-center rounded-[var(--radius-card)]">
                       <Icon className="size-5" />
                     </div>
                     <CardTitle className="text-xl font-semibold tracking-[-0.02em]">
@@ -180,57 +176,59 @@ export default function FreeInvoiceMakerFreelancersPage() {
               );
             })}
           </div>
-        </section>
+        </PageSection>
 
-        <section className="mt-8 grid gap-4 lg:grid-cols-[1fr_1fr]">
-          <div className="rounded-[1.75rem] border border-black/10 bg-white/90 p-6 dark:border-white/10 dark:bg-card/90">
-            <p className="text-[11px] font-semibold tracking-[0.24em] text-muted-foreground uppercase">
-              What this replaces
-            </p>
-            <p className="mt-3 text-xl font-semibold tracking-[-0.02em] text-foreground">
-              Spreadsheets, repeated templates, and awkward chat attachments.
-            </p>
-            <p className="mt-3 text-sm leading-7 text-muted-foreground">
-              Free Invoice Kit works best when you need a clean invoice fast and do not want another
-              platform to manage every detail of the business.
-            </p>
+        <PageSection width="wide" spacing="compact">
+          <div className="grid gap-4 lg:grid-cols-[1fr_1fr]">
+            <InfoPanel>
+              <p className="text-muted-foreground text-[11px] font-semibold tracking-[0.24em] uppercase">
+                What this replaces
+              </p>
+              <p className="text-foreground mt-3 text-xl font-semibold tracking-[-0.02em]">
+                Spreadsheets, repeated templates, and awkward chat attachments.
+              </p>
+              <p className="text-muted-foreground mt-3 text-sm leading-7">
+                Free Invoice Kit works best when you need a clean invoice fast and do not want
+                another platform to manage every detail of the business.
+              </p>
+            </InfoPanel>
+
+            <InfoPanel tone="accent">
+              <p className="text-muted-foreground text-[11px] font-semibold tracking-[0.24em] uppercase">
+                Start invoicing
+              </p>
+              <p className="text-foreground mt-3 text-xl font-semibold tracking-[-0.02em]">
+                Make the invoice and send it before the task slips into admin backlog.
+              </p>
+              <Button asChild size="lg" className="mt-6">
+                <Link href="/create">
+                  Start for Free
+                  <ArrowRight className="size-4" />
+                </Link>
+              </Button>
+            </InfoPanel>
           </div>
+        </PageSection>
 
-          <div className="rounded-[1.75rem] border border-primary/10 bg-primary/5 p-6">
-            <p className="text-[11px] font-semibold tracking-[0.24em] text-muted-foreground uppercase">
-              Start invoicing
-            </p>
-            <p className="mt-3 text-xl font-semibold tracking-[-0.02em] text-foreground">
-              Make the invoice and send it before the task slips into admin backlog.
-            </p>
-            <Button asChild size="lg" className="mt-6 h-12 rounded-full px-6">
-              <Link href="/create">
-                Start for Free
-                <ArrowRight className="size-4" />
-              </Link>
-            </Button>
-          </div>
-        </section>
-
-        <section className="mt-8 space-y-4">
+        <PageSection width="wide" spacing="compact">
           <div>
-            <p className="text-[11px] font-semibold tracking-[0.24em] text-muted-foreground uppercase">
+            <p className="text-muted-foreground text-[11px] font-semibold tracking-[0.24em] uppercase">
               FAQ
             </p>
-            <h2 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-foreground sm:text-3xl">
+            <h2 className="text-foreground mt-2 text-2xl font-semibold tracking-[-0.03em] sm:text-3xl">
               Questions freelancers usually ask first
             </h2>
           </div>
 
           <div className="grid gap-4">
             {faqs.map((faq) => (
-              <div key={faq.question} className="rounded-[1.5rem] border border-black/10 bg-white/90 p-5 dark:border-white/10 dark:bg-card/90">
-                <h3 className="text-lg font-semibold text-foreground">{faq.question}</h3>
-                <p className="mt-2 text-sm leading-7 text-muted-foreground">{faq.answer}</p>
-              </div>
+              <InfoPanel key={faq.question} className="p-5">
+                <h3 className="text-foreground text-lg font-semibold">{faq.question}</h3>
+                <p className="text-muted-foreground mt-2 text-sm leading-7">{faq.answer}</p>
+              </InfoPanel>
             ))}
           </div>
-        </section>
+        </PageSection>
       </main>
 
       <Footer />

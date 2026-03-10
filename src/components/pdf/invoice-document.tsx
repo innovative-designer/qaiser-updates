@@ -5,12 +5,16 @@ import { formatCurrency } from '@/lib/currencies';
 import type { InvoiceData } from '@/types/invoice';
 
 const colors = {
-  ink: '#182230',
-  slate: '#5d6b7d',
-  line: '#d8dde5',
-  accent: '#214562',
-  accentSoft: '#eef4f8',
-  paper: '#fffdf8',
+  ink: '#1a2433',
+  slate: '#617084',
+  line: '#d7dee8',
+  lineStrong: '#bcc8d6',
+  accent: '#4266c4',
+  accentDeep: '#274180',
+  accentSoft: '#eef3ff',
+  paper: '#fdfaf4',
+  quietPanel: '#f6f2ea',
+  white: '#ffffff',
 };
 
 const styles = StyleSheet.create({
@@ -19,16 +23,16 @@ const styles = StyleSheet.create({
     color: colors.ink,
     fontFamily: 'Helvetica',
     fontSize: 10,
-    paddingTop: 42,
-    paddingRight: 40,
-    paddingBottom: 82,
-    paddingLeft: 40,
+    paddingTop: 40,
+    paddingRight: 36,
+    paddingBottom: 78,
+    paddingLeft: 36,
   },
   masthead: {
-    marginBottom: 26,
-    paddingBottom: 16,
+    marginBottom: 24,
+    paddingBottom: 18,
     borderBottomWidth: 1,
-    borderBottomColor: colors.line,
+    borderBottomColor: colors.lineStrong,
     borderBottomStyle: 'solid',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -39,12 +43,12 @@ const styles = StyleSheet.create({
   eyebrow: {
     fontSize: 8,
     textTransform: 'uppercase',
-    letterSpacing: 1.8,
+    letterSpacing: 1.9,
     color: colors.slate,
     marginBottom: 6,
   },
   businessName: {
-    fontSize: 18,
+    fontSize: 19,
     fontFamily: 'Helvetica-Bold',
     marginBottom: 6,
   },
@@ -59,24 +63,24 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   invoiceLabel: {
-    fontSize: 28,
-    letterSpacing: 2,
+    fontSize: 27,
+    letterSpacing: 1.6,
     textTransform: 'uppercase',
-    color: colors.accent,
+    color: colors.accentDeep,
     fontFamily: 'Helvetica-Bold',
   },
   metaCard: {
     width: '100%',
-    marginTop: 10,
-    padding: 12,
+    marginTop: 12,
+    padding: 13,
     borderWidth: 1,
-    borderColor: colors.line,
+    borderColor: colors.lineStrong,
     backgroundColor: colors.accentSoft,
   },
   metaRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 5,
+    marginBottom: 6,
   },
   metaRowLast: {
     flexDirection: 'row',
@@ -96,19 +100,19 @@ const styles = StyleSheet.create({
   addressSection: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 22,
+    marginBottom: 24,
   },
   addressCard: {
     width: '48%',
-    padding: 14,
+    padding: 16,
     borderWidth: 1,
-    borderColor: colors.line,
-    backgroundColor: '#ffffff',
+    borderColor: colors.lineStrong,
+    backgroundColor: colors.white,
   },
   addressName: {
     fontSize: 12,
     fontFamily: 'Helvetica-Bold',
-    marginBottom: 4,
+    marginBottom: 5,
   },
   addressLine: {
     fontSize: 9,
@@ -117,24 +121,31 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   table: {
-    marginTop: 4,
+    marginTop: 6,
   },
   tableHeader: {
     flexDirection: 'row',
-    paddingBottom: 7,
+    paddingBottom: 8,
     borderBottomWidth: 1,
-    borderBottomColor: colors.line,
+    borderBottomColor: colors.lineStrong,
+    backgroundColor: colors.quietPanel,
+    paddingTop: 7,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   tableHeaderText: {
     fontSize: 8,
     textTransform: 'uppercase',
-    letterSpacing: 1.4,
+    letterSpacing: 1.5,
     color: colors.slate,
     fontFamily: 'Helvetica-Bold',
   },
   tableRow: {
     flexDirection: 'row',
-    paddingVertical: 10,
+    paddingTop: 11,
+    paddingRight: 10,
+    paddingBottom: 11,
+    paddingLeft: 10,
     borderBottomWidth: 1,
     borderBottomColor: colors.line,
     borderBottomStyle: 'solid',
@@ -144,15 +155,15 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   qtyCol: {
-    width: 52,
+    width: 54,
     textAlign: 'right',
   },
   rateCol: {
-    width: 86,
+    width: 90,
     textAlign: 'right',
   },
   amountCol: {
-    width: 96,
+    width: 102,
     textAlign: 'right',
   },
   itemTitle: {
@@ -169,15 +180,15 @@ const styles = StyleSheet.create({
     color: colors.ink,
   },
   totalsWrap: {
-    marginTop: 18,
+    marginTop: 20,
     marginLeft: 'auto',
-    width: 220,
-    paddingTop: 4,
+    width: 236,
+    paddingTop: 8,
   },
   totalRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 7,
+    marginBottom: 8,
   },
   totalLabel: {
     fontSize: 9,
@@ -191,27 +202,27 @@ const styles = StyleSheet.create({
   grandTotalRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 10,
-    paddingTop: 10,
+    marginTop: 12,
+    paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: colors.line,
+    borderTopColor: colors.lineStrong,
   },
   grandTotalLabel: {
-    fontSize: 12,
+    fontSize: 12.5,
     color: colors.ink,
     fontFamily: 'Helvetica-Bold',
   },
   grandTotalValue: {
-    fontSize: 12,
-    color: colors.accent,
+    fontSize: 13,
+    color: colors.accentDeep,
     fontFamily: 'Helvetica-Bold',
   },
   notesSection: {
     marginTop: 24,
-    padding: 14,
+    padding: 15,
     borderWidth: 1,
-    borderColor: colors.line,
-    backgroundColor: '#ffffff',
+    borderColor: colors.lineStrong,
+    backgroundColor: colors.white,
   },
   notesText: {
     fontSize: 9,
@@ -219,11 +230,11 @@ const styles = StyleSheet.create({
     lineHeight: 1.6,
   },
   placeholderBox: {
-    marginTop: 16,
+    marginTop: 18,
     padding: 12,
-    backgroundColor: colors.accentSoft,
+    backgroundColor: colors.quietPanel,
     borderWidth: 1,
-    borderColor: colors.line,
+    borderColor: colors.lineStrong,
   },
   placeholderText: {
     fontSize: 8,
@@ -234,10 +245,10 @@ const styles = StyleSheet.create({
   },
   footer: {
     position: 'absolute',
-    left: 40,
-    right: 40,
-    bottom: 28,
-    paddingTop: 10,
+    left: 36,
+    right: 36,
+    bottom: 26,
+    paddingTop: 11,
     borderTopWidth: 1,
     borderTopColor: colors.line,
   },
@@ -296,7 +307,9 @@ export function InvoiceDocument({ invoice }: InvoiceDocumentProps) {
                 </Text>
               ))
             ) : (
-              <Text style={styles.businessLine}>Add your business details in Free Invoice Kit.</Text>
+              <Text style={styles.businessLine}>
+                Add your business details in Free Invoice Kit.
+              </Text>
             )}
           </View>
 
@@ -333,7 +346,6 @@ export function InvoiceDocument({ invoice }: InvoiceDocumentProps) {
               <Text style={styles.addressLine}>Client details will appear here.</Text>
             )}
           </View>
-
         </View>
 
         <View style={styles.table}>
@@ -364,7 +376,9 @@ export function InvoiceDocument({ invoice }: InvoiceDocumentProps) {
         <View style={styles.totalsWrap}>
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>Subtotal</Text>
-            <Text style={styles.totalValue}>{formatCurrency(invoice.subtotal, invoice.currency)}</Text>
+            <Text style={styles.totalValue}>
+              {formatCurrency(invoice.subtotal, invoice.currency)}
+            </Text>
           </View>
 
           {invoice.taxRate > 0 ? (

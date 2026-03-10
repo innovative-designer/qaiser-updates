@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowLeft,
   CheckCircle2,
@@ -51,6 +51,10 @@ function getNumberValue(value: string) {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+function selectAll(event: React.FocusEvent<HTMLInputElement>) {
+  event.currentTarget.select();
+}
+
 interface FieldProps {
   id: string;
   label: string;
@@ -63,13 +67,13 @@ interface FieldProps {
 
 function Field({ id, label, required, error, className, labelClassName, children }: FieldProps) {
   return (
-    <div className={cn('space-y-2', className)}>
+    <div className={cn('space-y-2.5', className)}>
       <Label htmlFor={id} className={labelClassName}>
         {label}
         {required ? <span className="text-destructive">*</span> : null}
       </Label>
       {children}
-      {error ? <p className="text-destructive text-xs">{error}</p> : null}
+      {error ? <p className="text-destructive text-xs font-medium">{error}</p> : null}
     </div>
   );
 }
@@ -91,6 +95,7 @@ export default function CreateInvoicePage() {
   const [isSaving, setIsSaving] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedPdfUrl, setGeneratedPdfUrl] = useState<string | null>(null);
+  const invoiceReadyRef = useRef<HTMLDivElement>(null);
   const [hasSavedBusiness, setHasSavedBusiness] = useState(false);
   const [businessEditable, setBusinessEditable] = useState(true);
 
@@ -224,6 +229,9 @@ export default function CreateInvoicePage() {
       }
 
       setGeneratedPdfUrl(resolvedPdfUrl);
+      setTimeout(() => {
+        invoiceReadyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
 
       if (persistedPdfUrl) {
         setPdfUrl(persistedPdfUrl);
@@ -303,11 +311,11 @@ export default function CreateInvoicePage() {
 
       <main className="app-shell py-6 pb-32 sm:py-8 sm:pb-36 lg:py-10 lg:pb-12">
         {/* Mobile: compact tool header — form visible immediately */}
-        <div className="flex items-center justify-between px-1 pb-4 lg:hidden">
+        <div className="surface-floating flex items-center justify-between rounded-[var(--radius-card)] border px-3 py-2.5 pb-2.5 lg:hidden">
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="text-muted-foreground hover:text-foreground flex size-9 items-center justify-center rounded-xl transition-colors"
+              className="text-muted-foreground hover:text-foreground flex size-9 items-center justify-center rounded-[var(--radius-button-sm)] transition-colors hover:bg-[var(--surface-hover)]"
               aria-label="Back to home"
             >
               <ArrowLeft className="size-4" />
@@ -315,10 +323,7 @@ export default function CreateInvoicePage() {
             <h1 className="text-foreground text-lg font-semibold tracking-tight">New Invoice</h1>
           </div>
           <div className="flex items-center gap-2">
-            <Badge
-              variant="secondary"
-              className="rounded-full px-2.5 py-0.5 text-[11px] font-medium"
-            >
+            <Badge variant="secondary" className="px-2.5 py-0.5 text-[11px] font-medium">
               {invoice.status === 'sent' ? 'Ready' : 'Draft'}
             </Badge>
             <span className="text-muted-foreground text-xs tabular-nums">
@@ -331,8 +336,7 @@ export default function CreateInvoicePage() {
           <section className="grid items-stretch gap-6 lg:grid-cols-2">
             <Card
               className={cn(
-                'dark:bg-card/90 bg-white/90',
-                errors.businessName ? 'ring-destructive/20 ring-2' : undefined
+                errors.businessName ? 'border-destructive/45 ring-destructive/10 ring-4' : undefined
               )}
             >
               <CardHeader className="flex flex-row items-start justify-between gap-4 pb-3">
@@ -436,12 +440,14 @@ export default function CreateInvoicePage() {
 
             <Card
               className={cn(
-                'dark:bg-card/90 bg-white/90',
-                errors.clientName ? 'ring-destructive/20 ring-2' : undefined
+                errors.clientName ? 'border-destructive/45 ring-destructive/10 ring-4' : undefined
               )}
             >
-              <CardHeader className="pb-3">
-                <CardTitle>Client Info</CardTitle>
+              <CardHeader className="flex flex-row items-start justify-between gap-4 pb-3">
+                <div className="min-w-0">
+                  <CardTitle>Client Info</CardTitle>
+                </div>
+                <div className="h-9 shrink-0" aria-hidden="true" />
               </CardHeader>
               <CardContent className="grid gap-4 sm:grid-cols-2">
                 <Field id="clientName" label="Client Name" required error={errors.clientName}>
@@ -487,16 +493,16 @@ export default function CreateInvoicePage() {
 
           <Card
             className={cn(
-              'dark:bg-card/90 bg-white/90',
-              errors.lineItems ? 'ring-destructive/20 ring-2' : undefined
+              errors.lineItems ? 'border-destructive/45 ring-destructive/10 ring-4' : undefined
             )}
           >
             <CardHeader>
               <CardTitle>Line Items</CardTitle>
               <CardDescription>Add the work, quantity, and rate for each charge.</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-5 lg:space-y-6">
-              <div className="text-muted-foreground hidden grid-cols-[minmax(0,1.8fr)_88px_152px_152px_44px] gap-4 text-[11px] font-semibold tracking-[0.18em] uppercase lg:grid">
+            <CardContent className="space-y-0 px-0 pb-5">
+              {/* Table header — desktop only */}
+              <div className="text-muted-foreground border-border/60 mx-5 mb-1 hidden grid-cols-[minmax(0,1fr)_72px_120px_120px_36px] gap-3 border-b pb-2 text-[11px] font-semibold tracking-[0.16em] uppercase lg:grid">
                 <p>Description</p>
                 <p className="text-right">Qty</p>
                 <p className="text-right">Rate</p>
@@ -504,7 +510,8 @@ export default function CreateInvoicePage() {
                 <span />
               </div>
 
-              <div className="-mx-4 space-y-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+              {/* Rows */}
+              <div className="space-y-2 px-5 lg:space-y-0 lg:px-0 lg:divide-y lg:divide-border/50">
                 {invoice.lineItems.map((item, index) => {
                   const rowInvalid =
                     Boolean(errors.lineItems) && (!item.description.trim() || item.rate <= 0);
@@ -512,108 +519,112 @@ export default function CreateInvoicePage() {
                   return (
                     <div
                       key={item.id}
-                      className="border-border/70 bg-muted/55 grid gap-4 rounded-[1.5rem] border p-4 lg:grid-cols-[minmax(0,1.8fr)_88px_152px_152px_44px] lg:items-end lg:p-5"
+                      className="surface-quiet group rounded-[var(--radius-card)] border px-3 pb-3 pt-2 lg:rounded-none lg:border-0 lg:bg-transparent lg:px-5 lg:py-2.5 lg:grid lg:grid-cols-[minmax(0,1fr)_72px_120px_120px_36px] lg:items-center lg:gap-3"
                     >
-                      <Field
-                        id={`line-item-description-${index}`}
-                        label="Description"
-                        className="lg:space-y-0"
-                        labelClassName="lg:hidden"
-                      >
-                        <Input
-                          id={`line-item-description-${index}`}
-                          value={item.description}
-                          placeholder="Website design retainer"
-                          aria-invalid={rowInvalid && !item.description.trim()}
-                          onChange={(event) =>
-                            setLineItem(index, 'description', event.target.value)
-                          }
-                          className="bg-background/88 h-12"
-                        />
-                      </Field>
-
-                      <Field
-                        id={`line-item-quantity-${index}`}
-                        label="Qty"
-                        className="lg:space-y-0"
-                        labelClassName="lg:hidden"
-                      >
-                        <Input
-                          id={`line-item-quantity-${index}`}
-                          type="number"
-                          min={1}
-                          value={item.quantity}
-                          onChange={(event) =>
-                            setLineItem(index, 'quantity', getNumberValue(event.target.value))
-                          }
-                          className="h-12 text-right"
-                        />
-                      </Field>
-
-                      <Field
-                        id={`line-item-rate-${index}`}
-                        label="Rate"
-                        className="lg:space-y-0"
-                        labelClassName="lg:hidden"
-                      >
-                        <Input
-                          id={`line-item-rate-${index}`}
-                          type="number"
-                          min={0}
-                          step="0.01"
-                          value={item.rate}
-                          placeholder="0.00"
-                          aria-invalid={rowInvalid && item.rate <= 0}
-                          onChange={(event) =>
-                            setLineItem(index, 'rate', getNumberValue(event.target.value))
-                          }
-                          className="h-12 text-right"
-                        />
-                      </Field>
-
-                      <div className="space-y-2 sm:space-y-0">
-                        <Label htmlFor={`line-item-amount-${index}`} className="lg:hidden">
-                          Amount
-                        </Label>
-                        <div
-                          id={`line-item-amount-${index}`}
-                          className="border-input bg-background/88 text-foreground flex h-12 items-center justify-end rounded-2xl border px-4 text-sm font-medium"
-                        >
+                      {/* Mobile: delete top-right + amount */}
+                      <div className="mb-1 flex items-center justify-between lg:hidden">
+                        <p className="text-foreground text-sm font-semibold tabular-nums">
                           {formatCurrency(item.amount, invoice.currency)}
-                        </div>
-                      </div>
-
-                      <div className="flex items-end justify-end">
+                        </p>
                         <Button
                           type="button"
                           variant="ghost"
                           size="icon"
                           onClick={() => removeLineItem(index)}
                           disabled={invoice.lineItems.length === 1}
-                          className="text-muted-foreground hover:text-destructive size-10"
+                          className="text-muted-foreground hover:text-destructive -mr-1 size-7"
                         >
-                          <Trash2 className="size-4" />
+                          <Trash2 className="size-3.5" />
                           <span className="sr-only">Remove line item</span>
                         </Button>
                       </div>
+
+                      {/* Description */}
+                      <div className="flex items-center gap-1.5 lg:contents">
+                        <span className="text-muted-foreground shrink-0 text-[10px] font-semibold tracking-wider uppercase lg:hidden">Item</span>
+                        <Input
+                          id={`line-item-description-${index}`}
+                          value={item.description}
+                          placeholder="Item description"
+                          aria-label="Description"
+                          aria-invalid={rowInvalid && !item.description.trim()}
+                          onChange={(event) => setLineItem(index, 'description', event.target.value)}
+                          className="h-9 min-w-0 flex-1 border-0 bg-transparent pl-1 pr-0 text-sm shadow-none focus-visible:ring-0 lg:border lg:bg-(--surface-field) lg:px-3 lg:shadow-sm"
+                        />
+                      </div>
+
+                      {/* Mobile: qty × rate */}
+                      <div className="mt-2 flex items-center gap-3 lg:contents">
+                        <div className="flex items-center gap-1.5 lg:contents">
+                          <span className="text-muted-foreground shrink-0 text-[10px] font-semibold tracking-wider uppercase lg:hidden">Qty</span>
+                          <Input
+                            id={`line-item-quantity-${index}`}
+                            type="number"
+                            min={1}
+                            value={item.quantity}
+                            aria-label="Quantity"
+                            onChange={(event) =>
+                              setLineItem(index, 'quantity', getNumberValue(event.target.value))
+                            }
+                            onFocus={selectAll}
+                            className="h-8 w-14 shrink-0 text-center tabular-nums lg:h-9 lg:w-full lg:text-right"
+                          />
+                        </div>
+                        <div className="flex min-w-0 flex-1 items-center gap-1.5 lg:contents">
+                          <span className="text-muted-foreground shrink-0 text-[10px] font-semibold tracking-wider uppercase lg:hidden">Rate</span>
+                          <Input
+                            id={`line-item-rate-${index}`}
+                            type="number"
+                            min={0}
+                            step="0.01"
+                            value={item.rate}
+                            placeholder="0.00"
+                            aria-label="Rate"
+                            aria-invalid={rowInvalid && item.rate <= 0}
+                            onChange={(event) =>
+                              setLineItem(index, 'rate', getNumberValue(event.target.value))
+                            }
+                            onFocus={selectAll}
+                            className="h-8 min-w-0 flex-1 text-right tabular-nums lg:h-9 lg:flex-none lg:w-full"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Desktop: amount + delete */}
+                      <p className="text-foreground hidden h-9 items-center justify-end text-sm font-medium tabular-nums lg:flex">
+                        {formatCurrency(item.amount, invoice.currency)}
+                      </p>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => removeLineItem(index)}
+                        disabled={invoice.lineItems.length === 1}
+                        className="text-muted-foreground hover:text-destructive hidden size-9 opacity-0 transition-opacity group-hover:opacity-100 lg:flex"
+                      >
+                        <Trash2 className="size-3.5" />
+                        <span className="sr-only">Remove line item</span>
+                      </Button>
                     </div>
                   );
                 })}
               </div>
 
               {errors.lineItems ? (
-                <p className="text-destructive text-xs">{errors.lineItems}</p>
+                <p className="text-destructive px-5 pt-2 text-xs">{errors.lineItems}</p>
               ) : null}
 
-              <Button type="button" variant="outline" size="sm" onClick={addLineItem}>
-                <Plus className="size-4" />
-                Add Line Item
-              </Button>
+              <div className="border-border/60 mx-5 mt-4 border-t pt-3">
+                <Button type="button" variant="outline" size="sm" onClick={addLineItem}>
+                  <Plus className="size-4" />
+                  Add Line Item
+                </Button>
+              </div>
             </CardContent>
           </Card>
 
           <section className="grid gap-6 lg:grid-cols-2">
-            <Card className="dark:bg-card/90 bg-white/90">
+            <Card>
               <CardHeader>
                 <CardTitle>Financial Summary</CardTitle>
                 <CardDescription>Fine-tune totals before saving the invoice.</CardDescription>
@@ -644,25 +655,25 @@ export default function CreateInvoicePage() {
                   </Field>
                 </div>
 
-                <div className="border-border/70 bg-muted/60 space-y-3 rounded-[1.4rem] border p-4">
-                  <div className="text-muted-foreground flex items-center justify-between text-sm">
+                <div className="surface-quiet space-y-3 rounded-(--radius-card) border p-4 sm:p-5">
+                  <div className="text-muted-foreground flex items-center justify-between text-sm tabular-nums">
                     <span>Subtotal</span>
                     <span>{formatCurrency(invoice.subtotal, invoice.currency)}</span>
                   </div>
-                  <div className="text-muted-foreground flex items-center justify-between text-sm">
+                  <div className="text-muted-foreground flex items-center justify-between text-sm tabular-nums">
                     <span>Tax Amount</span>
                     <span>{formatCurrency(invoice.taxAmount, invoice.currency)}</span>
                   </div>
                   {invoice.discount > 0 ? (
-                    <div className="text-muted-foreground flex items-center justify-between text-sm">
+                    <div className="text-muted-foreground flex items-center justify-between text-sm tabular-nums">
                       <span>Discount ({invoice.discount}%)</span>
                       <span>-{formatCurrency(invoice.discountAmount, invoice.currency)}</span>
                     </div>
                   ) : null}
                   <Separator />
-                  <div className="text-foreground flex items-center justify-between text-lg font-bold tracking-tight">
+                  <div className="text-foreground flex items-center justify-between text-xl font-bold tracking-tight tabular-nums">
                     <span>Total</span>
-                    <span className="text-primary">
+                    <span className="text-primary text-[1.65rem]">
                       {formatCurrency(invoice.total, invoice.currency)}
                     </span>
                   </div>
@@ -672,8 +683,7 @@ export default function CreateInvoicePage() {
 
             <Card
               className={cn(
-                'dark:bg-card/90 bg-white/90',
-                errors.dueDate ? 'ring-destructive/20 ring-2' : undefined
+                errors.dueDate ? 'border-destructive/45 ring-destructive/10 ring-4' : undefined
               )}
             >
               <CardHeader>
@@ -685,7 +695,7 @@ export default function CreateInvoicePage() {
               <CardContent className="grid gap-4 sm:grid-cols-2">
                 <Field id="currency" label="Currency">
                   <Select value={invoice.currency} onValueChange={setCurrency}>
-                    <SelectTrigger id="currency" className="bg-background/88 w-full">
+                    <SelectTrigger id="currency" className="w-full">
                       <SelectValue placeholder="Select currency" />
                     </SelectTrigger>
                     <SelectContent>
@@ -722,12 +732,11 @@ export default function CreateInvoicePage() {
           </section>
 
           <div className="space-y-3">
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="surface-quiet grid gap-3 rounded-(--radius-card) border p-3 sm:grid-cols-2">
               <Button
                 type="button"
                 size="lg"
                 variant="outline"
-                className="bg-background/90"
                 disabled={actionDisabled}
                 onClick={handleSaveInvoice}
               >
@@ -754,7 +763,9 @@ export default function CreateInvoicePage() {
               </Button>
             </div>
 
-            <p className="text-muted-foreground text-center text-xs">{storageMessage}</p>
+            <p className="text-muted-foreground text-center text-xs tabular-nums">
+              {storageMessage}
+            </p>
           </div>
 
           {/* Mobile: banner after form, before results */}
@@ -763,7 +774,7 @@ export default function CreateInvoicePage() {
           </div>
 
           {generatedPdfUrl ? (
-            <Card className="border border-emerald-200 bg-[linear-gradient(180deg,rgba(236,253,245,0.88),rgba(255,255,255,0.94))]">
+            <Card ref={invoiceReadyRef} className="border border-emerald-200 bg-[linear-gradient(180deg,rgba(236,253,245,0.88),rgba(255,255,255,0.94))] shadow-[0_24px_70px_-44px_rgba(16,185,129,0.34)] dark:bg-[linear-gradient(180deg,rgba(6,78,59,0.18),rgba(20,24,32,0.92))]">
               <CardHeader>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="mt-0.5 size-6 text-emerald-600" />
@@ -777,10 +788,10 @@ export default function CreateInvoicePage() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                {/* Primary: WhatsApp — light bg, green icon, native share-sheet feel */}
                 <Button
                   size="lg"
-                  className="border-input bg-background/88 hover:bg-accent w-full border font-semibold text-[#075E54] shadow-sm"
+                  variant="outline"
+                  className="w-full font-semibold text-[#075E54]"
                   onClick={handleShareWhatsApp}
                 >
                   <svg viewBox="0 0 24 24" className="size-5" aria-hidden="true">
@@ -792,17 +803,12 @@ export default function CreateInvoicePage() {
                   Send on WhatsApp
                 </Button>
 
-                {/* Secondary actions */}
                 <div className="grid grid-cols-2 gap-2">
-                  <Button
-                    variant="outline"
-                    className="bg-background/88"
-                    onClick={handleDownloadPdf}
-                  >
+                  <Button variant="outline" onClick={handleDownloadPdf}>
                     <Download className="size-4" />
                     Download
                   </Button>
-                  <Button asChild variant="outline" className="bg-background/88">
+                  <Button asChild variant="outline">
                     <a href={generatedPdfUrl} target="_blank" rel="noreferrer">
                       <Eye className="size-4" />
                       Open PDF
@@ -813,7 +819,7 @@ export default function CreateInvoicePage() {
                 {hasRemotePdf && (
                   <Button
                     variant="outline"
-                    className="bg-background/88 w-full"
+                    className="w-full"
                     onClick={() => {
                       navigator.clipboard.writeText(generatedPdfUrl!);
                       toast.success('Link copied to clipboard.');
@@ -837,9 +843,9 @@ export default function CreateInvoicePage() {
         </div>
       </main>
 
-      <div className="safe-bottom border-border/70 bg-background/92 fixed inset-x-0 bottom-0 z-30 border-t px-4 py-3 backdrop-blur-xl lg:hidden">
+      <div className="safe-bottom fixed inset-x-0 bottom-0 z-30 px-4 py-3 lg:hidden">
         <div className="app-shell px-0">
-          <div className="editorial-panel flex items-center gap-2 px-2 py-2">
+          <div className="surface-floating flex items-center gap-2 rounded-(--radius-shell) border px-2 py-2">
             <Button
               type="button"
               variant="outline"

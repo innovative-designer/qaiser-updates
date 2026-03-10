@@ -9,12 +9,12 @@ interface FooterProps {
 
 export function Footer({ className }: FooterProps) {
   return (
-    <footer className={cn('border-border/60 mt-12 border-t bg-white/35 dark:bg-background/40', className)}>
+    <footer className={cn('border-border/60 mt-12 border-t bg-transparent', className)}>
       <div className="app-shell py-8 sm:py-10">
-        <div className="editorial-shell flex flex-col gap-6 px-5 py-6 sm:px-8 sm:py-7 lg:flex-row lg:items-end lg:justify-between">
+        <div className="editorial-shell hero-wash flex flex-col gap-6 px-5 py-6 sm:px-8 sm:py-7 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-xl">
             <p className="section-kicker">Free Invoice Kit</p>
-            <p className="mt-3 text-lg font-semibold tracking-tight text-foreground">
+            <p className="text-foreground mt-3 text-lg font-semibold tracking-tight">
               Fast, chat-native invoicing for freelancers and small businesses.
             </p>
             <p className="text-muted-foreground mt-2 text-sm leading-6">
@@ -24,15 +24,24 @@ export function Footer({ className }: FooterProps) {
           </div>
 
           <div className="flex flex-wrap items-center gap-3 text-sm">
-            <Link href="#" className="bg-secondary/70 hover:bg-secondary inline-flex rounded-full px-4 py-2 transition-colors">
-            Privacy
-          </Link>
-            <Link href="#" className="bg-secondary/70 hover:bg-secondary inline-flex rounded-full px-4 py-2 transition-colors">
-            Terms
-          </Link>
-            <Link href="#" className="bg-secondary/70 hover:bg-secondary inline-flex rounded-full px-4 py-2 transition-colors">
-            Twitter
-          </Link>
+            <Link
+              href="#"
+              className="surface-field inline-flex rounded-[var(--radius-button)] border px-4 py-2.5 transition-colors hover:bg-[var(--surface-hover)]"
+            >
+              Privacy
+            </Link>
+            <Link
+              href="#"
+              className="surface-field inline-flex rounded-[var(--radius-button)] border px-4 py-2.5 transition-colors hover:bg-[var(--surface-hover)]"
+            >
+              Terms
+            </Link>
+            <Link
+              href="#"
+              className="surface-field inline-flex rounded-[var(--radius-button)] border px-4 py-2.5 transition-colors hover:bg-[var(--surface-hover)]"
+            >
+              Twitter
+            </Link>
           </div>
         </div>
       </div>
