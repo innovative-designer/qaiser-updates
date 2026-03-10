@@ -333,6 +333,8 @@ export default function CreateInvoicePage() {
         </div>
 
         <div className="mt-6 space-y-6">
+          <ProWaitlistBanner source="create-top" variant="banner" />
+
           <section className="grid items-stretch gap-6 lg:grid-cols-2">
             <Card
               className={cn(
@@ -766,11 +768,6 @@ export default function CreateInvoicePage() {
             <p className="text-muted-foreground text-center text-xs tabular-nums">
               {storageMessage}
             </p>
-          </div>
-
-          {/* Mobile: banner after form, before results */}
-          <div className="lg:hidden">
-            <ProWaitlistBanner source="banner" variant="banner" />
           </div>
 
           {generatedPdfUrl ? (
