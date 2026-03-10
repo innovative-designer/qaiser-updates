@@ -333,7 +333,9 @@ export default function CreateInvoicePage() {
         </div>
 
         <div className="mt-6 space-y-6">
-          <ProWaitlistBanner source="create-top" variant="banner" />
+          <div className="hidden md:block">
+            <ProWaitlistBanner source="create-top" variant="banner" />
+          </div>
 
           <section className="grid items-stretch gap-6 lg:grid-cols-2">
             <Card
