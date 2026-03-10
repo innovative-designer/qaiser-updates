@@ -553,7 +553,7 @@ export default function CreateInvoicePage() {
                           aria-label="Description"
                           aria-invalid={rowInvalid && !item.description.trim()}
                           onChange={(event) => setLineItem(index, 'description', event.target.value)}
-                          className="h-9 min-w-0 flex-1 border-0 bg-transparent pl-1 pr-0 text-sm shadow-none focus-visible:ring-0 lg:border lg:bg-(--surface-field) lg:px-3 lg:shadow-sm"
+                          className="h-11 min-w-0 flex-1 border-0 bg-transparent pl-1 pr-0 text-base shadow-none focus-visible:ring-0 lg:border lg:bg-(--surface-field) lg:px-3 lg:shadow-sm"
                         />
                       </div>
 
@@ -571,7 +571,7 @@ export default function CreateInvoicePage() {
                               setLineItem(index, 'quantity', getNumberValue(event.target.value))
                             }
                             onFocus={selectAll}
-                            className="h-8 w-14 shrink-0 text-center tabular-nums lg:h-9 lg:w-full lg:text-right"
+                            className="h-11 w-14 shrink-0 text-center text-base tabular-nums lg:w-full lg:text-right"
                           />
                         </div>
                         <div className="flex min-w-0 flex-1 items-center gap-1.5 lg:contents">
@@ -589,13 +589,13 @@ export default function CreateInvoicePage() {
                               setLineItem(index, 'rate', getNumberValue(event.target.value))
                             }
                             onFocus={selectAll}
-                            className="h-8 min-w-0 flex-1 text-right tabular-nums lg:h-9 lg:flex-none lg:w-full"
+                            className="h-11 min-w-0 flex-1 text-right text-base tabular-nums lg:flex-none lg:w-full"
                           />
                         </div>
                       </div>
 
                       {/* Desktop: amount + delete */}
-                      <p className="text-foreground hidden h-9 items-center justify-end text-sm font-medium tabular-nums lg:flex">
+                      <p className="text-foreground hidden h-11 items-center justify-end text-base font-medium tabular-nums lg:flex">
                         {formatCurrency(item.amount, invoice.currency)}
                       </p>
                       <Button
