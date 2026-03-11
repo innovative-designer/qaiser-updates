@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 
+import { PostHogProvider } from '@/components/providers/posthog-provider';
+
 export const metadata: Metadata = {
   title: 'Invoice History',
   description: 'View, re-share, and manage your saved invoices.',
@@ -10,5 +12,10 @@ export const metadata: Metadata = {
 };
 
 export default function HistoryLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <>
+      <PostHogProvider />
+      {children}
+    </>
+  );
 }

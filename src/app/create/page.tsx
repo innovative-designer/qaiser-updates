@@ -38,6 +38,7 @@ import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { useInvoiceForm, type ValidationErrors } from '@/hooks/use-invoice-form';
 import { useLocalInvoices } from '@/hooks/use-local-invoices';
+import { captureAnalyticsEvent } from '@/lib/analytics/posthog';
 import { CURRENCIES, formatCurrency } from '@/lib/currencies';
 import { MAX_INVOICES } from '@/lib/constants';
 import { downloadPdf, shareOnWhatsApp } from '@/lib/share';
@@ -286,6 +287,14 @@ export default function CreateInvoicePage() {
         pdfUrl: persistedPdfUrl,
       });
 
+      captureAnalyticsEvent('invoice_created', {
+        source: 'create',
+        currency: invoice.currency,
+        line_item_count: invoice.lineItems.length,
+        has_discount: invoice.discount > 0,
+        has_tax: invoice.taxRate > 0,
+        has_logo: Boolean(logoPreview),
+      });
       toast.success('Invoice PDF generated successfully.');
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to generate PDF';
@@ -323,7 +332,7 @@ export default function CreateInvoicePage() {
       return;
     }
 
-    const result = await shareOnWhatsApp(invoiceToShare);
+    const result = await shareOnWhatsApp(invoiceToShare, { source: 'create' });
 
     if (result === 'shared') {
       toast.success('Invoice shared on WhatsApp.');
@@ -336,7 +345,7 @@ export default function CreateInvoicePage() {
   }
 
   async function handleDownloadPdf() {
-    const success = await downloadPdf(getInvoiceForSharing());
+    const success = await downloadPdf(getInvoiceForSharing(), { source: 'create' });
 
     if (!success) {
       toast.error('Generate a PDF first before downloading.');

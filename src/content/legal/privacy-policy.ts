@@ -24,7 +24,7 @@ export const privacyPolicy: ContentDocument = {
   lastUpdated: PRIVACY_LAST_UPDATED,
   highlights: [
     'Invoices and saved business details can be stored in your own browser using localStorage and IndexedDB.',
-    'PostHog analytics are active in production for pageview and product-usage measurement.',
+    'Minimal PostHog analytics may run only on non-indexed app pages such as invoice creation and history.',
     'Google advertising cookies may be used if AdSense is enabled on indexable content pages in the future.',
   ],
   sections: [
@@ -64,8 +64,8 @@ export const privacyPolicy: ContentDocument = {
     {
       title: 'Analytics',
       paragraphs: [
-        'FreeInvoiceKit uses PostHog in production to measure pageviews and understand how visitors use the website and product flows.',
-        'Analytics information helps us improve page performance, identify broken flows, and understand which content or features are most useful.',
+        'FreeInvoiceKit uses PostHog only on non-indexed product pages such as the invoice creator and invoice history. Public SEO pages and blog content are intended to load without PostHog.',
+        'Analytics are limited to explicit product events such as creating an invoice, downloading a PDF, or clicking a share action. Session recording, surveys, and broad automatic page interaction capture are disabled in this configuration.',
       ],
     },
     {

@@ -1,10 +1,15 @@
+import { captureAnalyticsEvent } from '@/lib/analytics/posthog';
 import { formatCurrency } from '@/lib/currencies';
 import { saveInvoice } from '@/lib/db';
 import type { InvoiceData } from '@/types/invoice';
 
 type ShareMethod = NonNullable<InvoiceData['sentVia']>;
+type ShareSource = 'create' | 'history';
 
 export type WhatsAppShareResult = 'shared' | 'fallback' | 'cancelled';
+export interface ShareTrackingContext {
+  source: ShareSource;
+}
 
 function buildCaption(invoice: InvoiceData): string {
   const amount = formatCurrency(invoice.total, invoice.currency);
@@ -39,14 +44,19 @@ async function markAsSent(invoice: InvoiceData, via: ShareMethod): Promise<void>
     sentVia: via,
   });
 }
-
-
-export async function shareOnWhatsApp(invoice: InvoiceData): Promise<WhatsAppShareResult> {
+export async function shareOnWhatsApp(
+  invoice: InvoiceData,
+  context: ShareTrackingContext,
+): Promise<WhatsAppShareResult> {
   if (!invoice.pdfUrl) {
     return 'fallback';
   }
 
   const caption = buildCaption(invoice);
+  captureAnalyticsEvent('share_clicked', {
+    source: context.source,
+    channel: 'whatsapp',
+  });
 
   try {
     const response = await fetch(invoice.pdfUrl);
@@ -66,6 +76,10 @@ export async function shareOnWhatsApp(invoice: InvoiceData): Promise<WhatsAppSha
 
     // Browser doesn't support file sharing — download the PDF as fallback
     await downloadFile(invoice.pdfUrl, `invoice-${invoice.id}.pdf`);
+    captureAnalyticsEvent('pdf_downloaded', {
+      source: context.source,
+      channel: 'whatsapp_fallback',
+    });
     await markAsSent(invoice, 'whatsapp');
     return 'fallback';
   } catch (error) {
@@ -74,17 +88,28 @@ export async function shareOnWhatsApp(invoice: InvoiceData): Promise<WhatsAppSha
     }
 
     await downloadFile(invoice.pdfUrl, `invoice-${invoice.id}.pdf`);
+    captureAnalyticsEvent('pdf_downloaded', {
+      source: context.source,
+      channel: 'whatsapp_fallback',
+    });
     await markAsSent(invoice, 'whatsapp');
     return 'fallback';
   }
 }
 
-export async function downloadPdf(invoice: InvoiceData): Promise<boolean> {
+export async function downloadPdf(
+  invoice: InvoiceData,
+  context: ShareTrackingContext,
+): Promise<boolean> {
   if (!invoice.pdfUrl) {
     return false;
   }
 
   await downloadFile(invoice.pdfUrl, `invoice-${invoice.id}.pdf`);
+  captureAnalyticsEvent('pdf_downloaded', {
+    source: context.source,
+    channel: 'download',
+  });
   await markAsSent(invoice, 'download');
   return true;
 }
@@ -98,6 +123,10 @@ export async function shareViaEmail(invoice: InvoiceData): Promise<void> {
       `Best regards,\n${invoice.businessName || ''}`
   );
   const recipient = encodeURIComponent(invoice.clientEmail || '');
+  captureAnalyticsEvent('share_clicked', {
+    source: 'create',
+    channel: 'email',
+  });
   await markAsSent(invoice, 'email');
   window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
 }
@@ -105,5 +134,9 @@ export async function shareViaEmail(invoice: InvoiceData): Promise<void> {
 export async function copyCaptionText(invoice: InvoiceData): Promise<void> {
   const caption = buildCaption(invoice);
   await navigator.clipboard.writeText(caption);
+  captureAnalyticsEvent('share_clicked', {
+    source: 'create',
+    channel: 'copy_caption',
+  });
   await markAsSent(invoice, 'copy');
 }

@@ -10,7 +10,7 @@ export const cookiePolicy: ContentDocument = {
   lastUpdated: COOKIE_LAST_UPDATED,
   highlights: [
     'This site uses both cookies and non-cookie browser storage technologies.',
-    'Analytics are currently supported through PostHog in production.',
+    'Minimal PostHog analytics may run only on non-indexed app pages.',
     'Advertising cookies may be introduced later if AdSense is enabled on public content pages.',
   ],
   sections: [
@@ -51,7 +51,8 @@ export const cookiePolicy: ContentDocument = {
     {
       title: 'Analytics technologies',
       paragraphs: [
-        'PostHog is currently used in production to capture pageview and usage analytics. These tools help us understand which pages are used and how the product can be improved.',
+        'PostHog may be loaded only on non-indexed app routes such as invoice creation and invoice history. Public SEO pages are intended to load without PostHog.',
+        'When enabled, the setup is limited to explicit product events such as invoice creation, PDF download, and share actions. Session recording, surveys, and broad automatic interaction capture are disabled.',
       ],
     },
     {
