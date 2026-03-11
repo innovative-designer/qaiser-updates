@@ -46,3 +46,7 @@ next-env.d.ts
 .codex/
 .agents/
 .playwright-mcp/
+
+# Tooling artifacts
+skills-lock.json
+transfer_skill.ps1

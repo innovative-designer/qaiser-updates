@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { APP_NAME, APP_URL } from '@/lib/constants';
+import { buildBreadcrumbSchema, buildFaqSchema } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Free Invoice Maker for Freelancers - No Signup, No Fees',
@@ -72,7 +73,7 @@ const faqs = [
   {
     question: 'Where are my invoices stored?',
     answer:
-      'Draft invoices are stored locally in your browser. Generated PDFs can also be stored remotely when Supabase is configured.',
+      'Draft invoices are stored locally in your browser so you can come back to them without needing an account.',
   },
   {
     question: 'What currencies are supported?',
@@ -81,23 +82,39 @@ const faqs = [
   },
 ];
 
+const relatedGuides = [
+  {
+    href: '/send-invoice-whatsapp',
+    title: 'Send Invoice On WhatsApp',
+    description: 'See the fastest way to move a finished PDF invoice directly into client chat.',
+  },
+  {
+    href: '/invoice-template/freelancer',
+    title: 'Freelancer Invoice Template',
+    description: 'Use a template-structured page if you want the invoice format explained before you build it.',
+  },
+  {
+    href: '/compare/freshbooks',
+    title: 'FreshBooks Alternative',
+    description: 'Compare the lightweight invoice workflow against a fuller software stack.',
+  },
+];
+
 export default function FreeInvoiceMakerFreelancersPage() {
+  const schemas = [
+    buildFaqSchema(faqs),
+    buildBreadcrumbSchema([
+      { name: 'Home', item: APP_URL },
+      {
+        name: 'Free Invoice Maker for Freelancers',
+        item: `${APP_URL}/free-invoice-maker-freelancers`,
+      },
+    ]),
+  ];
+
   return (
     <div className="min-h-screen">
-      <JsonLd
-        data={{
-          '@context': 'https://schema.org',
-          '@type': 'FAQPage',
-          mainEntity: faqs.map((faq) => ({
-            '@type': 'Question',
-            name: faq.question,
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: faq.answer,
-            },
-          })),
-        }}
-      />
+      <JsonLd data={schemas} />
 
       <Header />
 
@@ -124,7 +141,7 @@ export default function FreeInvoiceMakerFreelancersPage() {
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="lg">
-                  <Link href="/history">See saved invoices</Link>
+                  <Link href="/send-invoice-whatsapp">See WhatsApp workflow</Link>
                 </Button>
               </div>
             </div>
@@ -226,6 +243,29 @@ export default function FreeInvoiceMakerFreelancersPage() {
                 <h3 className="text-foreground text-lg font-semibold">{faq.question}</h3>
                 <p className="text-muted-foreground mt-2 text-sm leading-7">{faq.answer}</p>
               </InfoPanel>
+            ))}
+          </div>
+        </PageSection>
+
+        <PageSection width="wide" spacing="compact">
+          <div>
+            <p className="text-muted-foreground text-[11px] font-semibold tracking-[0.24em] uppercase">
+              Related Guides
+            </p>
+            <h2 className="text-foreground mt-2 text-2xl font-semibold tracking-[-0.03em] sm:text-3xl">
+              Other tools freelancers use
+            </h2>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-3">
+            {relatedGuides.map((guide) => (
+              <Link key={guide.href} href={guide.href} className="block">
+                <InfoPanel className="h-full p-5 transition-transform duration-200 hover:-translate-y-0.5">
+                  <h3 className="text-foreground text-lg font-semibold">{guide.title}</h3>
+                  <p className="text-muted-foreground mt-2 text-sm leading-7">{guide.description}</p>
+                  <div className="text-primary mt-4 text-sm font-medium">Open guide</div>
+                </InfoPanel>
+              </Link>
             ))}
           </div>
         </PageSection>

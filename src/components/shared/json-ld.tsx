@@ -1,5 +1,7 @@
+type JsonLdObject = Record<string, unknown>;
+
 interface JsonLdProps {
-  data: Record<string, unknown>;
+  data: JsonLdObject | JsonLdObject[];
 }
 
 export function JsonLd({ data }: JsonLdProps) {

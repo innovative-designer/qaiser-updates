@@ -3,16 +3,37 @@ import Link from 'next/link';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
-import { getAllPosts, getPostBySlug } from '@/lib/blog';
 import { Footer } from '@/components/shared/footer';
 import { Header } from '@/components/shared/header';
 import { InfoPanel } from '@/components/shared/info-panel';
+import { JsonLd } from '@/components/shared/json-ld';
 import { PageHero } from '@/components/shared/page-hero';
 import { PageSection } from '@/components/shared/page-section';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { getAllPosts, getPostBySlug } from '@/lib/blog';
+import { APP_NAME, APP_URL } from '@/lib/constants';
+import { buildArticleSchema, buildBreadcrumbSchema, toAbsoluteUrl } from '@/lib/seo';
 
 type Props = { params: Promise<{ slug: string }> };
+
+const relatedResources = [
+  {
+    href: '/send-invoice-whatsapp',
+    title: 'WhatsApp Invoice Workflow',
+    description: 'See the step-by-step flow for generating a PDF invoice and sending it in chat.',
+  },
+  {
+    href: '/free-invoice-maker-freelancers',
+    title: 'Free Invoice Maker For Freelancers',
+    description: 'Explore the fastest invoice setup for solo operators who want less admin drag.',
+  },
+  {
+    href: '/blog',
+    title: 'More Invoicing Guides',
+    description: 'Browse the rest of the blog for invoicing, payment, and workflow advice.',
+  },
+];
 
 export async function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }));
@@ -22,14 +43,39 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) return {};
+
+  const canonicalUrl = `${APP_URL}/blog/${post.slug}`;
+  const imageUrl = toAbsoluteUrl(post.ogImage ?? '/og-image.png');
+
   return {
-    title: `${post.title} — Free Invoice Kit`,
+    title: post.title,
     description: post.description,
+    keywords: post.keywords,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
+      url: canonicalUrl,
       title: post.title,
       description: post.description,
       type: 'article',
       publishedTime: post.publishedAt,
+      modifiedTime: post.updatedAt ?? post.publishedAt,
+      siteName: APP_NAME,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${post.title} — ${APP_NAME}`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.description,
+      images: [imageUrl],
     },
   };
 }
@@ -39,8 +85,27 @@ export default async function BlogPostPage({ params }: Props) {
   const post = getPostBySlug(slug);
   if (!post) notFound();
 
+  const canonicalUrl = `${APP_URL}/blog/${post.slug}`;
+  const schemas = [
+    buildArticleSchema({
+      title: post.title,
+      description: post.description,
+      publishedAt: post.publishedAt,
+      modifiedAt: post.updatedAt,
+      url: canonicalUrl,
+      image: post.ogImage,
+    }),
+    buildBreadcrumbSchema([
+      { name: 'Home', item: APP_URL },
+      { name: 'Blog', item: `${APP_URL}/blog` },
+      { name: post.title, item: canonicalUrl },
+    ]),
+  ];
+
   return (
     <div className="min-h-screen">
+      <JsonLd data={schemas} />
+
       <Header />
 
       <main className="py-8 sm:py-10 lg:py-12">
@@ -105,6 +170,33 @@ export default async function BlogPostPage({ params }: Props) {
                 </Link>
               </Button>
             </InfoPanel>
+          </div>
+        </PageSection>
+
+        <PageSection width="narrow" spacing="compact">
+          <div className="space-y-4">
+            <div>
+              <p className="text-muted-foreground text-[11px] font-semibold tracking-[0.24em] uppercase">
+                Related Resources
+              </p>
+              <h2 className="text-foreground mt-2 text-2xl font-semibold tracking-[-0.03em] sm:text-3xl">
+                More guides you might find useful
+              </h2>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-3">
+              {relatedResources.map((resource) => (
+                <Link key={resource.href} href={resource.href} className="block">
+                  <InfoPanel className="h-full p-5 transition-transform duration-200 hover:-translate-y-0.5">
+                    <h3 className="text-foreground text-lg font-semibold">{resource.title}</h3>
+                    <p className="text-muted-foreground mt-2 text-sm leading-7">
+                      {resource.description}
+                    </p>
+                    <div className="text-primary mt-4 text-sm font-medium">Open resource</div>
+                  </InfoPanel>
+                </Link>
+              ))}
+            </div>
           </div>
         </PageSection>
       </main>
