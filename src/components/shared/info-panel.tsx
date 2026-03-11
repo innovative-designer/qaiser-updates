@@ -17,7 +17,7 @@ interface InfoPanelProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function InfoPanel({ className, tone = 'default', children, ...props }: InfoPanelProps) {
   return (
-    <div className={cn('p-6 sm:p-7', toneClasses[tone], className)} {...props}>
+    <div className={cn('p-4 sm:p-6 md:p-7', toneClasses[tone], className)} {...props}>
       {children}
     </div>
   );

@@ -17,7 +17,7 @@ export function PageHero({
   return (
     <div
       className={cn(
-        'editorial-shell hero-wash relative overflow-hidden px-5 py-6 sm:px-8 sm:py-8 lg:px-10 lg:py-10',
+        'editorial-shell hero-wash relative overflow-hidden px-3 py-5 sm:px-8 sm:py-8 lg:px-10 lg:py-10',
         className
       )}
       {...props}
