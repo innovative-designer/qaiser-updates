@@ -77,14 +77,24 @@ const useCases = [
     description: 'Built around chat-native delivery instead of email-first invoicing habits.',
   },
   {
-    href: '/invoice-generator-pakistan',
-    title: 'For PKR invoices',
-    description: 'Create local-currency invoices with a mobile-friendly workflow.',
+    href: '/invoice-generator/graphic-designers',
+    title: 'For creative services',
+    description: 'Use profession-focused pages for designers, photographers, and other solo service work.',
   },
   {
-    href: '/whatsapp-billing-uae',
-    title: 'For UAE freelancers',
-    description: 'Generate AED invoices and send them in the channels clients already use.',
+    href: '/invoice-generator/india',
+    title: 'For local-currency markets',
+    description: 'Browse country pages for INR, PKR, AED, and NGN invoice flows.',
+  },
+  {
+    href: '/compare/freshbooks',
+    title: 'For software comparisons',
+    description: 'Compare the lightweight invoice workflow against FreshBooks, Stripe, and Wave.',
+  },
+  {
+    href: '/invoice-template/freelancer',
+    title: 'For invoice templates',
+    description: 'Start from template-driven pages when you want structure before opening the builder.',
   },
 ];
 
@@ -321,10 +331,10 @@ export default function Home() {
                   workflow.
                 </p>
               </div>
-              <Badge className="px-4 py-1.5">Modernized across all routes</Badge>
+              <Badge className="px-4 py-1.5">Expanded across guides, comparisons, and templates</Badge>
             </div>
 
-            <div className="mt-8 grid gap-4 md:grid-cols-2">
+            <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {useCases.map((item) => (
                 <Link
                   key={item.href}

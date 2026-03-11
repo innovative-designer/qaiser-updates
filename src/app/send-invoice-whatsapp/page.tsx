@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { APP_NAME, APP_URL } from '@/lib/constants';
+import { buildBreadcrumbSchema, buildFaqSchema, buildHowToSchema } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'How to Send an Invoice on WhatsApp - Free PDF Invoice Maker',
@@ -60,7 +61,7 @@ const faqs = [
   {
     question: 'Is the invoice sent as a link or as a file?',
     answer:
-      'The current Sprint 2 flow generates a PDF file. When Supabase storage is configured, the app can also return a hosted PDF URL.',
+      'The current workflow generates a PDF file that you can download and share directly in WhatsApp.',
   },
   {
     question: 'Can I customize the invoice with my business logo?',
@@ -69,23 +70,61 @@ const faqs = [
   },
 ];
 
+const relatedGuides = [
+  {
+    href: '/free-invoice-maker-freelancers',
+    title: 'Free Invoice Maker For Freelancers',
+    description: 'See the no-signup invoicing flow built for solo operators and service work.',
+  },
+  {
+    href: '/invoice-template/freelancer',
+    title: 'Freelancer Invoice Template',
+    description: 'Review the invoice structure first, then jump into the same builder to create it.',
+  },
+  {
+    href: '/invoice-generator/india',
+    title: 'Invoice Generator India',
+    description: 'See the same WhatsApp-first invoicing pattern localized for INR billing.',
+  },
+];
+
 export default function SendInvoiceWhatsAppPage() {
+  const schemas = [
+    buildFaqSchema(faqs),
+    buildHowToSchema({
+      name: 'How to Send an Invoice on WhatsApp',
+      description:
+        'Create a professional PDF invoice and send it on WhatsApp in 30 seconds.',
+      totalTime: 'PT30S',
+      steps: [
+        {
+          name: 'Open Free Invoice Kit',
+          text: 'Go to the invoice builder. No signup is required.',
+          url: `${APP_URL}/create`,
+        },
+        {
+          name: 'Fill in your invoice',
+          text: 'Enter your business details, client information, and line items.',
+        },
+        {
+          name: 'Generate the PDF',
+          text: 'Create a finished invoice PDF that is ready to share.',
+        },
+        {
+          name: 'Send it on WhatsApp',
+          text: 'Download the PDF and share it into the client chat.',
+        },
+      ],
+    }),
+    buildBreadcrumbSchema([
+      { name: 'Home', item: APP_URL },
+      { name: 'Send Invoice on WhatsApp', item: `${APP_URL}/send-invoice-whatsapp` },
+    ]),
+  ];
+
   return (
     <div className="min-h-screen">
-      <JsonLd
-        data={{
-          '@context': 'https://schema.org',
-          '@type': 'FAQPage',
-          mainEntity: faqs.map((faq) => ({
-            '@type': 'Question',
-            name: faq.question,
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: faq.answer,
-            },
-          })),
-        }}
-      />
+      <JsonLd data={schemas} />
 
       <Header />
 
@@ -111,7 +150,7 @@ export default function SendInvoiceWhatsAppPage() {
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="lg">
-                  <Link href="/history">View saved invoices</Link>
+                  <Link href="/free-invoice-maker-freelancers">See freelancer workflow</Link>
                 </Button>
               </div>
             </div>
@@ -224,6 +263,29 @@ export default function SendInvoiceWhatsAppPage() {
                 <h3 className="text-foreground text-lg font-semibold">{faq.question}</h3>
                 <p className="text-muted-foreground mt-2 text-sm leading-7">{faq.answer}</p>
               </InfoPanel>
+            ))}
+          </div>
+        </PageSection>
+
+        <PageSection spacing="compact">
+          <div>
+            <p className="text-muted-foreground text-[11px] font-semibold tracking-[0.24em] uppercase">
+              Related Guides
+            </p>
+            <h2 className="text-foreground mt-2 text-2xl font-semibold tracking-[-0.03em] sm:text-3xl">
+              More ways to speed up your invoicing
+            </h2>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-3">
+            {relatedGuides.map((guide) => (
+              <Link key={guide.href} href={guide.href} className="block">
+                <InfoPanel className="h-full p-5 transition-transform duration-200 hover:-translate-y-0.5">
+                  <h3 className="text-foreground text-lg font-semibold">{guide.title}</h3>
+                  <p className="text-muted-foreground mt-2 text-sm leading-7">{guide.description}</p>
+                  <div className="text-primary mt-4 text-sm font-medium">Open guide</div>
+                </InfoPanel>
+              </Link>
             ))}
           </div>
         </PageSection>

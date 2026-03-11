@@ -57,7 +57,10 @@
 | `/blog`, `/blog/[slug]` | SSG | Blog index and articles |
 | `/about`, `/contact`, `/faq` | Static | Info pages |
 | `/privacy-policy`, `/terms-of-service`, `/cookie-policy` | Static | Legal pages |
-| SEO landings | Static | `/invoice-generator-pakistan`, `/send-invoice-whatsapp`, `/free-invoice-maker-freelancers`, `/stripe-invoice-alternative`, `/whatsapp-billing-uae` |
+| `/invoice-generator/[slug]` | SSG | Industry + country invoice pages (programmatic SEO) |
+| `/compare/[slug]` | SSG | Competitor comparison pages (programmatic SEO) |
+| `/invoice-template/[slug]` | SSG | Invoice template pages (programmatic SEO) |
+| `/send-invoice-whatsapp`, `/free-invoice-maker-freelancers` | Static | Hand-crafted SEO landings |
 | `/offline` | Static | PWA offline fallback |
 | `/api/invoice/generate-pdf` | Dynamic | PDF generation API |
 | `/api/waitlist` | Dynamic | Pro waitlist (Supabase) |

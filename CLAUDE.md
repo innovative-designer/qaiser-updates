@@ -64,3 +64,4 @@ Path alias: `@/*` → `./src/*`
 - PWA disabled in dev — use `pnpm build && pnpm start` to test offline
 - `suppressHydrationWarning` on `<html>` required for next-themes
 - No required env vars for core functionality
+- **NEVER use `suppressHydrationWarning` to hide hydration errors** — always fix the root cause. Hydration mismatches from `nanoid`/`Math.random()`/`Date.now()` must be solved by deferring random generation to a client-side `useEffect`, not by suppressing the warning.

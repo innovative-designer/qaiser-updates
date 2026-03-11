@@ -1,18 +1,10 @@
 import { post as sendInvoiceWhatsApp } from '@/content/blog/send-invoice-whatsapp-30-seconds';
-
-export type BlogPost = {
-  slug: string;
-  title: string;
-  description: string;
-  publishedAt: string;
-  readingTimeMin: number;
-  html: string;
-};
+import type { BlogPost } from '@/types/blog';
 
 const posts: BlogPost[] = [sendInvoiceWhatsApp];
 
 export function getAllPosts(): BlogPost[] {
-  return posts.sort(
+  return [...posts].sort(
     (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
   );
 }

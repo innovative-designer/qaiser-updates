@@ -1,9 +1,18 @@
-export const post = {
+import type { BlogPost } from '@/types/blog';
+
+export const post: BlogPost = {
   slug: 'send-invoice-whatsapp-30-seconds',
   title: 'How to Send a Professional Invoice on WhatsApp in 30 Seconds',
   description:
     'Step-by-step guide to creating a PDF invoice and sending it directly to a client on WhatsApp — no signup, no app install, completely free.',
   publishedAt: '2026-03-08',
+  keywords: [
+    'send invoice whatsapp',
+    'whatsapp invoice pdf',
+    'how to send an invoice on whatsapp',
+    'free invoice generator no signup',
+  ],
+  ogImage: '/opengraph-image',
   readingTimeMin: 3,
   html: `
 <p>Sending invoices on WhatsApp is how millions of freelancers and small businesses in Pakistan, UAE, Nigeria, India, and beyond get paid every day. The problem? Most invoice tools are slow, require signup, or don't actually attach a PDF — they just paste a link.</p>

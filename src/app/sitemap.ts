@@ -2,9 +2,39 @@ import type { MetadataRoute } from 'next';
 
 import { APP_URL } from '@/lib/constants';
 import { getAllPosts } from '@/lib/blog';
+import { comparisonPages } from '@/content/seo/comparisons';
+import { countryPages } from '@/content/seo/countries';
+import { industryPages } from '@/content/seo/industries';
+import { templatePages } from '@/content/seo/templates';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticLastModified = new Date('2026-03-10T00:00:00.000Z');
+  const contentDrivenPages = [
+    ...comparisonPages.map((page) => ({
+      url: `${APP_URL}${page.path}`,
+      lastModified: new Date(page.lastModified),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    })),
+    ...countryPages.map((page) => ({
+      url: `${APP_URL}${page.path}`,
+      lastModified: new Date(page.lastModified),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    })),
+    ...industryPages.map((page) => ({
+      url: `${APP_URL}${page.path}`,
+      lastModified: new Date(page.lastModified),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
+    ...templatePages.map((page) => ({
+      url: `${APP_URL}${page.path}`,
+      lastModified: new Date(page.lastModified),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
+  ];
 
   return [
     {
@@ -62,32 +92,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: `${APP_URL}/whatsapp-billing-uae`,
-      lastModified: staticLastModified,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${APP_URL}/invoice-generator-pakistan`,
-      lastModified: staticLastModified,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${APP_URL}/stripe-invoice-alternative`,
-      lastModified: staticLastModified,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
       url: `${APP_URL}/blog`,
       lastModified: staticLastModified,
       changeFrequency: 'weekly' as const,
       priority: 0.7,
     },
+    ...contentDrivenPages,
     ...getAllPosts().map((post) => ({
       url: `${APP_URL}/blog/${post.slug}`,
-      lastModified: new Date(post.publishedAt),
+      lastModified: new Date(post.updatedAt ?? post.publishedAt),
       changeFrequency: 'monthly' as const,
       priority: 0.6,
     })),

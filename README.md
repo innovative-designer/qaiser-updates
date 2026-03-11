@@ -11,7 +11,7 @@ Free Invoice Kit is a Next.js 16 invoice app for creating professional PDF invoi
 - Invoice PDF generation and local persistence (IndexedDB)
 - WhatsApp / download / email / copy sharing flows with branded WhatsApp button
 - Pro waitlist API and UI (Supabase-backed)
-- Six SEO landing pages (`/invoice-generator-pakistan`, `/send-invoice-whatsapp`, `/free-invoice-maker-freelancers`, `/stripe-invoice-alternative`, `/whatsapp-billing-uae`, plus home page)
+- Programmatic SEO pages (`/invoice-generator/[slug]`, `/compare/[slug]`, `/invoice-template/[slug]`) plus hand-crafted landings (`/send-invoice-whatsapp`, `/free-invoice-maker-freelancers`)
 - PWA manifest, service worker (Serwist), and offline fallback route
 - Security headers (CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy)
 - Rate limiting and input sanitization on PDF API
@@ -39,11 +39,11 @@ Free Invoice Kit is a Next.js 16 invoice app for creating professional PDF invoi
 | `/history` | Static | Invoice history (IndexedDB) |
 | `/blog` | Static | Blog index |
 | `/blog/[slug]` | SSG | Blog articles |
-| `/invoice-generator-pakistan` | Static | SEO landing |
+| `/invoice-generator/[slug]` | SSG | Industry + country invoice pages (programmatic SEO) |
+| `/compare/[slug]` | SSG | Competitor comparison pages (programmatic SEO) |
+| `/invoice-template/[slug]` | SSG | Invoice template pages (programmatic SEO) |
 | `/send-invoice-whatsapp` | Static | SEO landing |
 | `/free-invoice-maker-freelancers` | Static | SEO landing |
-| `/stripe-invoice-alternative` | Static | SEO landing |
-| `/whatsapp-billing-uae` | Static | SEO landing |
 | `/offline` | Static | PWA offline fallback |
 | `/api/invoice/generate-pdf` | Dynamic | PDF generation API |
 | `/api/waitlist` | Dynamic | Pro waitlist API |
