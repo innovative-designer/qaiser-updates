@@ -1,1023 +1,620 @@
-# Free Invoice Kit SEO Launch Plan
+# Free Invoice Kit SEO Launch Implementation Plan
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Build full SEO infrastructure for Free Invoice Kit before domain goes live, maximizing organic discoverability and combining launch-channel tactics to hit the highest possible traffic in the first 30 days.
+**Goal:** Ship the code and content-system changes required for Free Invoice Kit to launch with a technically sound SEO foundation and a reusable path for gradual SEO expansion.
 
-**Architecture:** Layered approach — technical foundation first, then programmatic content scale, then off-site distribution. Every layer is designed around the app's unique position: free, no-signup, WhatsApp-first, mobile-first, emerging markets.
+**Architecture:** Fix the existing indexable pages first, then extract shared SEO helpers and page templates, then scale into new route families in small batches. Keep manual launch work, outreach, and webmaster-tool setup out of this file; those live in `docs/plans/2026-03-09-seo-launch-ops-playbook.md`.
 
-**Tech Stack:** Next.js 15 App Router, TypeScript, Tailwind CSS v4, shadcn/ui, pnpm. No CMS — content lives in `src/content/` as TypeScript files.
-
----
-
-## Realistic Traffic Expectations (Read This First)
-
-**100k organic traffic in 30 days from a new domain is not achievable through SEO alone.** Google's "sandbox effect" suppresses new domains for 3–6 months regardless of content quality. What IS achievable:
-
-| Channel | Realistic Month-1 Visitors |
-|---|---|
-| Organic (SEO foundation) | 500 – 3,000 |
-| Product Hunt launch | 2,000 – 8,000 |
-| Hacker News (Show HN) | 5,000 – 50,000 (one-day spike if front page) |
-| Reddit posts (r/freelance, r/pakistan, etc.) | 1,000 – 10,000 |
-| Twitter/X viral post | 500 – 5,000 |
-| Direct / word of mouth | 500 – 2,000 |
-| **Total realistic range** | **10,000 – 70,000** |
-
-The SEO work you do now compounds over months 2–12. Month 6 organic alone can be 30k–100k if the foundation is right. **Treat SEO as the long game; treat the launch channels as the short game.**
+**Tech Stack:** Next.js 16 App Router, React 19, TypeScript, Tailwind CSS v4, shadcn/ui, TypeScript content files in `src/content/`, pnpm.
 
 ---
 
-## Current App Inventory (What Already Exists)
+## How To Use This Plan
 
-### Pages
-| Route | Purpose | SEO Status |
-|---|---|---|
-| `/` | Homepage | ✅ SoftwareApplication schema, OG meta |
-| `/create` | Invoice builder | ⚠️ Tool page, no SEO meta |
-| `/history` | Saved invoices | ⚠️ App page, no SEO meta |
-| `/blog` | Blog index | ⚠️ Basic meta only |
-| `/blog/send-invoice-whatsapp-30-seconds` | Blog post #1 | ⚠️ No individual metadata |
-| `/free-invoice-maker-freelancers` | Freelancer LP | ✅ FAQPage schema, canonical |
-| `/send-invoice-whatsapp` | WhatsApp guide | ✅ FAQPage schema, canonical |
-| `/invoice-generator-pakistan` | Pakistan LP | ⚠️ Needs review |
-| `/whatsapp-billing-uae` | UAE LP | ⚠️ Needs review |
-| `/stripe-invoice-alternative` | Comparison page | ✅ Canonical, comparison table |
-| `/offline` | PWA offline page | ➖ Not indexed |
-
-### What's Already Good
-- Sitemap auto-generated at `/sitemap.ts`
-- robots.txt exists (verify content)
-- JSON-LD schema on homepage and 2 landing pages
-- FAQPage schema on landing pages
-- Canonical URLs on landing pages
-- OG/Twitter card metadata in root layout
-- PWA manifest, icons, apple-touch-icon
-- Core Web Vitals: good (Next.js App Router, Tailwind)
-- Mobile-first design
-
-### What's Missing (Gap Analysis)
-- Only 1 blog post
-- Missing HowTo schema on process pages
-- Missing BreadcrumbList schema sitewide
-- Missing Article schema on blog posts
-- Missing hreflang for Pakistan/UAE targeting
-- No structured data on blog post pages
-- Blog post content lives in TypeScript (not crawlable as individual pages with metadata)
-- No `robots.txt` verification in this audit
-- No Google Search Console setup
-- No Bing Webmaster Tools setup
-- No structured local/geo SEO for country pages
-- 0 inbound links (new domain)
-- No comparison pages for major competitors (FreshBooks, Wave, Zoho, Invoice Ninja)
-- No industry-vertical landing pages (design, photography, consulting, etc.)
+- This is the engineering-only SEO plan.
+- Execute phases in order. Do not start scaled page creation before Phases 1 and 2 are complete.
+- Keep changes incremental. Each phase should be merged only after `pnpm lint` and `pnpm build` pass.
+- Prefer reusable helpers and templates over duplicating SEO JSON-LD and metadata objects across pages.
+- Manual tasks such as Google Search Console, Bing Webmaster Tools, launch submissions, backlink outreach, and publishing cadence are intentionally excluded from this file.
 
 ---
 
-## Keyword Strategy
+## Progress Tracker
 
-### Tier 1 — Core Head Terms (High Volume, High Competition)
-These are worth targeting but will take 6–12 months to rank. Build content around them anyway.
+- Phase 1: Completed on 2026-03-11
+- Phase 2: Completed on 2026-03-11
+- Phase 3: Completed on 2026-03-11
+- Phase 4: Completed on 2026-03-11
+- Phase 5: Completed on 2026-03-11
 
-| Keyword | Est. Monthly Searches | Difficulty |
-|---|---|---|
-| free invoice generator | 50,000–100,000 | Very High |
-| invoice generator | 100,000+ | Very High |
-| free invoice maker | 30,000–60,000 | High |
-| invoice template | 200,000+ | Very High |
-| online invoice generator | 10,000–30,000 | High |
-
-### Tier 2 — Niche Keywords (Medium Volume, Winnable in 3–6 Months)
-
-| Keyword | Est. Monthly Searches | Why Free Invoice Kit Can Win |
-|---|---|---|
-| free invoice generator no signup | 1,000–5,000 | App's core differentiator |
-| send invoice whatsapp | 1,000–5,000 | No direct competitors target this |
-| whatsapp invoice pdf | 500–2,000 | Near-zero competition |
-| invoice generator for freelancers free | 2,000–8,000 | Specific + free = winnable |
-| mobile invoice generator | 1,000–3,000 | Underexploited niche |
-| invoice generator pakistan | 500–2,000 | Low competition, strong intent |
-| invoice generator uae | 1,000–3,000 | Low competition |
-| free invoice maker india | 5,000–15,000 | Huge market, low competition |
-| free invoice generator nigeria | 1,000–3,000 | Emerging market, very low competition |
-
-### Tier 3 — Long-Tail Quick Wins (Low Volume, Rank in 1–3 Months)
-
-| Keyword | Target Page |
-|---|---|
-| how to send invoice on whatsapp | `/send-invoice-whatsapp` |
-| free invoice generator no login required | Homepage or new LP |
-| stripe invoice alternative free | `/stripe-invoice-alternative` |
-| quickbooks alternative free invoicing | New comparison page |
-| invoice generator for graphic designers | New industry page |
-| invoice generator for photographers | New industry page |
-| pkr invoice generator | `/invoice-generator-pakistan` |
-| aed invoice generator | `/whatsapp-billing-uae` |
-| free invoice app offline | New LP or homepage section |
-
-### Competitor Keywords to Target
-
-These are "X alternative" queries with strong buyer intent:
-
-- `freshbooks alternative free` → new comparison page
-- `wave invoice alternative` → new comparison page
-- `zoho invoice alternative` → new comparison page
-- `invoice ninja alternative` → new comparison page
-- `paypal invoice alternative` → new comparison page
+**Validation run so far:**
+- `pnpm lint` completed on 2026-03-11
+- `pnpm build` attempted on 2026-03-11 and failed before app compilation because the local Next.js `linux/x64` SWC binary was not installed in this environment
 
 ---
 
-## Technical SEO Tasks
+## Current State To Preserve
 
-### Task 1: Verify and Fix `robots.txt`
+- `public/robots.txt` already exists and is permissive.
+- `/create`, `/history`, and `/offline` already use route metadata with `robots` directives:
+  - `src/app/create/layout.tsx`
+  - `src/app/history/layout.tsx`
+  - `src/app/offline/layout.tsx`
+- The homepage already has `SoftwareApplication` schema in `src/app/page.tsx`.
+- Blog posts already have route-level metadata generation in `src/app/blog/[slug]/page.tsx`, but they still need canonical, richer Open Graph, `Article` schema, and breadcrumb support.
+- Existing landing pages already have strong visual structure and should be improved in place rather than redesigned from scratch.
 
-**Files:**
-- Check: `public/robots.txt`
-- Create if missing: `public/robots.txt`
+---
 
-**Step 1: Check if file exists**
+## Non-Goals For This File
+
+- Google Search Console setup
+- Bing Webmaster Tools setup
+- Product Hunt, Hacker News, Reddit, X, LinkedIn, or directory submissions
+- Backlink outreach and guest posting
+- Editorial writing workflow and publishing calendar execution
+- KPI reporting and weekly SEO review rituals
+
+Those belong in `docs/plans/2026-03-09-seo-launch-ops-playbook.md`.
+
+---
+
+## Phase 1: Technical SEO Hardening On Existing Surfaces
+
+**Outcome:** The current site has correct global metadata assets, blog post schema, canonical coverage, and reusable SEO primitives.
+
+**Dependencies:** None.
+
+**Status:** Completed on 2026-03-11.
+
+**Validation for the phase:**
 
 ```bash
-ls public/robots.txt
+pnpm lint
+pnpm build
 ```
 
-**Step 2: Create or update with correct content**
+### Task 1: Normalize Shared SEO Utilities
 
-```
-User-agent: *
-Allow: /
+**Status:** Completed on 2026-03-11.
 
-Sitemap: https://www.freeinvoicekit.com/sitemap.xml
+**Files:**
+- Modify: `src/components/shared/json-ld.tsx`
+- Create: `src/lib/seo.ts`
+- Optional create if needed: `src/types/seo.ts`
 
-# Block tool pages from indexing (optional — they have no SEO value)
-Disallow: /create
-Disallow: /history
-Disallow: /offline
-Disallow: /api/
-```
+**Implementation notes:**
+- Update `JsonLd` so it can safely render either a single JSON-LD object or an array of objects.
+- Add shared builders/constants for repeated SEO structures:
+  - `buildBreadcrumbSchema()`
+  - `buildArticleSchema()`
+  - `buildFaqSchema()`
+  - `buildHowToSchema()`
+- Keep the helper layer thin. Do not introduce a large abstraction that hides page-specific metadata.
 
-**Step 3: Verify sitemap URL resolves at `/sitemap.xml` after deployment**
+**Subtasks:**
+1. Read all current JSON-LD usage in the app.
+2. Update `JsonLd` prop typing to support `Record<string, unknown> | Record<string, unknown>[]`.
+3. Add `src/lib/seo.ts` with small schema-builder helpers used by multiple pages.
+4. Refactor one existing page to prove the helper API is practical before wider adoption.
+5. Run `pnpm lint`.
 
-Next.js App Router auto-exports `sitemap.ts` to `/sitemap.xml`. No extra config needed.
+**Definition of done:**
+- Multiple schema blocks can be rendered without duplicating raw objects in every page.
+- The helper API is simple enough to reuse across blog, comparison, and geo pages.
+
+### Task 2: Add A Real OG Image And Global Social Metadata
+
+**Status:** Completed on 2026-03-11.
+
+**Files:**
+- Create: `src/app/opengraph-image.tsx`
+- Modify: `src/app/layout.tsx`
+
+**Implementation notes:**
+- Add `openGraph.images` and `twitter.images` to root metadata.
+- Reuse `APP_URL` for absolute asset URLs.
+- The image should be 1200x630 and match the existing product visual language instead of introducing a new brand direction.
+- Implemented as a generated Open Graph route instead of a static binary asset.
+
+**Subtasks:**
+1. Create `src/app/opengraph-image.tsx`.
+2. Add `images` to root `openGraph` metadata.
+3. Add `images` to root `twitter` metadata.
+4. Confirm no page-level metadata overrides break inheritance unexpectedly.
+5. Run `pnpm lint`.
+6. Run `pnpm build`.
+
+**Definition of done:**
+- Social previews are defined globally.
+- The default OG image works for pages that do not yet have per-page images.
+
+### Task 3: Harden Blog Post Metadata And Structured Data
+
+**Status:** Completed on 2026-03-11.
+
+**Files:**
+- Modify: `src/app/blog/[slug]/page.tsx`
+- Modify: `src/lib/blog.ts`
+- Modify: `src/content/blog/send-invoice-whatsapp-30-seconds.ts`
+- Create if needed: `src/types/blog.ts`
+
+**Implementation notes:**
+- Preserve existing `generateStaticParams()`.
+- Extend blog post typing so each post can optionally define `keywords`, `ogImage`, and `updatedAt`.
+- Add:
+  - canonical URL
+  - richer `openGraph`
+  - `twitter`
+  - `Article` JSON-LD
+  - `BreadcrumbList` JSON-LD
+- Do not claim an `updatedAt` value unless the post source actually provides one.
+
+**Subtasks:**
+1. Extract or create a proper `BlogPost` type.
+2. Add optional SEO metadata fields to the type and first post file.
+3. Update `generateMetadata()` to include `alternates.canonical`, `openGraph.url`, `twitter`, and optional keywords.
+4. Add `Article` schema to the page body using the shared SEO helpers.
+5. Add a blog breadcrumb schema: `Home > Blog > Post Title`.
+6. Add a visible related-links area if it materially improves internal linking without bloating the article page.
+7. Run `pnpm lint`.
+8. Run `pnpm build`.
+
+**Definition of done:**
+- Every blog post can ship its own canonical, schema, and social metadata.
+- The blog route is ready for additional posts without more SEO plumbing changes.
+
+### Task 4: Review Robots, Sitemap, And Canonical Consistency
+
+**Status:** Completed on 2026-03-11.
+
+**Files:**
+- Modify if needed: `public/robots.txt`
+- Modify if needed: `src/app/sitemap.ts`
+- Modify if needed: `src/lib/constants.ts`
+
+**Implementation notes:**
+- Keep `robots.txt` permissive unless there is a clear crawl-control problem.
+- Do not add `Disallow` rules for pages already using `noindex` metadata unless there is a deliberate indexing strategy change.
+- Confirm the sitemap only includes pages that should be indexed.
+
+**Subtasks:**
+1. Verify `APP_URL` is the canonical production domain.
+2. Review `public/robots.txt` for correctness and minimalism.
+3. Review `src/app/sitemap.ts` against currently indexable routes.
+4. Remove any route from the sitemap that should remain non-indexable.
+5. Run `pnpm lint`.
+6. Run `pnpm build`.
+
+**Definition of done:**
+- Canonical domain, sitemap output, and robots strategy do not conflict with route-level metadata.
 
 ---
 
-### Task 2: Add HowTo Schema to Process Pages
+## Phase 2: Optimize Existing Indexable Pages
+
+**Outcome:** The current money pages and content hub pages have stronger metadata, structured data, locale targeting, and internal linking.
+
+**Dependencies:** Phase 1 complete.
+
+**Status:** Completed on 2026-03-11.
+
+**Validation for the phase:**
+
+```bash
+pnpm lint
+pnpm build
+```
+
+### Task 5: Upgrade The Blog Index
+
+**Status:** Completed on 2026-03-11.
+
+**Files:**
+- Modify: `src/app/blog/page.tsx`
+
+**Implementation notes:**
+- Improve the title and description to reflect the search intent of invoicing guides for freelancers.
+- Add canonical metadata.
+- Add breadcrumb schema if it fits the shared helper pattern.
+
+**Subtasks:**
+1. Tighten blog index title and description for search intent.
+2. Add `alternates.canonical`.
+3. Add breadcrumb JSON-LD if not already handled elsewhere.
+4. Review article card copy to strengthen internal linking cues without rewriting the design.
+5. Run `pnpm lint`.
+
+**Definition of done:**
+- The blog index is no longer a basic placeholder from an SEO standpoint.
+
+### Task 6: Add HowTo And Breadcrumb Support To Process Pages
+
+**Status:** Completed on 2026-03-11.
 
 **Files:**
 - Modify: `src/app/send-invoice-whatsapp/page.tsx`
 - Modify: `src/app/free-invoice-maker-freelancers/page.tsx`
 
-**Step 1: Add HowTo JSON-LD to `/send-invoice-whatsapp`**
+**Implementation notes:**
+- `send-invoice-whatsapp` should get both FAQ and `HowTo`.
+- `free-invoice-maker-freelancers` should at minimum get breadcrumb support; add `HowTo` only if the content genuinely describes a step-by-step process.
+- Avoid stuffing multiple schema types into a page unless the visible content supports them.
 
-In the `JsonLd` component call, add a second schema (or update existing to array):
+**Subtasks:**
+1. Add breadcrumb schema to both pages.
+2. Add `HowTo` schema to `send-invoice-whatsapp`.
+3. Evaluate whether `free-invoice-maker-freelancers` supports `HowTo`; skip if it would be synthetic.
+4. Replace links to `/history` with links to indexable pages where that improves crawl flow.
+5. Add a small “related guides” section linking to other indexable landing pages.
+6. Run `pnpm lint`.
+7. Run `pnpm build`.
 
-```tsx
-<JsonLd
-  data={{
-    '@context': 'https://schema.org',
-    '@type': 'HowTo',
-    name: 'How to Send an Invoice on WhatsApp',
-    description: 'Create a professional PDF invoice and send it on WhatsApp in 30 seconds.',
-    totalTime: 'PT30S',
-    step: [
-      {
-        '@type': 'HowToStep',
-        name: 'Open Free Invoice Kit',
-        text: 'Go to www.freeinvoicekit.com/create. No signup needed.',
-        url: 'https://www.freeinvoicekit.com/create',
-      },
-      {
-        '@type': 'HowToStep',
-        name: 'Fill in your invoice',
-        text: 'Enter business details, client info, and line items.',
-      },
-      {
-        '@type': 'HowToStep',
-        name: 'Generate PDF',
-        text: 'Tap Generate Invoice to create a professional PDF.',
-      },
-      {
-        '@type': 'HowToStep',
-        name: 'Send on WhatsApp',
-        text: 'Download the PDF and share it in your WhatsApp client chat.',
-      },
-    ],
-  }}
-/>
-```
+**Definition of done:**
+- Process-oriented pages match the intent they are trying to rank for.
+- Internal links point toward indexable SEO pages, not `noindex` utility routes.
 
-**Step 2: Verify in Google Rich Results Test** (manual, after deploy)
+### Task 7: Fully Optimize Pakistan And UAE Landing Pages
 
-Visit `https://search.google.com/test/rich-results` and paste your URL.
-
----
-
-### Task 3: Add BreadcrumbList Schema Sitewide
+**Status:** Completed on 2026-03-11.
 
 **Files:**
-- Modify: Each landing page that has a parent (all pages under root)
+- Modify: `src/app/invoice-generator-pakistan/page.tsx`
+- Modify: `src/app/whatsapp-billing-uae/page.tsx`
 
-On every landing page, add:
+**Implementation notes:**
+- Add `alternates.languages` for `en-PK` and `en-AE`.
+- Add FAQ and breadcrumb schema to both pages.
+- Add locale-aware visible content, not just metadata.
+- UAE currently needs FAQ content and JSON-LD from scratch.
+- Pakistan needs stronger local references such as PKR, JazzCash, Easypaisa, and freelancer platform context.
 
-```tsx
-<JsonLd
-  data={{
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Home',
-        item: 'https://www.freeinvoicekit.com',
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: 'Page Title Here',
-        item: 'https://www.freeinvoicekit.com/current-page-slug',
-      },
-    ],
-  }}
-/>
-```
+**Subtasks:**
+1. Add canonical and `hreflang`-style alternates metadata to both pages.
+2. Add FAQ arrays and FAQ schema to both pages.
+3. Add breadcrumb schema to both pages.
+4. Expand visible copy to include local market context without becoming keyword spam.
+5. Add stronger cross-links between geo pages and the WhatsApp/freelancer pages.
+6. Run `pnpm lint`.
+7. Run `pnpm build`.
 
----
+**Definition of done:**
+- Geo pages have metadata, schema, and visible content aligned with their regional query intent.
 
-### Task 4: Add Article Schema to Blog Posts
+### Task 8: Upgrade The Existing Comparison Page
+
+**Status:** Completed on 2026-03-11.
 
 **Files:**
-- Modify: `src/app/blog/[slug]/page.tsx`
+- Modify: `src/app/stripe-invoice-alternative/page.tsx`
 
-**Step 1: Read the current blog post page**
+**Implementation notes:**
+- Add FAQ schema and breadcrumb support.
+- Strengthen title/description to target “free Stripe invoice alternative” and “no signup” intent.
+- Add contextual links to `/create`, `/free-invoice-maker-freelancers`, and `/send-invoice-whatsapp`.
 
-Check what metadata and schema are currently on individual blog posts.
+**Subtasks:**
+1. Improve metadata copy for comparison intent.
+2. Add FAQ content and FAQ schema.
+3. Add breadcrumb schema.
+4. Add internal links to adjacent SEO pages.
+5. Run `pnpm lint`.
+6. Run `pnpm build`.
 
-**Step 2: Add Article JSON-LD**
-
-In the `[slug]/page.tsx`, add:
-
-```tsx
-<JsonLd
-  data={{
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: post.title,
-    description: post.description,
-    datePublished: post.publishedAt,
-    dateModified: post.publishedAt,
-    author: {
-      '@type': 'Organization',
-      name: 'Free Invoice Kit',
-      url: 'https://www.freeinvoicekit.com',
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Free Invoice Kit',
-      url: 'https://www.freeinvoicekit.com',
-    },
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': `https://www.freeinvoicekit.com/blog/${post.slug}`,
-    },
-  }}
-/>
-```
-
-**Step 3: Add individual metadata per blog post**
-
-Ensure `generateMetadata` in `[slug]/page.tsx` produces unique `title`, `description`, and `canonical` per post.
+**Definition of done:**
+- The Stripe comparison page can act as the reusable standard for future comparison pages.
 
 ---
 
-### Task 5: Add hreflang for International Pages
+## Phase 3: Build Reusable SEO Page Infrastructure
 
-**Files:**
-- Modify: `src/app/layout.tsx` or individual page metadata
+**Outcome:** New SEO pages can be added by authoring content data and thin route files instead of cloning entire pages.
 
-**Step 1: Add alternates to Pakistan and UAE pages**
+**Dependencies:** Phases 1 and 2 complete.
 
-In the `metadata` export of each geo page:
+**Status:** Completed on 2026-03-11.
 
-```tsx
-// invoice-generator-pakistan/page.tsx
-export const metadata: Metadata = {
-  alternates: {
-    canonical: `${APP_URL}/invoice-generator-pakistan`,
-    languages: {
-      'en-PK': `${APP_URL}/invoice-generator-pakistan`,
-      'en': `${APP_URL}/invoice-generator-pakistan`,
-    },
-  },
-};
-
-// whatsapp-billing-uae/page.tsx
-export const metadata: Metadata = {
-  alternates: {
-    canonical: `${APP_URL}/whatsapp-billing-uae`,
-    languages: {
-      'en-AE': `${APP_URL}/whatsapp-billing-uae`,
-      'en': `${APP_URL}/whatsapp-billing-uae`,
-    },
-  },
-};
-```
-
----
-
-### Task 6: Improve Core Web Vitals (Pre-Launch Audit)
-
-**Step 1: Run Lighthouse**
-
-After deploying to staging/production:
+**Validation for the phase:**
 
 ```bash
-npx lighthouse https://www.freeinvoicekit.com --output html --output-path ./lighthouse-report.html
+pnpm lint
+pnpm build
 ```
 
-Or use `https://pagespeed.web.dev/` manually.
+### Task 9: Define Reusable SEO Content Models
 
-**Step 2: Priority fixes if scores are below 90**
-
-- Images: use `next/image` with `priority` prop on LCP images
-- Fonts: already using `next/font/google` (good)
-- Remove render-blocking scripts
-- Ensure no Cumulative Layout Shift on invoice form
-
----
-
-### Task 7: Set Up Google Search Console (Manual Step)
-
-1. Go to `https://search.google.com/search-console`
-2. Add property for `www.freeinvoicekit.com` (domain property)
-3. Verify via DNS TXT record (your domain registrar)
-4. Submit sitemap: `https://www.freeinvoicekit.com/sitemap.xml`
-5. Request indexing for all pages via URL Inspection tool
-
-**Priority pages to request indexing for:**
-- `https://www.freeinvoicekit.com`
-- `https://www.freeinvoicekit.com/send-invoice-whatsapp`
-- `https://www.freeinvoicekit.com/free-invoice-maker-freelancers`
-- `https://www.freeinvoicekit.com/invoice-generator-pakistan`
-- `https://www.freeinvoicekit.com/whatsapp-billing-uae`
-- `https://www.freeinvoicekit.com/stripe-invoice-alternative`
-- `https://www.freeinvoicekit.com/blog/send-invoice-whatsapp-30-seconds`
-
----
-
-### Task 8: Set Up Bing Webmaster Tools (Manual Step)
-
-1. Go to `https://www.bing.com/webmasters`
-2. Add your site and verify (can import GSC verification)
-3. Submit sitemap
-4. Enable Auto URL Submission
-
-Bing's "IndexNow" protocol lets you push pages instantly — add it to your deployment pipeline:
+**Status:** Completed on 2026-03-11.
 
 **Files:**
-- Modify: `package.json` scripts or CI
+- Create: `src/types/seo-page.ts`
+- Create: `src/content/seo/industries.ts`
+- Create: `src/content/seo/comparisons.ts`
+- Create: `src/content/seo/countries.ts`
+- Create: `src/content/seo/templates.ts`
+
+**Implementation notes:**
+- Keep each content family explicit.
+- Define only the fields the shared templates actually need:
+  - `slug`
+  - `title`
+  - `description`
+  - `h1`
+  - section copy
+  - FAQ entries
+  - optional locale/currency metadata
+  - optional comparison-table data
+- Do not invent a giant one-size-fits-all schema if two smaller interfaces are clearer.
+
+**Subtasks:**
+1. Define content interfaces for industry, comparison, country, and invoice-template pages.
+2. Seed each file with 1 to 2 real examples, not placeholders.
+3. Make sure each seed entry has enough copy to render a complete page.
+4. Keep content separate from React components.
+5. Run `pnpm lint`.
+
+**Definition of done:**
+- Content models are ready to support page generation without ad hoc props.
+
+### Task 10: Create Shared SEO Page Renderers
+
+**Status:** Completed on 2026-03-11.
+
+**Files:**
+- Create: `src/components/shared/seo/industry-page.tsx`
+- Create: `src/components/shared/seo/comparison-page.tsx`
+- Create: `src/components/shared/seo/country-page.tsx`
+- Create: `src/components/shared/seo/template-page.tsx`
+- Optional create: `src/components/shared/seo/seo-page-shell.tsx`
+
+**Implementation notes:**
+- Reuse existing shared building blocks:
+  - `Header`
+  - `Footer`
+  - `PageHero`
+  - `PageSection`
+  - `InfoPanel`
+  - `JsonLd`
+- Do not rebuild the marketing design system.
+- Every shared renderer must accept data and return:
+  - visible page sections
+  - metadata inputs
+  - schema inputs
+  - internal links
+
+**Subtasks:**
+1. Decide whether a base shell component reduces duplication without hiding too much.
+2. Build the comparison renderer first using the Stripe page as the reference.
+3. Build the country renderer next using Pakistan/UAE as references.
+4. Build industry and invoice-template renderers last.
+5. Refactor only when a renderer actually reduces duplication.
+6. Run `pnpm lint`.
+7. Run `pnpm build`.
+
+**Definition of done:**
+- New SEO pages can be created from shared page components instead of copy-pasting full page files.
+
+### Task 11: Wire Shared Content Into Sitemap Generation
+
+**Status:** Completed on 2026-03-11.
+
+**Files:**
+- Modify: `src/app/sitemap.ts`
+- Modify if needed: `src/lib/seo.ts`
+
+**Implementation notes:**
+- The sitemap should read from the new SEO content collections.
+- Only include entries that are backed by implemented routes.
+- Use stable `lastModified` values instead of `new Date()` unless the content source justifies it.
+
+**Subtasks:**
+1. Import the new content collections into `src/app/sitemap.ts`.
+2. Add only the route families that are actually live.
+3. Keep priorities conservative and consistent.
+4. Run `pnpm build` and verify sitemap generation still succeeds.
+
+**Definition of done:**
+- Scaled SEO pages automatically appear in the sitemap when their route families go live.
+
+---
+
+## Phase 4: Ship The First Small Batches Of New Pages
+
+**Outcome:** The site expands beyond the current baseline without exploding maintenance cost.
+
+**Dependencies:** Phase 3 complete.
+
+**Status:** Completed on 2026-03-11.
+
+**Validation for every batch:**
 
 ```bash
-# After deploy, ping IndexNow
-curl -X POST "https://api.indexnow.org/indexnow" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "host": "www.freeinvoicekit.com",
-    "key": "YOUR_INDEXNOW_KEY",
-    "urlList": ["https://www.freeinvoicekit.com/", "https://www.freeinvoicekit.com/blog/..."]
-  }'
+pnpm lint
+pnpm build
 ```
 
----
+### Task 12: Batch A Industry Pages
 
-## On-Page SEO Tasks
-
-### Task 9: Improve Homepage Meta
+**Status:** Completed on 2026-03-11.
 
 **Files:**
-- Modify: `src/app/layout.tsx`
+- Create: `src/app/invoice-generator-graphic-designers/page.tsx`
+- Create: `src/app/invoice-generator-photographers/page.tsx`
+- Create: `src/app/invoice-generator-consultants/page.tsx`
+- Modify: `src/content/seo/industries.ts`
 
-**Current:**
-```tsx
-keywords: ['invoice generator', 'free invoice maker', 'whatsapp invoice', ...]
-```
+**Implementation notes:**
+- Start with 3 pages, not 10 to 20.
+- Pick professions with clear query intent and obvious invoice needs.
+- Each route file should be thin and delegate to the shared industry renderer.
 
-**Improve description to be more keyword-rich:**
+**Subtasks:**
+1. Finalize three industry entries in the content file.
+2. Create thin route files for those entries.
+3. Add metadata, FAQ, breadcrumb, and CTA consistency.
+4. Add cross-links from existing pages where relevant.
+5. Run `pnpm lint`.
+6. Run `pnpm build`.
 
-```tsx
-description: 'Free invoice generator — create professional PDF invoices and send them on WhatsApp in 30 seconds. No signup. Works offline. Free forever.',
-```
+**Definition of done:**
+- Three industry pages are live, indexable, and consistent with the shared system.
 
-**Add more targeted keywords:**
+### Task 13: Batch B Comparison Pages
 
-```tsx
-keywords: [
-  'invoice generator',
-  'free invoice generator',
-  'free invoice maker',
-  'whatsapp invoice',
-  'freelancer invoicing',
-  'invoice generator no signup',
-  'mobile invoice generator',
-  'PDF invoice maker',
-  'invoice generator pakistan',
-  'invoice generator uae',
-  'send invoice whatsapp',
-],
-```
-
----
-
-### Task 10: Improve Individual Page Titles and Descriptions
-
-Audit each page's title for keyword placement (keyword should appear in first 60 characters of title).
-
-| Page | Current Title | Recommended Title |
-|---|---|---|
-| Homepage | `Free Invoice Kit \| Free invoicing on WhatsApp` | `Free Invoice Generator — Send on WhatsApp in 30 Seconds` |
-| `/send-invoice-whatsapp` | `How to Send an Invoice on WhatsApp...` | ✅ Good |
-| `/free-invoice-maker-freelancers` | `Free Invoice Maker for Freelancers...` | ✅ Good |
-| `/stripe-invoice-alternative` | `Free Stripe Invoice Alternative \| Free Invoice Kit` | `Free Stripe Invoice Alternative — No Signup Required` |
-| `/blog` | `Blog — Free Invoice Kit` | `Invoicing Tips for Freelancers — Free Invoice Kit Blog` |
-
----
-
-### Task 11: Add Internal Linking Strategy
-
-**Principle:** Every page should have at least 3 internal links to other relevant pages.
-
-**Create a linking map:**
-
-```
-Homepage → /create, /send-invoice-whatsapp, /free-invoice-maker-freelancers, /blog
-/send-invoice-whatsapp → /create, /free-invoice-maker-freelancers, /invoice-generator-pakistan
-/free-invoice-maker-freelancers → /create, /send-invoice-whatsapp, /stripe-invoice-alternative
-/invoice-generator-pakistan → /send-invoice-whatsapp, /whatsapp-billing-uae, /create
-/whatsapp-billing-uae → /send-invoice-whatsapp, /invoice-generator-pakistan, /create
-/stripe-invoice-alternative → /create, /free-invoice-maker-freelancers
-/blog posts → /create, relevant landing pages
-```
-
-**Add a "Related Articles" section to blog posts** and a "Related guides" section to landing pages.
-
----
-
-## Programmatic SEO Tasks
-
-### Task 12: Build Industry Vertical Landing Pages
-
-Create 10–20 pages targeting `invoice generator for [profession]`. These are low-competition, high-intent keywords.
+**Status:** Completed on 2026-03-11.
 
 **Files:**
-- Create: `src/app/invoice-generator-[profession]/page.tsx` (or use a dynamic route)
-- Create: `src/content/industries.ts` (data file)
+- Create: `src/app/freshbooks-alternative/page.tsx`
+- Create: `src/app/wave-invoice-alternative/page.tsx`
+- Modify: `src/content/seo/comparisons.ts`
 
-**Recommended approach: dynamic route with data file**
+**Implementation notes:**
+- Start with two pages and validate the template quality before scaling to six or more.
+- Each page must state when the competitor is the better fit; avoid one-sided spam copy.
 
-**Step 1: Create data file**
+**Subtasks:**
+1. Add FreshBooks and Wave entries to the comparison data file.
+2. Create route files that render through the comparison template.
+3. Reuse FAQ and comparison-table structures from the shared renderer.
+4. Add cross-links to `/stripe-invoice-alternative` and adjacent landing pages.
+5. Run `pnpm lint`.
+6. Run `pnpm build`.
 
-```typescript
-// src/content/industries.ts
-export const industries = [
-  {
-    slug: 'invoice-generator-graphic-designers',
-    title: 'Free Invoice Generator for Graphic Designers',
-    description: 'Create professional invoices for design projects. Send PDFs on WhatsApp in 30 seconds. No signup.',
-    h1: 'Invoice generator built for graphic designers',
-    body: 'Graphic designers need fast invoicing between projects...',
-    faqs: [
-      { q: 'Can I add my logo?', a: '...' },
-    ],
-  },
-  {
-    slug: 'invoice-generator-photographers',
-    title: 'Free Invoice Generator for Photographers',
-    // ...
-  },
-  {
-    slug: 'invoice-generator-web-developers',
-    // ...
-  },
-  {
-    slug: 'invoice-generator-consultants',
-    // ...
-  },
-  {
-    slug: 'invoice-generator-writers',
-    // ...
-  },
-  {
-    slug: 'invoice-generator-social-media-managers',
-    // ...
-  },
-  {
-    slug: 'invoice-generator-virtual-assistants',
-    // ...
-  },
-  {
-    slug: 'invoice-generator-video-editors',
-    // ...
-  },
-  {
-    slug: 'invoice-generator-translators',
-    // ...
-  },
-  {
-    slug: 'invoice-generator-architects',
-    // ...
-  },
-];
-```
+**Definition of done:**
+- The comparison route family is proven with at least two non-Stripe pages.
 
-**Step 2: Create dynamic route (or static pages)**
+### Task 14: Batch C Country Pages
 
-For 10–20 pages, static pages are better for SEO. Use a shared layout component and swap data.
-
-```bash
-# Create directory structure
-src/app/invoice-generator-graphic-designers/page.tsx
-src/app/invoice-generator-photographers/page.tsx
-# ...etc
-```
-
-Or use a catch-all dynamic segment with `generateStaticParams()`.
-
-**Step 3: Add to sitemap.ts**
-
-```typescript
-// In sitemap.ts
-import { industries } from '@/content/industries';
-
-// Add to the sitemap array:
-...industries.map((industry) => ({
-  url: `${APP_URL}/${industry.slug}`,
-  lastModified: new Date(),
-  changeFrequency: 'monthly' as const,
-  priority: 0.7,
-})),
-```
-
----
-
-### Task 13: Build Competitor Comparison Pages
-
-Create "X alternative" pages for each major competitor. These have strong buyer intent.
-
-**Pages to create:**
-
-| Route | Target Keyword |
-|---|---|
-| `/freshbooks-alternative` | freshbooks alternative free |
-| `/wave-invoice-alternative` | wave invoice alternative |
-| `/zoho-invoice-alternative` | zoho invoice alternative free |
-| `/invoice-ninja-alternative` | invoice ninja alternative |
-| `/paypal-invoice-alternative` | paypal invoice alternative no signup |
-| `/quickbooks-invoice-alternative` | quickbooks invoice alternative |
-
-**Template structure for each page:**
-- H1: "Free [Competitor] Alternative — Send Invoices on WhatsApp in 30 Seconds"
-- Comparison table (already done for Stripe — reuse pattern)
-- "When Free Invoice Kit is better" / "When [Competitor] is better" cards
-- FAQPage schema
-- Strong CTA to `/create`
-
----
-
-### Task 14: Build Country/City Landing Pages
-
-Expand beyond Pakistan and UAE. Each country page targets `free invoice generator [country]`.
-
-**Priority countries (low competition, WhatsApp-heavy markets):**
-
-| Route | Target Keyword | Market Size |
-|---|---|---|
-| `/invoice-generator-india` | free invoice generator india | Huge |
-| `/invoice-generator-nigeria` | invoice generator nigeria | Large |
-| `/invoice-generator-kenya` | invoice generator kenya | Medium |
-| `/invoice-generator-bangladesh` | invoice generator bangladesh | Medium |
-| `/invoice-generator-philippines` | invoice generator philippines | Medium |
-| `/invoice-generator-indonesia` | invoice generator indonesia | Large |
-| `/invoice-generator-egypt` | invoice generator egypt | Medium |
-| `/invoice-generator-ghana` | invoice generator ghana | Medium |
-| `/whatsapp-billing-india` | whatsapp billing india | Large |
-| `/whatsapp-billing-nigeria` | whatsapp billing nigeria | Medium |
-
-**Key customizations per page:**
-- Local currency displayed (INR, NGN, KES, BDT, PHP, IDR, EGP, GHS)
-- Local WhatsApp usage context
-- Local freelancer market context
-- hreflang for locale
-
----
-
-### Task 15: Build Invoice Template Pages
-
-Create pages for specific invoice template types. These are high-volume searches.
-
-**Routes to create:**
-
-```
-/invoice-template-freelancer
-/invoice-template-service-business
-/invoice-template-hourly
-/invoice-template-project-based
-/invoice-template-retainer
-/invoice-template-consulting
-/invoice-template-digital-agency
-```
-
-Each page should:
-- Show a static preview of what the invoice looks like
-- Explain what fields are included
-- Have a direct CTA to `/create` pre-filled with template type
-- Include downloadable example (even a PNG screenshot of the preview)
-
----
-
-## Content Strategy Tasks
-
-### Task 16: Blog Content Calendar (First 3 Months)
-
-**Month 1 — Foundation (publish before/at launch):**
-
-| Article Title | Target Keyword | Priority |
-|---|---|---|
-| How to Send an Invoice on WhatsApp in 30 Seconds | send invoice whatsapp | ✅ Published |
-| Free Invoice Generator with No Signup — Why It Matters | free invoice generator no signup | Week 1 |
-| How to Invoice Clients Faster as a Freelancer in 2026 | how to invoice clients faster | Week 1 |
-| The Best Free Invoice Tools for Pakistani Freelancers | invoice tools pakistan freelancers | Week 2 |
-| How to Create a Professional Invoice on Your Phone | create invoice on phone | Week 2 |
-| WhatsApp vs Email for Invoicing: What Gets Paid Faster | whatsapp invoice vs email | Week 3 |
-| 5 Invoice Mistakes Freelancers Make (and How to Fix Them) | invoice mistakes freelancers | Week 3 |
-| Free Invoice Template for Graphic Designers | invoice template graphic designers | Week 4 |
-
-**Month 2 — Niche depth:**
-
-| Article Title | Target Keyword |
-|---|---|
-| How to Invoice as a Freelancer in UAE Without a Trade License | invoice freelancer uae |
-| How Photographers Can Invoice Clients Quickly | invoice photographers |
-| The 30-Second Invoice: How to Get Paid Before the Chat Goes Cold | fast invoicing freelancers |
-| How to Build a Simple Invoicing System Without Software | simple invoicing system |
-| Mobile Invoicing: Why Phone-First Is the Right Approach | mobile invoicing |
-| How to Invoice in PKR: A Guide for Pakistani Freelancers | invoice pkr pakistan |
-| Freelance Invoice Checklist: 10 Things Every Invoice Needs | freelance invoice checklist |
-| How to Get Paid on WhatsApp: A Complete Guide for 2026 | get paid whatsapp |
-
-**Month 3 — Authority building:**
-
-| Article Title | Target Keyword |
-|---|---|
-| The State of Freelance Invoicing in Emerging Markets | freelance invoicing emerging markets |
-| How to Write a Professional Invoice (With Examples) | how to write professional invoice |
-| Invoice Numbering Systems: What Works for Freelancers | invoice numbering system |
-| Tax Invoice vs Regular Invoice: What Freelancers Need to Know | tax invoice vs regular invoice |
-| 7 Ways to Get Paid Faster as a Freelancer | get paid faster freelancer |
-
----
-
-### Task 17: Optimize Blog Post Metadata
+**Status:** Completed on 2026-03-11.
 
 **Files:**
-- Modify: `src/app/blog/[slug]/page.tsx`
-- Modify: Each blog post content file in `src/content/blog/`
+- Create: `src/app/invoice-generator-india/page.tsx`
+- Create: `src/app/invoice-generator-nigeria/page.tsx`
+- Modify: `src/content/seo/countries.ts`
 
-**Step 1: Add metadata fields to blog post data type**
+**Implementation notes:**
+- Start with two markets that fit the product’s WhatsApp-first positioning.
+- Keep each page genuinely localized: currency, payment context, and freelancer workflow should differ.
 
-```typescript
-// src/types/blog.ts (create if not exists)
-export interface BlogPost {
-  slug: string;
-  title: string;
-  description: string;
-  publishedAt: string;
-  readingTimeMin: number;
-  html: string;
-  // Add these:
-  keywords?: string[];
-  ogImage?: string;
-}
-```
+**Subtasks:**
+1. Add India and Nigeria entries to the country data file.
+2. Create route files that use the shared country renderer.
+3. Add locale alternates metadata where appropriate.
+4. Link new country pages from the homepage or relevant geo pages only if the links fit naturally.
+5. Run `pnpm lint`.
+6. Run `pnpm build`.
 
-**Step 2: Ensure `generateMetadata` in `[slug]/page.tsx` exports rich metadata**
+**Definition of done:**
+- The geo-page system scales past Pakistan and UAE without custom page rebuilds.
 
-```tsx
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const post = getPostBySlug(params.slug);
-  if (!post) return {};
+### Task 15: Batch D Invoice Template Pages
 
-  return {
-    title: post.title,
-    description: post.description,
-    keywords: post.keywords,
-    alternates: {
-      canonical: `${APP_URL}/blog/${post.slug}`,
-    },
-    openGraph: {
-      title: post.title,
-      description: post.description,
-      type: 'article',
-      publishedTime: post.publishedAt,
-      url: `${APP_URL}/blog/${post.slug}`,
-    },
-  };
-}
-```
-
----
-
-## Link Building Strategy
-
-### Task 18: Launch-Day Link Building (Manual Steps)
-
-These should happen on launch day, in order of priority:
-
-**Day 1 — Free Listings (Do These First)**
-
-1. **Product Hunt** (`producthunt.com`)
-   - Create a maker account before launch day
-   - Prepare: tagline (60 chars), description (260 chars), images (screenshots + demo GIF)
-   - Launch on a Tuesday, Wednesday, or Thursday (best days)
-   - Free Invoice Kit tagline suggestion: "Send a professional invoice on WhatsApp in 30 seconds"
-   - Get upvotes from your network in the first 2 hours (critical for front page)
-
-2. **Hacker News — Show HN** (`news.ycombinator.com`)
-   - Post: "Show HN: Free Invoice Kit – Free invoice generator, send PDFs on WhatsApp in 30s"
-   - Best time: Monday–Friday 7–9am US Eastern
-   - Key selling points for HN: no-login, PWA, works offline, open on mobile
-
-3. **Reddit posts** (natural, helpful tone — not spam)
-   - r/freelance: "I built a free invoice tool for WhatsApp — no signup, works offline"
-   - r/pakistan: Share in context of Pakistan freelancers
-   - r/digitalnomad: Mobile-first angle
-   - r/smallbusiness: "Free invoice generator with no subscription"
-   - r/webdev: "Built with Next.js — free invoice app for freelancers, feedback welcome"
-
-4. **Twitter/X thread**
-   - Thread: "Why I built a free invoice generator for WhatsApp..."
-   - Show the 30-second demo
-   - Tag relevant freelancer communities
-
-**Week 1 — Directory Submissions**
-
-| Directory | URL | Notes |
-|---|---|---|
-| AlternativeTo | alternativeto.net | List as alternative to FreshBooks, Wave, Stripe |
-| G2 | g2.com | Free listing, helps SEO |
-| Capterra | capterra.com | Free listing |
-| GetApp | getapp.com | Free listing |
-| SaaSHub | saashub.com | Free listing |
-| Slant | slant.co | List as invoice tool |
-| ToolHunt | toolhunt.net | Free tools directory |
-| Uneed | uneed.be | Indie tool directory |
-| Fazier | fazier.com | Weekly featured tool |
-
-**Week 2 — Community Outreach**
-
-1. **Indie Hackers**: Post your story — "Building a free invoice tool for emerging markets"
-2. **Dev.to**: Write a technical post — "How I built a PWA invoice generator with Next.js 16"
-3. **Medium/Substack**: Target freelancer publications
-4. **Facebook Groups**: Pakistan freelancers groups, UAE freelancers groups, Nigeria digital workers
-5. **LinkedIn**: Post targeting freelancers and solopreneurs
-
----
-
-### Task 19: Get Your First Backlinks
-
-**Low-effort, high-impact tactics:**
-
-1. **HARO / Qwoted**: Sign up at helpareporter.com. Respond to any query about invoicing, freelancing, or mobile payments. One mention in a major publication = massive SEO value.
-
-2. **Guest posts**: Write for freelancer blogs:
-   - Bonsai blog (bonsaipaper.com)
-   - AND.CO blog
-   - Freelancer.com editorial
-   - Toptal blog
-
-3. **Resource page link building**: Find pages that list "free invoice tools" and email to get listed:
-   ```
-   Search: "free invoice tools" site:.edu OR "invoice generator list"
-   ```
-   Email template:
-   > Subject: Free invoice tool for your resource page
-   > Hi [Name], I noticed your resource page on [topic]. I built Free Invoice Kit — a free, no-signup invoice generator with WhatsApp sharing. It might be a good fit for your list. [URL]
-
-4. **Broken link building**: Find broken links on freelancer resource pages and offer Free Invoice Kit as a replacement.
-
----
-
-## Local/Regional SEO
-
-### Task 20: Optimize Pakistan Landing Page
+**Status:** Completed on 2026-03-11.
 
 **Files:**
-- Read and improve: `src/app/invoice-generator-pakistan/page.tsx`
+- Create: `src/app/invoice-template-freelancer/page.tsx`
+- Create: `src/app/invoice-template-hourly/page.tsx`
+- Modify: `src/content/seo/templates.ts`
 
-**Checklist:**
-- H1 contains "invoice generator pakistan" or "PKR invoice"
-- Mentions Pakistani Rupee (PKR) explicitly
-- Mentions Jazzcash, Easypaisa (popular payment platforms)
-- Mentions common freelancer platforms used in Pakistan (Upwork, Fiverr, Freelancer.com)
-- FAQ includes "Does it support PKR?" with answer "Yes"
-- hreflang: `en-PK`
-- LocalBusiness or SoftwareApplication schema with locale context
+**Implementation notes:**
+- Keep this batch small until the product has a clear template-prefill experience.
+- If `/create` does not yet support query-param prefills cleanly, do not fake that behavior in the copy.
+
+**Subtasks:**
+1. Add two template-page data entries.
+2. Build route files using the shared template renderer.
+3. Use static preview imagery only if production-ready assets exist.
+4. If prefill support is missing, point CTAs to `/create` without promising a preloaded template.
+5. Run `pnpm lint`.
+6. Run `pnpm build`.
+
+**Definition of done:**
+- The site has at least one working invoice-template route family without misleading claims.
 
 ---
 
-### Task 21: Optimize UAE Landing Page
+## Phase 5: Post-Baseline Engineering Follow-Through
+
+**Outcome:** The SEO system remains maintainable after the first launch wave.
+
+**Dependencies:** Phases 1 through 4 complete.
+
+**Status:** Completed on 2026-03-11.
+
+### Task 16: Add A Lightweight SEO QA Checklist To The Repo
+
+**Status:** Completed on 2026-03-11.
 
 **Files:**
-- Read and improve: `src/app/whatsapp-billing-uae/page.tsx`
+- Create: `docs/plans/seo-page-qa-checklist.md`
 
-**Checklist:**
-- H1 contains "UAE" and "AED" or "invoice"
-- Mentions dirham (AED) explicitly
-- Mentions UAE freelancer landscape
-- Mentions that UAE has no income tax (relevant for freelancers)
-- FAQ includes "Does it support AED?" with answer "Yes"
-- hreflang: `en-AE`
+**Implementation notes:**
+- Keep this checklist engineering-focused.
+- It should be used before adding any new indexable page.
 
----
+**Checklist should cover:**
+- unique title
+- unique meta description
+- canonical URL
+- schema present where appropriate
+- page included in sitemap if indexable
+- page not linked primarily to `noindex` destinations
+- `pnpm lint`
+- `pnpm build`
 
-## Analytics and Monitoring
+**Definition of done:**
+- Future SEO pages have a repeatable acceptance checklist.
 
-### Task 22: Set Up Analytics (Manual Steps)
+### Task 17: Re-Audit Internal Linking After The First Batches Ship
 
-**Google Search Console (Priority #1):**
-- Register immediately on launch
-- Submit sitemap
-- Monitor: Coverage, Core Web Vitals, Search Performance
-
-**Google Analytics 4:**
-- Set up GA4 property
-- Add tracking via environment variable (PostHog is already in the app for product analytics)
-- Key events to track: `invoice_created`, `pdf_generated`, `whatsapp_shared`
-
-**PostHog (Already Configured):**
-- Make sure `NEXT_PUBLIC_POSTHOG_KEY` and `NEXT_PUBLIC_POSTHOG_HOST` are set in production
-- Set up funnels: Homepage → /create → PDF generated → WhatsApp shared
-
-**Weekly Monitoring Checklist:**
-- [ ] GSC: Any crawl errors?
-- [ ] GSC: New keyword impressions?
-- [ ] GSC: Any manual actions?
-- [ ] Core Web Vitals: Still green?
-- [ ] New pages indexed?
-
----
-
-## Pre-Launch Checklist
-
-Run through this before going live:
-
-### Domain & Hosting
-- [ ] Domain purchased and pointed to hosting
-- [ ] HTTPS active (SSL certificate)
-- [ ] `APP_URL` in `src/lib/constants.ts` matches your actual domain
-- [ ] All canonical URLs reflect the real domain
-
-### Technical SEO
-- [ ] `public/robots.txt` correct (don't block `/`)
-- [ ] Sitemap accessible at `/sitemap.xml`
-- [ ] All pages have unique `<title>` tags
-- [ ] All pages have unique `<meta description>` tags
-- [ ] No duplicate canonical issues
-- [ ] JSON-LD schema validates on all key pages (use Rich Results Test)
-- [ ] `lang="en"` on `<html>` tag ✅ (already in layout.tsx)
-- [ ] OG images set (at least homepage) — currently missing, add one
-
-### Performance
-- [ ] Lighthouse score > 90 on mobile
-- [ ] No render-blocking resources
-- [ ] LCP < 2.5s
-- [ ] CLS < 0.1
-
-### Content
-- [ ] At least 3 blog posts published at launch
-- [ ] All landing pages have at least 300 words of content
-- [ ] No "lorem ipsum" or placeholder content
-
-### Post-Launch (Day 1)
-- [ ] Google Search Console: site verified and sitemap submitted
-- [ ] Bing Webmaster Tools: verified and sitemap submitted
-- [ ] Product Hunt launch submitted
-- [ ] HN Show HN posted
-- [ ] Reddit posts live
-- [ ] AlternativeTo listing created
-
----
-
-## Add OG Image (Missing from App)
+**Status:** Completed on 2026-03-11.
 
 **Files:**
-- Create: `public/og-image.png` (1200×630px)
-- Modify: `src/app/layout.tsx`
+- Modify as needed:
+  - `src/app/page.tsx`
+  - `src/app/blog/page.tsx`
+  - `src/app/send-invoice-whatsapp/page.tsx`
+  - `src/app/free-invoice-maker-freelancers/page.tsx`
+  - `src/app/invoice-generator-pakistan/page.tsx`
+  - `src/app/whatsapp-billing-uae/page.tsx`
+  - `src/app/stripe-invoice-alternative/page.tsx`
 
-**Step 1: Create OG image**
+**Implementation notes:**
+- Do this after new pages exist.
+- Add links sparingly and intentionally; do not create generic footer spam blocks.
 
-Design a 1200×630px PNG with:
-- Free Invoice Kit logo/name
-- Tagline: "Free invoice generator. Send on WhatsApp in 30 sec."
-- Screenshot of the invoice UI
-- Blue brand color (`#4d5cff`)
-
-**Step 2: Add to metadata**
-
-```tsx
-openGraph: {
-  type: 'website',
-  url: APP_URL,
-  title: `${APP_NAME} | ${APP_TAGLINE}`,
-  description: APP_DESCRIPTION,
-  siteName: APP_NAME,
-  images: [
-    {
-      url: `${APP_URL}/og-image.png`,
-      width: 1200,
-      height: 630,
-      alt: 'Free Invoice Kit — Free invoice generator for WhatsApp',
-    },
-  ],
-},
-twitter: {
-  card: 'summary_large_image',
-  title: `${APP_NAME} | ${APP_TAGLINE}`,
-  description: APP_DESCRIPTION,
-  images: [`${APP_URL}/og-image.png`],
-},
-```
+**Definition of done:**
+- Key indexable pages each surface obvious next-click paths to related indexable pages.
 
 ---
 
-## 30-Day Post-Launch Traffic Roadmap
+## Execution Order Summary
 
-### Week 1 (Days 1–7): Launch Blast
-- **Goal:** Get indexed, generate backlinks, drive direct traffic
-- Day 1: Product Hunt launch + HN Show HN + Reddit posts + Twitter thread
-- Day 2–3: Submit to all directories (AlternativeTo, G2, Capterra, etc.)
-- Day 4–7: Respond to every comment on PH/HN/Reddit, engage community
-- **Expected visitors:** 3,000–15,000 (mostly direct/referral)
-
-### Week 2 (Days 8–14): Content Push
-- Publish 3 new blog posts from the content calendar
-- Write and submit 1 guest post pitch to a freelancer blog
-- Post in Facebook groups (Pakistan/UAE/Nigeria freelancer communities)
-- Engage in Twitter/LinkedIn conversations about freelancing and invoicing
-- **Expected visitors:** 1,000–3,000
-
-### Week 3–4 (Days 15–30): Long-Tail Indexing
-- New content starts getting indexed
-- Long-tail keywords begin generating impressions
-- Monitor GSC for quick wins (pages ranking #4–10, optimize them)
-- Build 2–3 comparison pages
-- **Expected visitors:** 500–2,000 organic + continued referral
-
-### **Realistic Total Month 1: 10,000–50,000 visitors**
-
-> Note: A single HN front-page hit can drive 10,000–50,000 visitors in 24 hours alone. That's the single highest-leverage action you can take. Polish the Show HN post carefully.
+1. Phase 1: Shared SEO plumbing, OG image, blog metadata/schema, robots/sitemap review
+2. Phase 2: Existing landing-page and comparison-page optimization
+3. Phase 3: Shared content models and reusable renderers
+4. Phase 4: Small route-family batches in this order:
+   - industries
+   - comparisons
+   - countries
+   - invoice templates
+5. Phase 5: QA checklist and internal-linking re-audit
 
 ---
 
-## Priority Order (Do These First)
+## Stop Conditions
 
-Ranked by impact-to-effort ratio:
-
-1. **Fix robots.txt** (30 min) — critical blocker
-2. **Create OG image** (1–2 hours) — needed for social sharing
-3. **Publish 2 more blog posts** (4–8 hours) — content at launch
-4. **Add Article schema to blog** (1 hour) — rich results
-5. **Add HowTo schema to process pages** (1 hour) — rich results
-6. **Improve homepage meta description** (15 min) — immediate CTR improvement
-7. **Build 3 industry vertical pages** (3–6 hours) — quick programmatic wins
-8. **Build 2 competitor comparison pages** (2–4 hours) — high-intent traffic
-9. **Register Google Search Console** (30 min) — can't rank without this
-10. **Create Product Hunt account and prepare assets** (2–3 hours) — launch day traffic
+- Do not create 10 to 20 new SEO pages before the shared template system exists.
+- Do not add schema types that the visible page content does not support.
+- Do not block crawl in `robots.txt` for routes already controlled with `noindex` unless strategy changes.
+- Do not promise product behaviors such as template-prefill or hosted PDF links unless those behaviors actually ship.
 
 ---
 
-## What I learned from Research
+## Ready-For-Implementation Verdict
 
-**Programmatic SEO patterns that work for free tools in 2025:**
-- Zapier model: integration/use-case pages at scale (1.3M+ keyword rankings)
-- Template pages by industry/profession are low-competition goldmines
-- "X alternative" pages capture buyers who are already searching to switch
+This file is intentionally structured for gradual implementation. It is ready to execute phase by phase.
 
-**Key insight on new domain ranking speed:**
-- Realistic: measurable organic traffic in months 3–6 after launch
-- Google sandbox effect suppresses new domains regardless of content quality
-- Solution: use non-organic channels for Month 1 traffic; let SEO compound from Month 3+
+The companion manual-work document is:
 
-**Winning differentiators to highlight in all content:**
-- "No signup" appears in 90% of winning competitor content for this space
-- WhatsApp integration is a genuine content gap — no major tool targets this
-- Emerging markets (India, Pakistan, Nigeria, UAE) are underserved by English-language SEO content
-
----
-
-✅ **Plan complete.**
-
-**Stats:**
-- Reddit: 0 (script limitation)
-- Web: 10+ sources — Gracker AI, Omnius, BrightSEOTools, Advertising Business, Concurate, SE Ranking, Kripesh Adwani, Invoice-Generator.com
-- Polymarket: 15 markets (none relevant to invoicing)
+- `docs/plans/2026-03-09-seo-launch-ops-playbook.md`
