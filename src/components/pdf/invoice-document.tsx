@@ -1,4 +1,4 @@
-import { Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
+import { Document, Image, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 
 import { APP_NAME, APP_TAGLINE, APP_URL } from '@/lib/constants';
 import { formatCurrency } from '@/lib/currencies';
@@ -280,9 +280,10 @@ function formatDate(value: string) {
 
 interface InvoiceDocumentProps {
   invoice: InvoiceData;
+  businessLogo?: string;
 }
 
-export function InvoiceDocument({ invoice }: InvoiceDocumentProps) {
+export function InvoiceDocument({ invoice, businessLogo }: InvoiceDocumentProps) {
   const businessLines = [
     invoice.businessEmail,
     invoice.businessPhone,
@@ -298,6 +299,12 @@ export function InvoiceDocument({ invoice }: InvoiceDocumentProps) {
       <Page size="A4" style={styles.page}>
         <View style={styles.masthead}>
           <View style={styles.brandBlock}>
+            {businessLogo ? (
+              <Image
+                src={businessLogo}
+                style={{ width: 48, height: 48, marginBottom: 8, objectFit: 'contain' }}
+              />
+            ) : null}
             <Text style={styles.eyebrow}>Invoice From</Text>
             <Text style={styles.businessName}>{invoice.businessName || 'Your Business'}</Text>
             {businessLines.length > 0 ? (
