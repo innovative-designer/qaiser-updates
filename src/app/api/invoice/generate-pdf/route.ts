@@ -80,6 +80,12 @@ export async function POST(request: NextRequest) {
     };
     const invoiceData = sanitized as InvoiceData;
 
+    // Pass through business logo (base64 data URL) if provided
+    const businessLogo =
+      typeof body.businessLogo === 'string' && body.businessLogo.startsWith('data:image/')
+        ? body.businessLogo
+        : undefined;
+
     if (!hasRequiredInvoiceFields(invoiceData)) {
       return NextResponse.json(
         {
@@ -90,7 +96,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const pdfBuffer = await renderToBuffer(InvoiceDocument({ invoice: invoiceData }));
+    const pdfBuffer = await renderToBuffer(InvoiceDocument({ invoice: invoiceData, businessLogo }));
     const pdfBytes = new Uint8Array(pdfBuffer);
 
     if (!supabaseAdmin) {

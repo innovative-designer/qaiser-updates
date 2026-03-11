@@ -8,6 +8,7 @@ import {
   Copy,
   Download,
   Eye,
+  ImagePlus,
   Loader2,
   Pencil,
   Plus,
@@ -98,6 +99,8 @@ export default function CreateInvoicePage() {
   const invoiceReadyRef = useRef<HTMLDivElement>(null);
   const [hasSavedBusiness, setHasSavedBusiness] = useState(false);
   const [businessEditable, setBusinessEditable] = useState(true);
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const logoInputRef = useRef<HTMLInputElement>(null);
 
   const BUSINESS_STORAGE_KEY = 'freeinvoicekit_business_info';
 
@@ -118,6 +121,7 @@ export default function CreateInvoicePage() {
         if (data.businessEmail) setField('businessEmail', data.businessEmail);
         if (data.businessPhone) setField('businessPhone', data.businessPhone);
         if (data.businessAddress) setField('businessAddress', data.businessAddress);
+        if (data.businessLogo) setLogoPreview(data.businessLogo);
         setHasSavedBusiness(true);
         setBusinessEditable(false);
       }
@@ -128,17 +132,20 @@ export default function CreateInvoicePage() {
   }, []);
 
   const handleSaveBusinessInfo = useCallback(() => {
-    const data = {
+    const data: Record<string, string> = {
       businessName: invoice.businessName,
       businessEmail: invoice.businessEmail,
       businessPhone: invoice.businessPhone,
       businessAddress: invoice.businessAddress,
     };
+    if (logoPreview && !logoPreview.startsWith('blob:')) {
+      data.businessLogo = logoPreview;
+    }
     localStorage.setItem(BUSINESS_STORAGE_KEY, JSON.stringify(data));
     setHasSavedBusiness(true);
     setBusinessEditable(false);
     toast.success('Business info saved for future invoices.');
-  }, [invoice.businessName, invoice.businessEmail, invoice.businessPhone, invoice.businessAddress]);
+  }, [invoice.businessName, invoice.businessEmail, invoice.businessPhone, invoice.businessAddress, logoPreview]);
 
   const handleClearBusinessInfo = useCallback(() => {
     localStorage.removeItem(BUSINESS_STORAGE_KEY);
@@ -146,9 +153,43 @@ export default function CreateInvoicePage() {
     setField('businessEmail', '');
     setField('businessPhone', '');
     setField('businessAddress', '');
+    setLogoPreview(null);
+    if (logoInputRef.current) {
+      logoInputRef.current.value = '';
+    }
     setHasSavedBusiness(false);
     setBusinessEditable(true);
   }, [setField]);
+
+  function handleLogoSelect(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file.');
+      return;
+    }
+
+    if (file.size > 512 * 1024) {
+      toast.error('Logo must be under 512KB.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        setLogoPreview(reader.result);
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function handleLogoRemove() {
+    setLogoPreview(null);
+    if (logoInputRef.current) {
+      logoInputRef.current.value = '';
+    }
+  }
 
   useEffect(() => {
     return () => {
@@ -199,7 +240,7 @@ export default function CreateInvoicePage() {
       const response = await fetch('/api/invoice/generate-pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(invoice),
+        body: JSON.stringify({ ...invoice, businessLogo: logoPreview || undefined }),
       });
 
       if (!response.ok) {
@@ -397,48 +438,99 @@ export default function CreateInvoicePage() {
                   )}
                 </div>
               </CardHeader>
-              <CardContent className="grid gap-4 sm:grid-cols-2">
-                <Field id="businessName" label="Business Name" required error={errors.businessName}>
-                  <Input
-                    id="businessName"
-                    value={invoice.businessName}
-                    placeholder="Studio North"
-                    aria-invalid={Boolean(errors.businessName)}
-                    disabled={hasSavedBusiness && !businessEditable}
-                    onChange={(event) => setField('businessName', event.target.value)}
-                  />
-                </Field>
+              <CardContent>
+                <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-start">
+                  {/* Brand Logo Upload Zone */}
+                  <div className="flex shrink-0 flex-col items-center gap-1.5 sm:mt-7">
+                    <label
+                      htmlFor="business-logo-input"
+                      className="group relative flex size-[72px] cursor-pointer flex-col items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-border/60 bg-muted/30 transition-all hover:border-primary/40 hover:bg-muted/50 sm:h-[8.5rem] sm:w-[8.5rem]"
+                    >
+                      {logoPreview ? (
+                        <>
+                          <img
+                            src={logoPreview}
+                            alt="Business logo"
+                            className="size-full object-cover"
+                          />
+                          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 rounded-2xl bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
+                            <ImagePlus className="size-4 text-white" />
+                            <span className="text-[10px] font-medium text-white">Change</span>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <ImagePlus className="size-5 text-muted-foreground/60 transition-colors group-hover:text-primary/70" />
+                          <span className="mt-1 text-[10px] font-medium text-muted-foreground/60 transition-colors group-hover:text-primary/70">
+                            Add Logo
+                          </span>
+                        </>
+                      )}
+                      <input
+                        ref={logoInputRef}
+                        id="business-logo-input"
+                        type="file"
+                        accept="image/png,image/jpeg,image/svg+xml"
+                        className="hidden"
+                        onChange={handleLogoSelect}
+                      />
+                    </label>
+                    {logoPreview ? (
+                      <button
+                        type="button"
+                        onClick={handleLogoRemove}
+                        className="text-[11px] text-muted-foreground underline-offset-2 transition-colors hover:text-destructive hover:underline"
+                      >
+                        Remove
+                      </button>
+                    ) : null}
+                  </div>
 
-                <Field id="businessEmail" label="Email">
-                  <Input
-                    id="businessEmail"
-                    type="email"
-                    value={invoice.businessEmail}
-                    placeholder="hello@studionorth.com"
-                    disabled={hasSavedBusiness && !businessEditable}
-                    onChange={(event) => setField('businessEmail', event.target.value)}
-                  />
-                </Field>
+                  {/* Business Fields */}
+                  <div className="grid w-full gap-4 sm:grid-cols-2">
+                    <Field id="businessName" label="Business Name" required error={errors.businessName}>
+                      <Input
+                        id="businessName"
+                        value={invoice.businessName}
+                        placeholder="Studio North"
+                        aria-invalid={Boolean(errors.businessName)}
+                        disabled={hasSavedBusiness && !businessEditable}
+                        onChange={(event) => setField('businessName', event.target.value)}
+                      />
+                    </Field>
 
-                <Field id="businessPhone" label="Phone">
-                  <Input
-                    id="businessPhone"
-                    value={invoice.businessPhone}
-                    placeholder="+1 (555) 123-4567"
-                    disabled={hasSavedBusiness && !businessEditable}
-                    onChange={(event) => setField('businessPhone', event.target.value)}
-                  />
-                </Field>
+                    <Field id="businessEmail" label="Email">
+                      <Input
+                        id="businessEmail"
+                        type="email"
+                        value={invoice.businessEmail}
+                        placeholder="hello@studionorth.com"
+                        disabled={hasSavedBusiness && !businessEditable}
+                        onChange={(event) => setField('businessEmail', event.target.value)}
+                      />
+                    </Field>
 
-                <Field id="businessAddress" label="Address">
-                  <Input
-                    id="businessAddress"
-                    value={invoice.businessAddress}
-                    placeholder="221B Market Street, Suite 8, San Francisco"
-                    disabled={hasSavedBusiness && !businessEditable}
-                    onChange={(event) => setField('businessAddress', event.target.value)}
-                  />
-                </Field>
+                    <Field id="businessPhone" label="Phone">
+                      <Input
+                        id="businessPhone"
+                        value={invoice.businessPhone}
+                        placeholder="+1 (555) 123-4567"
+                        disabled={hasSavedBusiness && !businessEditable}
+                        onChange={(event) => setField('businessPhone', event.target.value)}
+                      />
+                    </Field>
+
+                    <Field id="businessAddress" label="Address">
+                      <Input
+                        id="businessAddress"
+                        value={invoice.businessAddress}
+                        placeholder="221B Market Street, Suite 8, San Francisco"
+                        disabled={hasSavedBusiness && !businessEditable}
+                        onChange={(event) => setField('businessAddress', event.target.value)}
+                      />
+                    </Field>
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
