@@ -68,10 +68,10 @@ interface FieldProps {
 
 function Field({ id, label, required, error, className, labelClassName, children }: FieldProps) {
   return (
-    <div className={cn('space-y-2.5', className)}>
-      <Label htmlFor={id} className={labelClassName}>
+    <div className={cn('space-y-2', className)}>
+      <Label htmlFor={id} className={cn('text-[11px] font-semibold tracking-[0.08em] uppercase text-muted-foreground', labelClassName)}>
         {label}
-        {required ? <span className="text-destructive">*</span> : null}
+        {required ? <span className="text-destructive ml-0.5">*</span> : null}
       </Label>
       {children}
       {error ? <p className="text-destructive text-xs font-medium">{error}</p> : null}
@@ -350,9 +350,10 @@ export default function CreateInvoicePage() {
     <div className="min-h-screen">
       <Header ctaHref="/" ctaLabel="Back Home" />
 
-      <main className="app-shell py-6 pb-32 sm:py-8 sm:pb-36 lg:py-10 lg:pb-12">
-        {/* Mobile: compact tool header — form visible immediately */}
-        <div className="surface-floating flex items-center justify-between rounded-[var(--radius-card)] border px-3 py-2.5 pb-2.5 lg:hidden">
+      <main className="app-shell py-6 pb-32 sm:py-8 sm:pb-36 lg:py-10 lg:pb-16">
+
+        {/* Mobile: compact tool header */}
+        <div className="surface-floating flex items-center justify-between rounded-[var(--radius-card)] border px-3 py-2.5 lg:hidden">
           <div className="flex items-center gap-3">
             <Link
               href="/"
@@ -373,241 +374,332 @@ export default function CreateInvoicePage() {
           </div>
         </div>
 
-        <div className="mt-6 space-y-6">
+        <div className="mt-6 space-y-5">
+          {/* Pro waitlist banner */}
           <div className="hidden md:block">
             <ProWaitlistBanner source="create-top" variant="banner" />
           </div>
 
-          <section className="grid items-stretch gap-6 lg:grid-cols-2">
-            <Card
-              className={cn(
-                errors.businessName ? 'border-destructive/45 ring-destructive/10 ring-4' : undefined
-              )}
-            >
-              <CardHeader className="flex flex-row items-start justify-between gap-4 pb-3">
-                <div className="min-w-0">
-                  <CardTitle>Business Info</CardTitle>
-                </div>
-                <div className="flex shrink-0 flex-wrap items-center gap-1.5">
-                  {!hasSavedBusiness && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={handleSaveBusinessInfo}
-                      disabled={!invoice.businessName.trim()}
-                    >
-                      <Save className="size-3.5" />
-                      Save
-                    </Button>
-                  )}
-                  {hasSavedBusiness && !businessEditable && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setBusinessEditable(true)}
-                    >
-                      <Pencil className="size-3.5" />
-                      Edit
-                    </Button>
-                  )}
-                  {hasSavedBusiness && businessEditable && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={handleSaveBusinessInfo}
-                      disabled={!invoice.businessName.trim()}
-                    >
-                      <Save className="size-3.5" />
-                      Save
-                    </Button>
-                  )}
-                  {hasSavedBusiness && (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleClearBusinessInfo}
-                      className="text-muted-foreground hover:text-destructive"
-                    >
-                      <X className="size-3.5" />
-                      Clear
-                    </Button>
-                  )}
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-start">
-                  {/* Brand Logo Upload Zone */}
-                  <div className="flex shrink-0 flex-col items-center gap-1.5 sm:mt-7">
-                    <label
-                      htmlFor="business-logo-input"
-                      className="group relative flex size-[72px] cursor-pointer flex-col items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-border/60 bg-muted/30 transition-all hover:border-primary/40 hover:bg-muted/50 sm:h-[8.5rem] sm:w-[8.5rem]"
-                    >
-                      {logoPreview ? (
-                        <>
-                          <img
-                            src={logoPreview}
-                            alt="Business logo"
-                            className="size-full object-cover"
-                          />
-                          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 rounded-2xl bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
-                            <ImagePlus className="size-4 text-white" />
-                            <span className="text-[10px] font-medium text-white">Change</span>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <ImagePlus className="size-5 text-muted-foreground/60 transition-colors group-hover:text-primary/70" />
-                          <span className="mt-1 text-[10px] font-medium text-muted-foreground/60 transition-colors group-hover:text-primary/70">
-                            Add Logo
-                          </span>
-                        </>
-                      )}
-                      <input
-                        ref={logoInputRef}
-                        id="business-logo-input"
-                        type="file"
-                        accept="image/png,image/jpeg,image/svg+xml"
-                        className="hidden"
-                        onChange={handleLogoSelect}
-                      />
-                    </label>
-                    {logoPreview ? (
-                      <button
-                        type="button"
-                        onClick={handleLogoRemove}
-                        className="text-[11px] text-muted-foreground underline-offset-2 transition-colors hover:text-destructive hover:underline"
-                      >
-                        Remove
-                      </button>
-                    ) : null}
-                  </div>
+          {/* ── DESKTOP TWO-COLUMN LAYOUT ── */}
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-6">
 
-                  {/* Business Fields */}
-                  <div className="grid w-full gap-4 sm:grid-cols-2">
+          {/* ── INVOICE DOCUMENT CARD ── */}
+          <div
+            className={cn(
+              'w-full min-w-0 rounded-[var(--radius-card)] border bg-card shadow-[var(--shadow-card)]',
+              (errors.businessName || errors.clientName || errors.lineItems || errors.dueDate)
+                ? 'ring-2 ring-destructive/20'
+                : undefined
+            )}
+          >
+
+            {/* ── SECTION 1: Invoice Header ── */}
+            <div className="grid grid-cols-1 items-stretch gap-5 border-b border-border/60 p-5 sm:grid-cols-2 sm:p-6">
+
+              {/* Left: Logo upload */}
+              <div className="flex h-full flex-col gap-2">
+                <label
+                  htmlFor="business-logo-input"
+                  className="group relative flex h-40 w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-border/50 bg-muted/20 transition-all hover:border-primary/40 hover:bg-muted/30"
+                >
+                  {logoPreview ? (
+                    <>
+                      <img
+                        src={logoPreview}
+                        alt="Business logo"
+                        className="h-full w-full object-contain p-2"
+                      />
+                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 rounded-xl bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
+                        <ImagePlus className="size-4 text-white" />
+                        <span className="text-[10px] font-medium text-white">Change Logo</span>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="flex flex-col items-center gap-1.5">
+                      <ImagePlus className="size-5 text-muted-foreground/50 transition-colors group-hover:text-primary/60" />
+                      <span className="text-[11px] font-medium text-muted-foreground/50 transition-colors group-hover:text-primary/60">
+                        Add your logo
+                      </span>
+                      <span className="text-[10px] text-muted-foreground/35">PNG, JPG, SVG · max 512KB</span>
+                    </div>
+                  )}
+                  <input
+                    ref={logoInputRef}
+                    id="business-logo-input"
+                    type="file"
+                    accept="image/png,image/jpeg,image/svg+xml"
+                    className="absolute inset-0 opacity-0 cursor-pointer"
+                    onChange={handleLogoSelect}
+                  />
+                </label>
+                {logoPreview && (
+                  <button
+                    type="button"
+                    onClick={handleLogoRemove}
+                    className="text-center text-[11px] text-muted-foreground underline-offset-2 transition-colors hover:text-destructive hover:underline"
+                  >
+                    Remove logo
+                  </button>
+                )}
+              </div>
+
+              {/* Right: Invoice number + dates + currency */}
+              <div className="grid grid-cols-2 gap-3">
+                <Field id="invoice-number-display" label="Invoice No.">
+                  <div className="flex h-9 items-center rounded-[var(--radius-field)] border border-border/60 bg-muted/20 px-3 text-sm font-mono font-medium text-foreground/70">
+                    #{invoice.id}
+                  </div>
+                </Field>
+
+                <Field id="dueDate" label="Due Date" error={errors.dueDate}>
+                  <Input
+                    id="dueDate"
+                    type="date"
+                    min={today}
+                    value={invoice.dueDate}
+                    aria-invalid={Boolean(errors.dueDate)}
+                    onChange={(event) => setField('dueDate', event.target.value)}
+                    className="h-9"
+                  />
+                </Field>
+
+                <Field id="currency" label="Currency">
+                  <Select value={invoice.currency} onValueChange={setCurrency}>
+                    <SelectTrigger id="currency" className="h-9 w-full">
+                      <SelectValue placeholder="Currency" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {CURRENCIES.map((currency) => (
+                        <SelectItem key={currency.code} value={currency.code}>
+                          {currency.code} · {currency.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </Field>
+
+                <div className="flex items-end pb-0.5">
+                  <p className="text-muted-foreground text-xs tabular-nums">{storageMessage}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* ── SECTION 2: From / Bill To ── */}
+            <div className="grid grid-cols-1 gap-0 border-b border-border/60 sm:grid-cols-2 sm:divide-x sm:divide-border/60">
+
+              {/* FROM — Business Info */}
+              <div
+                className={cn(
+                  'group relative border-b border-border/60 p-6 sm:border-b-0 sm:p-8',
+                  errors.businessName ? 'bg-destructive/[0.03]' : undefined
+                )}
+              >
+                <div className="mb-3 flex items-center justify-between">
+                  <span className="text-[10px] font-bold tracking-[0.14em] uppercase text-muted-foreground/60">
+                    From
+                  </span>
+                  <div className="flex items-center gap-1">
+                    {!hasSavedBusiness && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleSaveBusinessInfo}
+                        disabled={!invoice.businessName.trim()}
+                        className="h-7 gap-1.5 px-2 text-xs text-muted-foreground hover:text-foreground"
+                      >
+                        <Save className="size-3" />
+                        Save
+                      </Button>
+                    )}
+                    {hasSavedBusiness && !businessEditable && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setBusinessEditable(true)}
+                        className="h-7 gap-1.5 px-2 text-xs text-muted-foreground hover:text-foreground"
+                      >
+                        <Pencil className="size-3" />
+                        Edit
+                      </Button>
+                    )}
+                    {hasSavedBusiness && businessEditable && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleSaveBusinessInfo}
+                        disabled={!invoice.businessName.trim()}
+                        className="h-7 gap-1.5 px-2 text-xs text-muted-foreground hover:text-foreground"
+                      >
+                        <Save className="size-3" />
+                        Save
+                      </Button>
+                    )}
+                    {hasSavedBusiness && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleClearBusinessInfo}
+                        className="h-7 gap-1.5 px-2 text-xs text-muted-foreground hover:text-destructive"
+                      >
+                        <X className="size-3" />
+                        Clear
+                      </Button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Saved / read view */}
+                {hasSavedBusiness && !businessEditable ? (
+                  <div
+                    className="cursor-pointer rounded-lg border border-dashed border-border/60 p-3 transition-colors hover:border-primary/30 hover:bg-muted/20"
+                    onClick={() => setBusinessEditable(true)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => e.key === 'Enter' && setBusinessEditable(true)}
+                    aria-label="Edit business info"
+                  >
+                    {invoice.businessName && (
+                      <p className="text-sm font-semibold text-foreground">{invoice.businessName}</p>
+                    )}
+                    {invoice.businessAddress && (
+                      <p className="mt-0.5 text-xs text-muted-foreground">{invoice.businessAddress}</p>
+                    )}
+                    {invoice.businessEmail && (
+                      <p className="mt-0.5 text-xs text-muted-foreground">{invoice.businessEmail}</p>
+                    )}
+                    {invoice.businessPhone && (
+                      <p className="mt-0.5 text-xs text-muted-foreground">{invoice.businessPhone}</p>
+                    )}
+                    {!invoice.businessName && (
+                      <p className="text-xs text-muted-foreground/50 italic">Click to add business info</p>
+                    )}
+                  </div>
+                ) : (
+                  <div className="space-y-3">
                     <Field id="businessName" label="Business Name" required error={errors.businessName}>
                       <Input
                         id="businessName"
                         value={invoice.businessName}
                         placeholder="Studio North"
                         aria-invalid={Boolean(errors.businessName)}
-                        disabled={hasSavedBusiness && !businessEditable}
                         onChange={(event) => setField('businessName', event.target.value)}
+                        className="h-9"
                       />
                     </Field>
-
-                    <Field id="businessEmail" label="Email">
-                      <Input
-                        id="businessEmail"
-                        type="email"
-                        value={invoice.businessEmail}
-                        placeholder="hello@studionorth.com"
-                        disabled={hasSavedBusiness && !businessEditable}
-                        onChange={(event) => setField('businessEmail', event.target.value)}
-                      />
-                    </Field>
-
-                    <Field id="businessPhone" label="Phone">
-                      <Input
-                        id="businessPhone"
-                        value={invoice.businessPhone}
-                        placeholder="+1 (555) 123-4567"
-                        disabled={hasSavedBusiness && !businessEditable}
-                        onChange={(event) => setField('businessPhone', event.target.value)}
-                      />
-                    </Field>
-
+                    <div className="grid grid-cols-2 gap-3">
+                      <Field id="businessEmail" label="Email">
+                        <Input
+                          id="businessEmail"
+                          type="email"
+                          value={invoice.businessEmail}
+                          placeholder="hello@studio.com"
+                          onChange={(event) => setField('businessEmail', event.target.value)}
+                          className="h-9"
+                        />
+                      </Field>
+                      <Field id="businessPhone" label="Phone">
+                        <Input
+                          id="businessPhone"
+                          value={invoice.businessPhone}
+                          placeholder="+1 555 0000"
+                          onChange={(event) => setField('businessPhone', event.target.value)}
+                          className="h-9"
+                        />
+                      </Field>
+                    </div>
                     <Field id="businessAddress" label="Address">
                       <Input
                         id="businessAddress"
                         value={invoice.businessAddress}
-                        placeholder="221B Market Street, Suite 8, San Francisco"
-                        disabled={hasSavedBusiness && !businessEditable}
+                        placeholder="221B Market St, San Francisco"
                         onChange={(event) => setField('businessAddress', event.target.value)}
+                        className="h-9"
                       />
                     </Field>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                )}
+              </div>
 
-            <Card
+              {/* BILL TO — Client Info */}
+              <div
+                className={cn(
+                  'p-6 sm:p-8',
+                  errors.clientName ? 'bg-destructive/[0.03]' : undefined
+                )}
+              >
+                <div className="mb-3">
+                  <span className="text-[10px] font-bold tracking-[0.14em] uppercase text-muted-foreground/60">
+                    Bill To
+                  </span>
+                </div>
+
+                <div className="space-y-3">
+                  <Field id="clientName" label="Client Name" required error={errors.clientName}>
+                    <Input
+                      id="clientName"
+                      value={invoice.clientName}
+                      placeholder="Amina Yusuf"
+                      aria-invalid={Boolean(errors.clientName)}
+                      onChange={(event) => setField('clientName', event.target.value)}
+                      className="h-9"
+                    />
+                  </Field>
+                  <div className="grid grid-cols-2 gap-3">
+                    <Field id="clientEmail" label="Email">
+                      <Input
+                        id="clientEmail"
+                        type="email"
+                        value={invoice.clientEmail}
+                        placeholder="amina@yusuf.com"
+                        onChange={(event) => setField('clientEmail', event.target.value)}
+                        className="h-9"
+                      />
+                    </Field>
+                    <Field id="clientPhone" label="Phone">
+                      <Input
+                        id="clientPhone"
+                        value={invoice.clientPhone}
+                        placeholder="+92 300 0000"
+                        onChange={(event) => setField('clientPhone', event.target.value)}
+                        className="h-9"
+                      />
+                    </Field>
+                  </div>
+                  <Field id="clientCompany" label="Company">
+                    <Input
+                      id="clientCompany"
+                      value={invoice.clientCompany}
+                      placeholder="Yusuf Media"
+                      onChange={(event) => setField('clientCompany', event.target.value)}
+                      className="h-9"
+                    />
+                  </Field>
+                </div>
+              </div>
+            </div>
+
+            {/* ── SECTION 3: Line Items ── */}
+            <div
               className={cn(
-                errors.clientName ? 'border-destructive/45 ring-destructive/10 ring-4' : undefined
+                'border-b border-border/60',
+                errors.lineItems ? 'bg-destructive/[0.03]' : undefined
               )}
             >
-              <CardHeader className="flex flex-row items-start justify-between gap-4 pb-3">
-                <div className="min-w-0">
-                  <CardTitle>Client Info</CardTitle>
-                </div>
-                <div className="h-9 shrink-0" aria-hidden="true" />
-              </CardHeader>
-              <CardContent className="grid gap-4 sm:grid-cols-2">
-                <Field id="clientName" label="Client Name" required error={errors.clientName}>
-                  <Input
-                    id="clientName"
-                    value={invoice.clientName}
-                    placeholder="Amina Yusuf"
-                    aria-invalid={Boolean(errors.clientName)}
-                    onChange={(event) => setField('clientName', event.target.value)}
-                  />
-                </Field>
-
-                <Field id="clientEmail" label="Email">
-                  <Input
-                    id="clientEmail"
-                    type="email"
-                    value={invoice.clientEmail}
-                    placeholder="amina@yusufmedia.com"
-                    onChange={(event) => setField('clientEmail', event.target.value)}
-                  />
-                </Field>
-
-                <Field id="clientPhone" label="Phone">
-                  <Input
-                    id="clientPhone"
-                    value={invoice.clientPhone}
-                    placeholder="+92 300 0000000"
-                    onChange={(event) => setField('clientPhone', event.target.value)}
-                  />
-                </Field>
-
-                <Field id="clientCompany" label="Company">
-                  <Input
-                    id="clientCompany"
-                    value={invoice.clientCompany}
-                    placeholder="Yusuf Media"
-                    onChange={(event) => setField('clientCompany', event.target.value)}
-                  />
-                </Field>
-              </CardContent>
-            </Card>
-          </section>
-
-          <Card
-            className={cn(
-              errors.lineItems ? 'border-destructive/45 ring-destructive/10 ring-4' : undefined
-            )}
-          >
-            <CardHeader>
-              <CardTitle>Line Items</CardTitle>
-              <CardDescription>Add the work, quantity, and rate for each charge.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-0 px-0 pb-5">
-              {/* Table header — desktop only */}
-              <div className="text-muted-foreground border-border/60 mx-5 mb-1 hidden grid-cols-[minmax(0,1fr)_72px_120px_120px_36px] gap-3 border-b pb-2 text-[11px] font-semibold tracking-[0.16em] uppercase lg:grid">
-                <p>Description</p>
-                <p className="text-right">Qty</p>
-                <p className="text-right">Rate</p>
-                <p className="text-right">Amount</p>
+              {/* Table header — desktop */}
+              <div className="hidden grid-cols-[minmax(0,1fr)_72px_120px_120px_40px] gap-3 border-b border-border/40 bg-muted/30 px-8 py-2.5 lg:grid">
+                <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-muted-foreground/70">Description</p>
+                <p className="text-right text-[10px] font-bold tracking-[0.12em] uppercase text-muted-foreground/70">Qty</p>
+                <p className="text-right text-[10px] font-bold tracking-[0.12em] uppercase text-muted-foreground/70">Rate</p>
+                <p className="text-right text-[10px] font-bold tracking-[0.12em] uppercase text-muted-foreground/70">Amount</p>
                 <span />
               </div>
 
               {/* Rows */}
-              <div className="space-y-2 px-5 lg:space-y-0 lg:px-0 lg:divide-y lg:divide-border/50">
+              <div className="divide-y divide-border/40 px-6 sm:px-8 lg:px-0">
                 {invoice.lineItems.map((item, index) => {
                   const rowInvalid =
                     Boolean(errors.lineItems) && (!item.description.trim() || item.rate <= 0);
@@ -615,11 +707,14 @@ export default function CreateInvoicePage() {
                   return (
                     <div
                       key={item.id}
-                      className="surface-quiet group rounded-[var(--radius-card)] border px-3 pb-3 pt-2 lg:rounded-none lg:border-0 lg:bg-transparent lg:px-5 lg:py-2.5 lg:grid lg:grid-cols-[minmax(0,1fr)_72px_120px_120px_36px] lg:items-center lg:gap-3"
+                      className={cn(
+                        'group py-3',
+                        'lg:grid lg:grid-cols-[minmax(0,1fr)_72px_120px_120px_40px] lg:items-center lg:gap-3 lg:px-8 lg:py-2.5'
+                      )}
                     >
-                      {/* Mobile: delete top-right + amount */}
-                      <div className="mb-1 flex items-center justify-between lg:hidden">
-                        <p className="text-foreground text-sm font-semibold tabular-nums">
+                      {/* Mobile: amount top-right + delete */}
+                      <div className="mb-2 flex items-center justify-between lg:hidden">
+                        <p className="text-sm font-semibold tabular-nums text-foreground">
                           {formatCurrency(item.amount, invoice.currency)}
                         </p>
                         <Button
@@ -636,23 +731,27 @@ export default function CreateInvoicePage() {
                       </div>
 
                       {/* Description */}
-                      <div className="flex items-center gap-1.5 lg:contents">
-                        <span className="text-muted-foreground shrink-0 text-[10px] font-semibold tracking-wider uppercase lg:hidden">Item</span>
+                      <div className="flex items-center gap-2 lg:contents">
+                        <span className="shrink-0 text-[10px] font-semibold tracking-wider uppercase text-muted-foreground/60 lg:hidden">
+                          Item
+                        </span>
                         <Input
                           id={`line-item-description-${index}`}
                           value={item.description}
-                          placeholder="Item description"
+                          placeholder="Item or service description"
                           aria-label="Description"
                           aria-invalid={rowInvalid && !item.description.trim()}
                           onChange={(event) => setLineItem(index, 'description', event.target.value)}
-                          className="h-11 min-w-0 flex-1 text-base"
+                          className="h-10 min-w-0 flex-1 text-sm lg:h-9"
                         />
                       </div>
 
-                      {/* Mobile: qty × rate */}
+                      {/* Mobile: qty × rate row */}
                       <div className="mt-2 flex items-center gap-3 lg:contents">
-                        <div className="flex items-center gap-1.5 lg:contents">
-                          <span className="text-muted-foreground shrink-0 text-[10px] font-semibold tracking-wider uppercase lg:hidden">Qty</span>
+                        <div className="flex items-center gap-2 lg:contents">
+                          <span className="shrink-0 text-[10px] font-semibold tracking-wider uppercase text-muted-foreground/60 lg:hidden">
+                            Qty
+                          </span>
                           <Input
                             id={`line-item-quantity-${index}`}
                             type="number"
@@ -663,11 +762,13 @@ export default function CreateInvoicePage() {
                               setLineItem(index, 'quantity', getNumberValue(event.target.value))
                             }
                             onFocus={selectAll}
-                            className="h-11 w-14 shrink-0 text-center text-base tabular-nums lg:w-full lg:text-right"
+                            className="h-10 w-14 shrink-0 text-center tabular-nums lg:h-9 lg:w-full lg:text-right"
                           />
                         </div>
-                        <div className="flex min-w-0 flex-1 items-center gap-1.5 lg:contents">
-                          <span className="text-muted-foreground shrink-0 text-[10px] font-semibold tracking-wider uppercase lg:hidden">Rate</span>
+                        <div className="flex min-w-0 flex-1 items-center gap-2 lg:contents">
+                          <span className="shrink-0 text-[10px] font-semibold tracking-wider uppercase text-muted-foreground/60 lg:hidden">
+                            Rate
+                          </span>
                           <Input
                             id={`line-item-rate-${index}`}
                             type="number"
@@ -681,13 +782,13 @@ export default function CreateInvoicePage() {
                               setLineItem(index, 'rate', getNumberValue(event.target.value))
                             }
                             onFocus={selectAll}
-                            className="h-11 min-w-0 flex-1 text-right text-base tabular-nums lg:flex-none lg:w-full"
+                            className="h-10 min-w-0 flex-1 text-right tabular-nums lg:h-9 lg:w-full"
                           />
                         </div>
                       </div>
 
                       {/* Desktop: amount + delete */}
-                      <p className="text-foreground hidden h-11 items-center justify-end text-base font-medium tabular-nums lg:flex">
+                      <p className="hidden h-9 items-center justify-end text-sm font-medium tabular-nums text-foreground lg:flex">
                         {formatCurrency(item.amount, invoice.currency)}
                       </p>
                       <Button
@@ -696,7 +797,7 @@ export default function CreateInvoicePage() {
                         size="icon"
                         onClick={() => removeLineItem(index)}
                         disabled={invoice.lineItems.length === 1}
-                        className="text-muted-foreground hover:text-destructive hidden size-9 opacity-0 transition-opacity group-hover:opacity-100 lg:flex"
+                        className="text-muted-foreground hover:text-destructive hidden size-8 opacity-0 transition-opacity group-hover:opacity-100 lg:flex"
                       >
                         <Trash2 className="size-3.5" />
                         <span className="sr-only">Remove line item</span>
@@ -706,166 +807,275 @@ export default function CreateInvoicePage() {
                 })}
               </div>
 
-              {errors.lineItems ? (
-                <p className="text-destructive px-5 pt-2 text-xs">{errors.lineItems}</p>
-              ) : null}
+              {errors.lineItems && (
+                <p className="text-destructive px-6 pb-2 text-xs sm:px-8">{errors.lineItems}</p>
+              )}
 
-              <div className="border-border/60 mx-5 mt-4 border-t pt-3">
-                <Button type="button" variant="outline" size="sm" onClick={addLineItem}>
+              {/* Add line item — dashed full-width button */}
+              <div className="px-6 py-4 sm:px-8">
+                <button
+                  type="button"
+                  onClick={addLineItem}
+                  className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border/50 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:bg-muted/20 hover:text-primary/80"
+                >
                   <Plus className="size-4" />
-                  Add Line Item
-                </Button>
+                  Add line item
+                </button>
               </div>
-            </CardContent>
-          </Card>
+            </div>
 
-          <section className="grid gap-6 lg:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Financial Summary</CardTitle>
-                <CardDescription>Fine-tune totals before saving the invoice.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-5">
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <Field id="taxRate" label="Tax Rate (%)">
-                    <Input
-                      id="taxRate"
-                      type="number"
-                      min={0}
-                      step="0.01"
-                      value={invoice.taxRate}
-                      onChange={(event) => setField('taxRate', getNumberValue(event.target.value))}
-                    />
-                  </Field>
+            {/* ── SECTION 4: Summary + Tax/Discount + Notes ── */}
+            <div className="border-b border-border/60 p-6 sm:p-8">
+              <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
 
-                  <Field id="discount" label="Discount (%)">
-                    <Input
-                      id="discount"
-                      type="number"
-                      min={0}
-                      max={100}
-                      step="0.01"
-                      value={invoice.discount}
-                      onChange={(event) => setField('discount', getNumberValue(event.target.value))}
+                {/* Left: Tax, Discount, Notes */}
+                <div className="flex-1 space-y-4 lg:max-w-sm">
+                  <div className="grid grid-cols-2 gap-3">
+                    <Field id="taxRate" label="Tax Rate (%)">
+                      <Input
+                        id="taxRate"
+                        type="number"
+                        min={0}
+                        step="0.01"
+                        value={invoice.taxRate}
+                        onFocus={selectAll}
+                        onChange={(event) => setField('taxRate', getNumberValue(event.target.value))}
+                        className="h-9"
+                      />
+                    </Field>
+                    <Field id="discount" label="Discount (%)">
+                      <Input
+                        id="discount"
+                        type="number"
+                        min={0}
+                        max={100}
+                        step="0.01"
+                        value={invoice.discount}
+                        onFocus={selectAll}
+                        onChange={(event) => setField('discount', getNumberValue(event.target.value))}
+                        className="h-9"
+                      />
+                    </Field>
+                  </div>
+
+                  <Field id="notes" label="Notes">
+                    <Textarea
+                      id="notes"
+                      value={invoice.notes}
+                      placeholder="Payment terms, thank-you notes, or any other details…"
+                      onChange={(event) => setField('notes', event.target.value)}
+                      className="min-h-[80px] resize-none text-sm"
                     />
                   </Field>
                 </div>
 
-                <div className="surface-quiet space-y-3 rounded-(--radius-card) border p-4 sm:p-5">
-                  <div className="text-muted-foreground flex items-center justify-between text-sm tabular-nums">
-                    <span>Subtotal</span>
-                    <span>{formatCurrency(invoice.subtotal, invoice.currency)}</span>
-                  </div>
-                  <div className="text-muted-foreground flex items-center justify-between text-sm tabular-nums">
-                    <span>Tax Amount</span>
-                    <span>{formatCurrency(invoice.taxAmount, invoice.currency)}</span>
-                  </div>
-                  {invoice.discount > 0 ? (
-                    <div className="text-muted-foreground flex items-center justify-between text-sm tabular-nums">
-                      <span>Discount ({invoice.discount}%)</span>
-                      <span>-{formatCurrency(invoice.discountAmount, invoice.currency)}</span>
+                {/* Right: Invoice summary block */}
+                <div className="w-full rounded-xl border border-border/60 bg-muted/20 p-5 lg:w-[260px] lg:shrink-0">
+                  <p className="mb-3 text-[10px] font-bold tracking-[0.12em] uppercase text-muted-foreground/60">
+                    Summary
+                  </p>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-sm tabular-nums">
+                      <span className="text-muted-foreground">Subtotal</span>
+                      <span className="font-medium text-foreground">{formatCurrency(invoice.subtotal, invoice.currency)}</span>
                     </div>
-                  ) : null}
-                  <Separator />
-                  <div className="text-foreground flex items-center justify-between text-xl font-bold tracking-tight tabular-nums">
-                    <span>Total</span>
-                    <span className="text-primary text-[1.65rem]">
+                    <div className="flex items-center justify-between text-sm tabular-nums">
+                      <span className="text-muted-foreground">Tax</span>
+                      <span className="font-medium text-foreground">{formatCurrency(invoice.taxAmount, invoice.currency)}</span>
+                    </div>
+                    {invoice.discount > 0 && (
+                      <div className="flex items-center justify-between text-sm tabular-nums">
+                        <span className="text-muted-foreground">Discount ({invoice.discount}%)</span>
+                        <span className="font-medium text-foreground">-{formatCurrency(invoice.discountAmount, invoice.currency)}</span>
+                      </div>
+                    )}
+                  </div>
+                  <Separator className="my-3" />
+                  <div className="flex items-center justify-between tabular-nums">
+                    <span className="text-sm font-semibold text-foreground">Total</span>
+                    <span className="text-2xl font-bold tracking-tight text-primary">
                       {formatCurrency(invoice.total, invoice.currency)}
                     </span>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-
-            <Card
-              className={cn(
-                errors.dueDate ? 'border-destructive/45 ring-destructive/10 ring-4' : undefined
-              )}
-            >
-              <CardHeader>
-                <CardTitle>Details</CardTitle>
-                <CardDescription>
-                  Choose the invoice currency, due date, and any notes.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="grid gap-4 sm:grid-cols-2">
-                <Field id="currency" label="Currency">
-                  <Select value={invoice.currency} onValueChange={setCurrency}>
-                    <SelectTrigger id="currency" className="w-full">
-                      <SelectValue placeholder="Select currency" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {CURRENCIES.map((currency) => (
-                        <SelectItem key={currency.code} value={currency.code}>
-                          {currency.code} · {currency.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </Field>
-
-                <Field id="dueDate" label="Due Date" error={errors.dueDate}>
-                  <Input
-                    id="dueDate"
-                    type="date"
-                    min={today}
-                    value={invoice.dueDate}
-                    aria-invalid={Boolean(errors.dueDate)}
-                    onChange={(event) => setField('dueDate', event.target.value)}
-                  />
-                </Field>
-
-                <Field id="notes" label="Notes" className="sm:col-span-2">
-                  <Textarea
-                    id="notes"
-                    value={invoice.notes}
-                    placeholder="Thanks for the opportunity. Payment is due within 7 days."
-                    onChange={(event) => setField('notes', event.target.value)}
-                  />
-                </Field>
-              </CardContent>
-            </Card>
-          </section>
-
-          <div className="space-y-3">
-            <div className="surface-quiet grid gap-3 rounded-(--radius-card) border p-3 sm:grid-cols-2">
-              <Button
-                type="button"
-                size="lg"
-                variant="outline"
-                disabled={actionDisabled}
-                onClick={handleSaveInvoice}
-              >
-                {isSaving ? 'Saving draft...' : 'Save Draft'}
-              </Button>
-
-              <Button
-                type="button"
-                size="lg"
-                disabled={actionDisabled}
-                onClick={handleGenerateInvoice}
-              >
-                {isGenerating ? (
-                  <>
-                    <Loader2 className="size-4 animate-spin" />
-                    Generating PDF...
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="size-4" />
-                    Generate Invoice
-                  </>
-                )}
-              </Button>
+              </div>
             </div>
 
-            <p className="text-muted-foreground text-center text-xs tabular-nums">
-              {storageMessage}
-            </p>
+            {/* Desktop action footer removed — buttons moved to right sidebar */}
           </div>
+          {/* ── END INVOICE DOCUMENT CARD ── */}
 
+          {/* ── RIGHT SIDEBAR (desktop only) ── */}
+          <div className="hidden lg:block lg:w-60 lg:shrink-0">
+            <div className="sticky top-6 space-y-3">
+              {/* ── Action buttons card ── */}
+              <div className="rounded-(--radius-card) border bg-card p-5 shadow-(--shadow-card)">
+                <div className="space-y-2.5">
+                  <Button
+                    type="button"
+                    size="sm"
+                    disabled={actionDisabled}
+                    onClick={handleGenerateInvoice}
+                    className="w-full gap-2"
+                  >
+                    {isGenerating ? (
+                      <>
+                        <Loader2 className="size-3.5 animate-spin" />
+                        Generating…
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="size-3.5" />
+                        Generate Invoice
+                      </>
+                    )}
+                  </Button>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    disabled={actionDisabled}
+                    onClick={handleSaveInvoice}
+                    className="w-full gap-2"
+                  >
+                    {isSaving ? (
+                      <>
+                        <Loader2 className="size-3.5 animate-spin" />
+                        Saving…
+                      </>
+                    ) : (
+                      <>
+                        <Save className="size-3.5" />
+                        Save Draft
+                      </>
+                    )}
+                  </Button>
+                </div>
+                <p className="mt-3 text-center text-[11px] text-muted-foreground/60 tabular-nums">
+                  {storageMessage}
+                </p>
+              </div>
+
+              <div
+                className={cn(
+                  'rounded-(--radius-card) border bg-card p-5 shadow-(--shadow-card) transition-all',
+                  generatedPdfUrl
+                    ? 'border-emerald-200 bg-[linear-gradient(180deg,rgba(236,253,245,0.88),rgba(255,255,255,0.94))] shadow-[0_24px_70px_-44px_rgba(16,185,129,0.34)] dark:bg-[linear-gradient(180deg,rgba(6,78,59,0.18),rgba(20,24,32,0.92))]'
+                    : undefined
+                )}
+              >
+                {/* Header */}
+                <div className="mb-4 flex items-center gap-2">
+                  {generatedPdfUrl ? (
+                    <CheckCircle2 className="size-4 text-emerald-600" />
+                  ) : (
+                    <div className="size-4 rounded-full border-2 border-border/50" />
+                  )}
+                  <p className="text-sm font-semibold text-foreground">
+                    {generatedPdfUrl ? 'Invoice Ready' : 'Share & Export'}
+                  </p>
+                </div>
+
+                {generatedPdfUrl && (
+                  <p className="mb-4 text-xs text-muted-foreground">
+                    Ready for {invoice.clientName || 'your client'}.
+                  </p>
+                )}
+
+                <div className="space-y-2">
+                  {/* WhatsApp */}
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="w-full justify-start gap-2 font-medium text-[#075E54] disabled:opacity-40"
+                    disabled={!generatedPdfUrl}
+                    onClick={handleShareWhatsApp}
+                  >
+                    <svg viewBox="0 0 24 24" className="size-4 shrink-0" aria-hidden="true">
+                      <path
+                        fill="#25D366"
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                      />
+                    </svg>
+                    Send on WhatsApp
+                  </Button>
+
+                  {/* Download */}
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="w-full justify-start gap-2 disabled:opacity-40"
+                    disabled={!generatedPdfUrl}
+                    onClick={handleDownloadPdf}
+                  >
+                    <Download className="size-4 shrink-0" />
+                    Download PDF
+                  </Button>
+
+                  {/* Open PDF */}
+                  {generatedPdfUrl ? (
+                    <Button size="sm" variant="outline" className="w-full justify-start gap-2" asChild>
+                      <a href={generatedPdfUrl} target="_blank" rel="noreferrer">
+                        <Eye className="size-4 shrink-0" />
+                        Open PDF
+                      </a>
+                    </Button>
+                  ) : (
+                    <Button size="sm" variant="outline" className="w-full justify-start gap-2 disabled:opacity-40" disabled>
+                      <Eye className="size-4 shrink-0" />
+                      Open PDF
+                    </Button>
+                  )}
+
+                  {/* Copy link */}
+                  {hasRemotePdf && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="w-full justify-start gap-2"
+                      onClick={() => {
+                        navigator.clipboard.writeText(generatedPdfUrl!);
+                        toast.success('Link copied to clipboard.');
+                      }}
+                    >
+                      <Copy className="size-4 shrink-0" />
+                      Copy Link
+                    </Button>
+                  )}
+                </div>
+
+                {/* Hint when not yet generated */}
+                {!generatedPdfUrl && (
+                  <p className="mt-4 text-center text-[11px] text-muted-foreground/60">
+                    Generate the invoice to unlock sharing options.
+                  </p>
+                )}
+
+                {/* Create another */}
+                {generatedPdfUrl && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="mt-3 w-full text-muted-foreground"
+                    onClick={handleCreateAnotherInvoice}
+                  >
+                    Create Another Invoice
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+          {/* ── END RIGHT SIDEBAR ── */}
+
+          </div>
+          {/* ── END DESKTOP TWO-COLUMN LAYOUT ── */}
+
+          {/* Invoice Ready card — mobile only, shown after PDF generated */}
           {generatedPdfUrl ? (
-            <Card ref={invoiceReadyRef} className="border border-emerald-200 bg-[linear-gradient(180deg,rgba(236,253,245,0.88),rgba(255,255,255,0.94))] shadow-[0_24px_70px_-44px_rgba(16,185,129,0.34)] dark:bg-[linear-gradient(180deg,rgba(6,78,59,0.18),rgba(20,24,32,0.92))]">
+            <Card
+              ref={invoiceReadyRef}
+              className="border border-emerald-200 bg-[linear-gradient(180deg,rgba(236,253,245,0.88),rgba(255,255,255,0.94))] shadow-[0_24px_70px_-44px_rgba(16,185,129,0.34)] dark:bg-[linear-gradient(180deg,rgba(6,78,59,0.18),rgba(20,24,32,0.92))] lg:hidden"
+            >
               <CardHeader>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="mt-0.5 size-6 text-emerald-600" />
@@ -934,6 +1144,7 @@ export default function CreateInvoicePage() {
         </div>
       </main>
 
+      {/* Mobile sticky bottom bar */}
       <div className="safe-bottom fixed inset-x-0 bottom-0 z-30 px-4 py-3 lg:hidden">
         <div className="app-shell px-0">
           <div className="surface-floating flex items-center gap-2 rounded-(--radius-shell) border px-2 py-2">

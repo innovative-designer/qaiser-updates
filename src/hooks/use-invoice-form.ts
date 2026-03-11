@@ -49,7 +49,8 @@ type InvoiceFormAction =
   | { type: 'REMOVE_LINE_ITEM'; index: number }
   | { type: 'SET_CURRENCY'; currency: string }
   | { type: 'SET_PDF_URL'; pdfUrl: string }
-  | { type: 'RESET' };
+  | { type: 'RESET' }
+  | { type: 'INIT_IDS' };
 
 export interface ValidationErrors {
   businessName?: string;
@@ -72,7 +73,7 @@ interface UseInvoiceFormResult {
 
 function createLineItem(): LineItem {
   return {
-    id: nanoid(LINE_ITEM_ID_LENGTH),
+    id: nanoid(LINE_ITEM_ID_LENGTH), // safe: only called client-side (ADD_LINE_ITEM action or RESET)
     description: '',
     quantity: 1,
     rate: 0,
@@ -82,7 +83,7 @@ function createLineItem(): LineItem {
 
 function createInitialState(): InvoiceData {
   return {
-    id: nanoid(INVOICE_ID_LENGTH),
+    id: '',
     businessName: '',
     businessEmail: '',
     businessPhone: '',
@@ -199,7 +200,17 @@ function invoiceReducer(state: InvoiceData, action: InvoiceFormAction): InvoiceD
       };
 
     case 'RESET':
-      return createInitialState();
+      return { ...createInitialState(), id: nanoid(INVOICE_ID_LENGTH), lineItems: [createLineItem()] };
+
+    case 'INIT_IDS':
+      return {
+        ...state,
+        id: state.id || nanoid(INVOICE_ID_LENGTH),
+        lineItems: state.lineItems.map((item) => ({
+          ...item,
+          id: item.id || nanoid(LINE_ITEM_ID_LENGTH),
+        })),
+      };
 
     default:
       return state;
@@ -242,6 +253,11 @@ export function validateInvoice(invoice: InvoiceData): ValidationErrors {
 
 export function useInvoiceForm(): UseInvoiceFormResult {
   const [invoice, dispatch] = useReducer(invoiceReducer, undefined, createInitialState);
+
+  useEffect(() => {
+    // Generate stable IDs only on the client to avoid SSR/client mismatch
+    dispatch({ type: 'INIT_IDS' });
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
