@@ -81,7 +81,7 @@ export default function RootLayout({
   const posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST;
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${geistMono.variable}`} suppressHydrationWarning>
       {posthogKey && posthogHost ? (
         <Script
           id="posthog-init"
@@ -94,7 +94,7 @@ posthog.init(${JSON.stringify(posthogKey)}, { api_host: ${JSON.stringify(posthog
           }}
         />
       ) : null}
-      <body className={`${inter.variable} ${geistMono.variable} antialiased`}>
+      <body className="antialiased">
         <SerwistProvider>
           <ThemeProvider
             attribute="class"
