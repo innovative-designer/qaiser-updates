@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 
+import { PostHogProvider } from '@/components/providers/posthog-provider';
+
 export const metadata: Metadata = {
   title: 'Create Invoice',
   description:
@@ -11,5 +13,10 @@ export const metadata: Metadata = {
 };
 
 export default function CreateLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <>
+      <PostHogProvider />
+      {children}
+    </>
+  );
 }

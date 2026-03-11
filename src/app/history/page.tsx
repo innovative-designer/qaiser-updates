@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLocalInvoices } from '@/hooks/use-local-invoices';
+import { captureAnalyticsEvent } from '@/lib/analytics/posthog';
 import { formatCurrency } from '@/lib/currencies';
 import { downloadPdf, shareOnWhatsApp } from '@/lib/share';
 
@@ -33,12 +34,12 @@ export default function HistoryPage() {
   }
 
   async function handleDownload(invoice: (typeof invoices)[number]) {
-    const ok = await downloadPdf(invoice);
+    const ok = await downloadPdf(invoice, { source: 'history' });
     if (!ok) toast.error('No PDF available for this invoice');
   }
 
   async function handleWhatsApp(invoice: (typeof invoices)[number]) {
-    await shareOnWhatsApp(invoice);
+    await shareOnWhatsApp(invoice, { source: 'history' });
   }
 
   return (
@@ -176,6 +177,10 @@ export default function HistoryPage() {
                         disabled={!invoice.pdfUrl || invoice.pdfUrl.startsWith('blob:')}
                         onClick={() => {
                           navigator.clipboard.writeText(invoice.pdfUrl!);
+                          captureAnalyticsEvent('share_clicked', {
+                            source: 'history',
+                            channel: 'copy_link',
+                          });
                           toast.success('Link copied to clipboard.');
                         }}
                       >

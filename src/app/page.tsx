@@ -172,8 +172,8 @@ export default function Home() {
             </div>
 
             <div className="relative mx-auto w-full max-w-md lg:max-w-none">
-              <div className="surface-card mx-auto max-w-[24rem] rounded-[1.7rem] border p-3">
-                <div className="surface-card rounded-[1.35rem] border p-4">
+              <div className="surface-card mx-auto max-w-[24rem] rounded-[1.7rem] border p-1.5 sm:p-3">
+                <div className="surface-card rounded-[1.35rem] border p-3 sm:p-4">
                   <div className="flex items-center justify-between pb-4">
                     <div>
                       <p className="text-foreground text-sm font-semibold">Studio North</p>
@@ -229,7 +229,7 @@ export default function Home() {
                     </div>
                   </InfoPanel>
 
-                  <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                  <div className="mt-4 grid grid-cols-2 gap-2">
                     <div className="bg-primary text-primary-foreground rounded-[var(--radius-button)] px-3 py-3 text-center text-sm font-medium">
                       Generate PDF
                     </div>
@@ -339,7 +339,7 @@ export default function Home() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="surface-card rounded-[var(--radius-card)] border p-5 transition hover:-translate-y-1 hover:bg-[var(--surface-hover)]"
+                  className="surface-card rounded-[var(--radius-card)] border p-4 sm:p-5 transition hover:-translate-y-1 hover:bg-[var(--surface-hover)]"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
@@ -363,7 +363,7 @@ export default function Home() {
         </PageSection>
 
         <PageSection className="pb-16 sm:pb-20 lg:pb-28" spacing="none">
-          <div className="text-primary-foreground rounded-[var(--radius-shell)] bg-[linear-gradient(135deg,color-mix(in_oklch,var(--primary)_92%,white_3%),color-mix(in_oklch,var(--primary)_78%,var(--accent)_18%))] px-5 py-7 shadow-[var(--shadow-hero)] sm:px-8 sm:py-10">
+          <div className="text-primary-foreground rounded-[var(--radius-shell)] bg-[linear-gradient(135deg,color-mix(in_oklch,var(--primary)_92%,white_3%),color-mix(in_oklch,var(--primary)_78%,var(--accent)_18%))] px-4 py-6 shadow-[var(--shadow-hero)] sm:px-8 sm:py-10">
             <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-2xl">
                 <p className="text-primary-foreground/70 text-[0.72rem] font-semibold tracking-[0.24em] uppercase">
