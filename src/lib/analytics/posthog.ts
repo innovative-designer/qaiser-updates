@@ -22,7 +22,7 @@ declare global {
 
 const POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 const POSTHOG_HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST;
-const ANALYTICS_ROUTE_PREFIXES = ['/create', '/history'] as const;
+const ANALYTICS_ROUTE_PREFIXES = ['/create', '/history', '/v'] as const;
 const POSTHOG_SCRIPT_SELECTOR = 'script[data-posthog-script="true"]';
 const IDLE_TIMEOUT_MS = 1500;
 

@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -42,6 +43,7 @@ import { captureAnalyticsEvent } from '@/lib/analytics/posthog';
 import { CURRENCIES, formatCurrency } from '@/lib/currencies';
 import { MAX_INVOICES } from '@/lib/constants';
 import { downloadPdf, shareOnWhatsApp } from '@/lib/share';
+import { getSharedInvoicePdfPath } from '@/lib/shared-invoice-links';
 import { cn } from '@/lib/utils';
 
 function getNumberValue(value: string) {
@@ -97,6 +99,7 @@ export default function CreateInvoicePage() {
   const [isSaving, setIsSaving] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedPdfUrl, setGeneratedPdfUrl] = useState<string | null>(null);
+  const [generatedViewerPath, setGeneratedViewerPath] = useState<string | null>(null);
   const invoiceReadyRef = useRef<HTMLDivElement>(null);
   const [hasSavedBusiness, setHasSavedBusiness] = useState(false);
   const [businessEditable, setBusinessEditable] = useState(true);
@@ -109,7 +112,9 @@ export default function CreateInvoicePage() {
   const storageMessage = loading
     ? 'Checking saved invoices...'
     : `${invoices.length} of ${MAX_INVOICES} local slots used.`;
-  const hasRemotePdf = Boolean(generatedPdfUrl && !generatedPdfUrl.startsWith('blob:'));
+  const hasRemotePdf = Boolean(generatedViewerPath);
+  const hasGeneratedPdf = Boolean(generatedPdfUrl || generatedViewerPath);
+  const openPdfHref = generatedViewerPath ?? generatedPdfUrl;
   const actionDisabled = isSaving || isGenerating;
 
   // Load saved business info on mount
@@ -218,6 +223,7 @@ export default function CreateInvoicePage() {
       reset();
       setCurrency(currentCurrency);
       setGeneratedPdfUrl(null);
+      setGeneratedViewerPath(null);
       setErrors({});
     } catch {
       toast.error('Could not save the invoice in local storage.');
@@ -249,21 +255,22 @@ export default function CreateInvoicePage() {
         throw new Error(errorData?.error || 'Failed to generate PDF');
       }
 
-      let resolvedPdfUrl: string;
+      let resolvedPdfUrl: string | null = null;
+      let resolvedViewerPath: string | null = null;
       let persistedPdfUrl: string | undefined;
 
       if (response.headers.get('Content-Type')?.includes('application/pdf')) {
         const blob = await response.blob();
         resolvedPdfUrl = URL.createObjectURL(blob);
       } else {
-        const data = (await response.json()) as { pdfUrl?: string };
+        const data = (await response.json()) as { viewerPath?: string };
 
-        if (!data.pdfUrl) {
-          throw new Error('PDF URL was not returned by the server');
+        if (!data.viewerPath) {
+          throw new Error('Viewer path was not returned by the server');
         }
 
-        resolvedPdfUrl = data.pdfUrl;
-        persistedPdfUrl = data.pdfUrl;
+        resolvedViewerPath = data.viewerPath;
+        persistedPdfUrl = getSharedInvoicePdfPath(invoice.id);
       }
 
       if (generatedPdfUrl?.startsWith('blob:')) {
@@ -271,6 +278,7 @@ export default function CreateInvoicePage() {
       }
 
       setGeneratedPdfUrl(resolvedPdfUrl);
+      setGeneratedViewerPath(resolvedViewerPath);
       setTimeout(() => {
         invoiceReadyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 100);
@@ -312,6 +320,7 @@ export default function CreateInvoicePage() {
     }
 
     setGeneratedPdfUrl(null);
+    setGeneratedViewerPath(null);
     reset();
     setCurrency(currentCurrency);
     setErrors({});
@@ -320,7 +329,10 @@ export default function CreateInvoicePage() {
   function getInvoiceForSharing() {
     return {
       ...invoice,
-      pdfUrl: invoice.pdfUrl || generatedPdfUrl || undefined,
+      pdfUrl:
+        invoice.pdfUrl ||
+        (generatedViewerPath ? getSharedInvoicePdfPath(invoice.id) : generatedPdfUrl) ||
+        undefined,
     };
   }
 
@@ -413,10 +425,13 @@ export default function CreateInvoicePage() {
                 >
                   {logoPreview ? (
                     <>
-                      <img
+                      <Image
                         src={logoPreview}
                         alt="Business logo"
-                        className="h-full w-full object-contain p-2"
+                        fill
+                        unoptimized
+                        sizes="(max-width: 640px) 100vw, 50vw"
+                        className="object-contain p-2"
                       />
                       <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 rounded-xl bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
                         <ImagePlus className="size-4 text-white" />
@@ -910,61 +925,52 @@ export default function CreateInvoicePage() {
               </div>
             </div>
 
-            {/* Desktop action footer removed — buttons moved to right sidebar */}
+            {/* ── SECTION 5: Primary Actions ── */}
+            <div className="flex flex-col items-center gap-3 p-5 sm:flex-row sm:justify-end sm:gap-2.5 sm:p-6">
+              <Button
+                type="button"
+                variant="outline"
+                disabled={actionDisabled}
+                onClick={handleSaveInvoice}
+                className="w-full gap-2 sm:w-auto"
+              >
+                {isSaving ? (
+                  <>
+                    <Loader2 className="size-4 animate-spin" />
+                    Saving…
+                  </>
+                ) : (
+                  <>
+                    <Save className="size-4" />
+                    Save Draft
+                  </>
+                )}
+              </Button>
+              <Button
+                type="button"
+                disabled={actionDisabled}
+                onClick={handleGenerateInvoice}
+                className="w-full gap-2 sm:w-auto"
+              >
+                {isGenerating ? (
+                  <>
+                    <Loader2 className="size-4 animate-spin" />
+                    Generating…
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="size-4" />
+                    Generate Invoice
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
           {/* ── END INVOICE DOCUMENT CARD ── */}
 
           {/* ── RIGHT SIDEBAR (desktop only) ── */}
           <div className="hidden lg:block lg:w-60 lg:shrink-0">
             <div className="sticky top-6 space-y-3">
-              {/* ── Action buttons card ── */}
-              <div className="rounded-(--radius-card) border bg-card p-5 shadow-(--shadow-card)">
-                <div className="space-y-2.5">
-                  <Button
-                    type="button"
-                    size="sm"
-                    disabled={actionDisabled}
-                    onClick={handleGenerateInvoice}
-                    className="w-full gap-2"
-                  >
-                    {isGenerating ? (
-                      <>
-                        <Loader2 className="size-3.5 animate-spin" />
-                        Generating…
-                      </>
-                    ) : (
-                      <>
-                        <Sparkles className="size-3.5" />
-                        Generate Invoice
-                      </>
-                    )}
-                  </Button>
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="outline"
-                    disabled={actionDisabled}
-                    onClick={handleSaveInvoice}
-                    className="w-full gap-2"
-                  >
-                    {isSaving ? (
-                      <>
-                        <Loader2 className="size-3.5 animate-spin" />
-                        Saving…
-                      </>
-                    ) : (
-                      <>
-                        <Save className="size-3.5" />
-                        Save Draft
-                      </>
-                    )}
-                  </Button>
-                </div>
-                <p className="mt-3 text-center text-[11px] text-muted-foreground/60 tabular-nums">
-                  {storageMessage}
-                </p>
-              </div>
-
               <div
                 className={cn(
                   'rounded-(--radius-card) border bg-card p-5 shadow-(--shadow-card) transition-all',
@@ -975,17 +981,17 @@ export default function CreateInvoicePage() {
               >
                 {/* Header */}
                 <div className="mb-4 flex items-center gap-2">
-                  {generatedPdfUrl ? (
+                  {hasGeneratedPdf ? (
                     <CheckCircle2 className="size-4 text-emerald-600" />
                   ) : (
                     <div className="size-4 rounded-full border-2 border-border/50" />
                   )}
                   <p className="text-sm font-semibold text-foreground">
-                    {generatedPdfUrl ? 'Invoice Ready' : 'Share & Export'}
+                    {hasGeneratedPdf ? 'Invoice Ready' : 'Share & Export'}
                   </p>
                 </div>
 
-                {generatedPdfUrl && (
+                {hasGeneratedPdf && (
                   <p className="mb-4 text-xs text-muted-foreground">
                     Ready for {invoice.clientName || 'your client'}.
                   </p>
@@ -997,7 +1003,7 @@ export default function CreateInvoicePage() {
                     size="sm"
                     variant="outline"
                     className="w-full justify-start gap-2 font-medium text-[#075E54] disabled:opacity-40"
-                    disabled={!generatedPdfUrl}
+                    disabled={!hasGeneratedPdf}
                     onClick={handleShareWhatsApp}
                   >
                     <svg viewBox="0 0 24 24" className="size-4 shrink-0" aria-hidden="true">
@@ -1014,7 +1020,7 @@ export default function CreateInvoicePage() {
                     size="sm"
                     variant="outline"
                     className="w-full justify-start gap-2 disabled:opacity-40"
-                    disabled={!generatedPdfUrl}
+                    disabled={!hasGeneratedPdf}
                     onClick={handleDownloadPdf}
                   >
                     <Download className="size-4 shrink-0" />
@@ -1022,9 +1028,9 @@ export default function CreateInvoicePage() {
                   </Button>
 
                   {/* Open PDF */}
-                  {generatedPdfUrl ? (
+                  {openPdfHref ? (
                     <Button size="sm" variant="outline" className="w-full justify-start gap-2" asChild>
-                      <a href={generatedPdfUrl} target="_blank" rel="noreferrer">
+                      <a href={openPdfHref} target="_blank" rel="noreferrer">
                         <Eye className="size-4 shrink-0" />
                         Open PDF
                       </a>
@@ -1043,7 +1049,7 @@ export default function CreateInvoicePage() {
                       variant="outline"
                       className="w-full justify-start gap-2"
                       onClick={() => {
-                        navigator.clipboard.writeText(generatedPdfUrl!);
+                        navigator.clipboard.writeText(`${window.location.origin}${generatedViewerPath}`);
                         toast.success('Link copied to clipboard.');
                       }}
                     >
@@ -1054,14 +1060,14 @@ export default function CreateInvoicePage() {
                 </div>
 
                 {/* Hint when not yet generated */}
-                {!generatedPdfUrl && (
+                {!hasGeneratedPdf && (
                   <p className="mt-4 text-center text-[11px] text-muted-foreground/60">
                     Generate the invoice to unlock sharing options.
                   </p>
                 )}
 
                 {/* Create another */}
-                {generatedPdfUrl && (
+                {hasGeneratedPdf && (
                   <Button
                     variant="ghost"
                     size="sm"
@@ -1072,6 +1078,8 @@ export default function CreateInvoicePage() {
                   </Button>
                 )}
               </div>
+
+
             </div>
           </div>
           {/* ── END RIGHT SIDEBAR ── */}
@@ -1080,7 +1088,7 @@ export default function CreateInvoicePage() {
           {/* ── END DESKTOP TWO-COLUMN LAYOUT ── */}
 
           {/* Invoice Ready card — mobile only, shown after PDF generated */}
-          {generatedPdfUrl ? (
+          {hasGeneratedPdf ? (
             <Card
               ref={invoiceReadyRef}
               className="border border-emerald-200 bg-[linear-gradient(180deg,rgba(236,253,245,0.88),rgba(255,255,255,0.94))] shadow-[0_24px_70px_-44px_rgba(16,185,129,0.34)] dark:bg-[linear-gradient(180deg,rgba(6,78,59,0.18),rgba(20,24,32,0.92))] lg:hidden"
@@ -1118,8 +1126,8 @@ export default function CreateInvoicePage() {
                     <Download className="size-4" />
                     Download
                   </Button>
-                  <Button asChild variant="outline">
-                    <a href={generatedPdfUrl} target="_blank" rel="noreferrer">
+                  <Button asChild variant="outline" disabled={!openPdfHref}>
+                    <a href={openPdfHref ?? '#'} target="_blank" rel="noreferrer">
                       <Eye className="size-4" />
                       Open PDF
                     </a>
@@ -1131,7 +1139,7 @@ export default function CreateInvoicePage() {
                     variant="outline"
                     className="w-full"
                     onClick={() => {
-                      navigator.clipboard.writeText(generatedPdfUrl!);
+                      navigator.clipboard.writeText(`${window.location.origin}${generatedViewerPath}`);
                       toast.success('Link copied to clipboard.');
                     }}
                   >
