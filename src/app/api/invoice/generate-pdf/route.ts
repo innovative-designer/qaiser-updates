@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { InvoiceDocument } from '@/components/pdf/invoice-document';
 import { safeCurrency, safeNumber, stripHtml } from '@/lib/sanitize';
+import { getSharedInvoicePdfPath, getSharedInvoiceViewerPath } from '@/lib/shared-invoice-links';
 import { supabaseAdmin } from '@/lib/supabase';
 import type { InvoiceData } from '@/types/invoice';
 
@@ -123,11 +124,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to store PDF' }, { status: 500 });
     }
 
-    const { data } = supabaseAdmin.storage.from('invoices').getPublicUrl(fileName);
-
     return NextResponse.json({
       invoiceId: invoiceData.id,
-      pdfUrl: data.publicUrl,
+      viewerPath: getSharedInvoiceViewerPath(invoiceData.id),
+      downloadPath: getSharedInvoicePdfPath(invoiceData.id, { download: true }),
     });
   } catch (error) {
     console.error('PDF generation error:', error);

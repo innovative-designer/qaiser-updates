@@ -1,6 +1,7 @@
 import { captureAnalyticsEvent } from '@/lib/analytics/posthog';
 import { formatCurrency } from '@/lib/currencies';
 import { saveInvoice } from '@/lib/db';
+import { getSharedInvoicePdfPath, getSharedInvoiceViewerPath } from '@/lib/shared-invoice-links';
 import type { InvoiceData } from '@/types/invoice';
 
 type ShareMethod = NonNullable<InvoiceData['sentVia']>;
@@ -9,6 +10,18 @@ type ShareSource = 'create' | 'history';
 export type WhatsAppShareResult = 'shared' | 'fallback' | 'cancelled';
 export interface ShareTrackingContext {
   source: ShareSource;
+}
+
+export function getShareableInvoicePaths(invoice: Pick<InvoiceData, 'id' | 'pdfUrl'>) {
+  if (!invoice.pdfUrl || invoice.pdfUrl.startsWith('blob:')) {
+    return null;
+  }
+
+  return {
+    viewerPath: getSharedInvoiceViewerPath(invoice.id),
+    pdfPath: getSharedInvoicePdfPath(invoice.id),
+    downloadPath: getSharedInvoicePdfPath(invoice.id, { download: true }),
+  };
 }
 
 function buildCaption(invoice: InvoiceData): string {
@@ -33,8 +46,10 @@ async function downloadFile(url: string, fileName: string): Promise<void> {
 }
 
 async function markAsSent(invoice: InvoiceData, via: ShareMethod): Promise<void> {
+  const shareablePaths = getShareableInvoicePaths(invoice);
   const persistedPdfUrl =
-    invoice.pdfUrl && !invoice.pdfUrl.startsWith('blob:') ? invoice.pdfUrl : undefined;
+    shareablePaths?.pdfPath ??
+    (invoice.pdfUrl && !invoice.pdfUrl.startsWith('blob:') ? invoice.pdfUrl : undefined);
 
   await saveInvoice({
     ...invoice,
@@ -48,7 +63,10 @@ export async function shareOnWhatsApp(
   invoice: InvoiceData,
   context: ShareTrackingContext,
 ): Promise<WhatsAppShareResult> {
-  if (!invoice.pdfUrl) {
+  const shareablePaths = getShareableInvoicePaths(invoice);
+  const pdfSource = shareablePaths?.pdfPath ?? invoice.pdfUrl;
+
+  if (!pdfSource) {
     return 'fallback';
   }
 
@@ -59,7 +77,7 @@ export async function shareOnWhatsApp(
   });
 
   try {
-    const response = await fetch(invoice.pdfUrl);
+    const response = await fetch(pdfSource);
     const blob = await response.blob();
     const file = new File([blob], `invoice-${invoice.id}.pdf`, { type: 'application/pdf' });
 
@@ -75,7 +93,7 @@ export async function shareOnWhatsApp(
     }
 
     // Browser doesn't support file sharing — download the PDF as fallback
-    await downloadFile(invoice.pdfUrl, `invoice-${invoice.id}.pdf`);
+    await downloadFile(shareablePaths?.downloadPath ?? pdfSource, `invoice-${invoice.id}.pdf`);
     captureAnalyticsEvent('pdf_downloaded', {
       source: context.source,
       channel: 'whatsapp_fallback',
@@ -87,7 +105,7 @@ export async function shareOnWhatsApp(
       return 'cancelled';
     }
 
-    await downloadFile(invoice.pdfUrl, `invoice-${invoice.id}.pdf`);
+    await downloadFile(shareablePaths?.downloadPath ?? pdfSource, `invoice-${invoice.id}.pdf`);
     captureAnalyticsEvent('pdf_downloaded', {
       source: context.source,
       channel: 'whatsapp_fallback',
@@ -101,11 +119,14 @@ export async function downloadPdf(
   invoice: InvoiceData,
   context: ShareTrackingContext,
 ): Promise<boolean> {
-  if (!invoice.pdfUrl) {
+  const shareablePaths = getShareableInvoicePaths(invoice);
+  const downloadSource = shareablePaths?.downloadPath ?? invoice.pdfUrl;
+
+  if (!downloadSource) {
     return false;
   }
 
-  await downloadFile(invoice.pdfUrl, `invoice-${invoice.id}.pdf`);
+  await downloadFile(downloadSource, `invoice-${invoice.id}.pdf`);
   captureAnalyticsEvent('pdf_downloaded', {
     source: context.source,
     channel: 'download',

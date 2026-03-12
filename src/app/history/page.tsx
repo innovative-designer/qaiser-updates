@@ -16,6 +16,7 @@ import { useLocalInvoices } from '@/hooks/use-local-invoices';
 import { captureAnalyticsEvent } from '@/lib/analytics/posthog';
 import { formatCurrency } from '@/lib/currencies';
 import { downloadPdf, shareOnWhatsApp } from '@/lib/share';
+import { getSharedInvoiceViewerPath } from '@/lib/shared-invoice-links';
 
 function formatInvoiceDate(value: string) {
   return new Date(value).toLocaleDateString('en-US', {
@@ -40,6 +41,14 @@ export default function HistoryPage() {
 
   async function handleWhatsApp(invoice: (typeof invoices)[number]) {
     await shareOnWhatsApp(invoice, { source: 'history' });
+  }
+
+  function getViewerPath(invoice: (typeof invoices)[number]) {
+    if (!invoice.pdfUrl || invoice.pdfUrl.startsWith('blob:')) {
+      return null;
+    }
+
+    return getSharedInvoiceViewerPath(invoice.id);
   }
 
   return (
@@ -167,7 +176,7 @@ export default function HistoryPage() {
                         Download
                       </Button>
                       <Button asChild variant="outline">
-                        <a href={invoice.pdfUrl ?? '#'} target="_blank" rel="noreferrer">
+                        <a href={getViewerPath(invoice) ?? '#'} target="_blank" rel="noreferrer">
                           <Eye className="size-4" />
                           Open PDF
                         </a>
@@ -176,7 +185,7 @@ export default function HistoryPage() {
                         variant="outline"
                         disabled={!invoice.pdfUrl || invoice.pdfUrl.startsWith('blob:')}
                         onClick={() => {
-                          navigator.clipboard.writeText(invoice.pdfUrl!);
+                          navigator.clipboard.writeText(`${window.location.origin}${getViewerPath(invoice)}`);
                           captureAnalyticsEvent('share_clicked', {
                             source: 'history',
                             channel: 'copy_link',
