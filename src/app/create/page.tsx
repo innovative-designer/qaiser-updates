@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 
+import { InvoiceColorPicker } from '@/components/shared/invoice-color-picker';
 import { ProWaitlistBanner } from '@/components/pro-waitlist-banner';
 import { Footer } from '@/components/shared/footer';
 import { Header } from '@/components/shared/header';
@@ -41,7 +42,7 @@ import { useInvoiceForm, type ValidationErrors } from '@/hooks/use-invoice-form'
 import { useLocalInvoices } from '@/hooks/use-local-invoices';
 import { captureAnalyticsEvent } from '@/lib/analytics/posthog';
 import { CURRENCIES, formatCurrency } from '@/lib/currencies';
-import { MAX_INVOICES } from '@/lib/constants';
+import { DEFAULT_ACCENT_COLOR, MAX_INVOICES } from '@/lib/constants';
 import { downloadPdf, shareOnWhatsApp } from '@/lib/share';
 import { getSharedInvoicePdfPath } from '@/lib/shared-invoice-links';
 import { cn } from '@/lib/utils';
@@ -105,8 +106,10 @@ export default function CreateInvoicePage() {
   const [businessEditable, setBusinessEditable] = useState(true);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const logoInputRef = useRef<HTMLInputElement>(null);
+  const [accentColor, setAccentColor] = useState(DEFAULT_ACCENT_COLOR);
 
   const BUSINESS_STORAGE_KEY = 'freeinvoicekit_business_info';
+  const ACCENT_COLOR_KEY = 'freeinvoicekit_accent_color';
 
   const today = useMemo(() => new Date().toISOString().split('T')[0] ?? '', []);
   const storageMessage = loading
@@ -134,6 +137,14 @@ export default function CreateInvoicePage() {
     } catch {
       // ignore invalid localStorage data
     }
+
+    // Load accent color preference
+    try {
+      const savedColor = localStorage.getItem(ACCENT_COLOR_KEY);
+      if (savedColor) setAccentColor(savedColor);
+    } catch {
+      // ignore
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -152,6 +163,15 @@ export default function CreateInvoicePage() {
     setBusinessEditable(false);
     toast.success('Business info saved for future invoices.');
   }, [invoice.businessName, invoice.businessEmail, invoice.businessPhone, invoice.businessAddress, logoPreview]);
+
+  const handleAccentColorChange = useCallback((color: string) => {
+    setAccentColor(color);
+    try {
+      localStorage.setItem(ACCENT_COLOR_KEY, color);
+    } catch {
+      // ignore
+    }
+  }, []);
 
   const handleClearBusinessInfo = useCallback(() => {
     localStorage.removeItem(BUSINESS_STORAGE_KEY);
@@ -247,7 +267,7 @@ export default function CreateInvoicePage() {
       const response = await fetch('/api/invoice/generate-pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...invoice, businessLogo: logoPreview || undefined }),
+        body: JSON.stringify({ ...invoice, businessLogo: logoPreview || undefined, accentColor }),
       });
 
       if (!response.ok) {
@@ -280,7 +300,12 @@ export default function CreateInvoicePage() {
       setGeneratedPdfUrl(resolvedPdfUrl);
       setGeneratedViewerPath(resolvedViewerPath);
       setTimeout(() => {
-        invoiceReadyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
+        if (isDesktop) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          invoiceReadyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
       }, 100);
 
       if (persistedPdfUrl) {
@@ -412,6 +437,7 @@ export default function CreateInvoicePage() {
                 ? 'ring-2 ring-destructive/20'
                 : undefined
             )}
+            style={{ '--invoice-accent': accentColor } as React.CSSProperties}
           >
 
             {/* ── SECTION 1: Invoice Header ── */}
@@ -519,7 +545,7 @@ export default function CreateInvoicePage() {
                 )}
               >
                 <div className="mb-3 flex items-center justify-between">
-                  <span className="text-[10px] font-bold tracking-[0.14em] uppercase text-muted-foreground/60">
+                  <span className="text-[10px] font-bold tracking-[0.14em] uppercase" style={{ color: 'var(--invoice-accent)' }}>
                     From
                   </span>
                   <div className="flex items-center gap-1">
@@ -656,7 +682,7 @@ export default function CreateInvoicePage() {
                 )}
               >
                 <div className="mb-3">
-                  <span className="text-[10px] font-bold tracking-[0.14em] uppercase text-muted-foreground/60">
+                  <span className="text-[10px] font-bold tracking-[0.14em] uppercase" style={{ color: 'var(--invoice-accent)' }}>
                     Bill To
                   </span>
                 </div>
@@ -714,11 +740,11 @@ export default function CreateInvoicePage() {
               )}
             >
               {/* Table header — desktop */}
-              <div className="hidden grid-cols-[minmax(0,1fr)_72px_120px_120px_40px] gap-3 border-b border-border/40 bg-muted/30 px-8 py-2.5 lg:grid">
-                <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-muted-foreground/70">Description</p>
-                <p className="text-right text-[10px] font-bold tracking-[0.12em] uppercase text-muted-foreground/70">Qty</p>
-                <p className="text-right text-[10px] font-bold tracking-[0.12em] uppercase text-muted-foreground/70">Rate</p>
-                <p className="text-right text-[10px] font-bold tracking-[0.12em] uppercase text-muted-foreground/70">Amount</p>
+              <div className="hidden grid-cols-[minmax(0,1fr)_72px_120px_120px_40px] gap-3 border-b border-border/40 px-8 py-2.5 lg:grid" style={{ backgroundColor: `color-mix(in srgb, var(--invoice-accent) 8%, transparent)` }}>
+                <p className="text-[10px] font-bold tracking-[0.12em] uppercase" style={{ color: 'var(--invoice-accent)' }}>Description</p>
+                <p className="text-right text-[10px] font-bold tracking-[0.12em] uppercase" style={{ color: 'var(--invoice-accent)' }}>Qty</p>
+                <p className="text-right text-[10px] font-bold tracking-[0.12em] uppercase" style={{ color: 'var(--invoice-accent)' }}>Rate</p>
+                <p className="text-right text-[10px] font-bold tracking-[0.12em] uppercase" style={{ color: 'var(--invoice-accent)' }}>Amount</p>
                 <span />
               </div>
 
@@ -895,7 +921,7 @@ export default function CreateInvoicePage() {
 
                 {/* Right: Invoice summary block */}
                 <div className="w-full rounded-xl border border-border/60 bg-muted/20 p-5 lg:w-[260px] lg:shrink-0">
-                  <p className="mb-3 text-[10px] font-bold tracking-[0.12em] uppercase text-muted-foreground/60">
+                  <p className="mb-3 text-[10px] font-bold tracking-[0.12em] uppercase" style={{ color: 'var(--invoice-accent)' }}>
                     Summary
                   </p>
                   <div className="space-y-2">
@@ -917,7 +943,7 @@ export default function CreateInvoicePage() {
                   <Separator className="my-3" />
                   <div className="flex items-center justify-between tabular-nums">
                     <span className="text-sm font-semibold text-foreground">Total</span>
-                    <span className="text-2xl font-bold tracking-tight text-primary">
+                    <span className="text-2xl font-bold tracking-tight" style={{ color: 'var(--invoice-accent)' }}>
                       {formatCurrency(invoice.total, invoice.currency)}
                     </span>
                   </div>
@@ -1079,6 +1105,8 @@ export default function CreateInvoicePage() {
                 )}
               </div>
 
+              {/* ── Accent Color Picker ── */}
+              <InvoiceColorPicker value={accentColor} onChange={handleAccentColorChange} />
 
             </div>
           </div>
