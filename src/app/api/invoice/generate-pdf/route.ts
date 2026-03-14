@@ -2,7 +2,7 @@ import { renderToBuffer } from '@react-pdf/renderer';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { InvoiceDocument } from '@/components/pdf/invoice-document';
-import { safeCurrency, safeNumber, stripHtml } from '@/lib/sanitize';
+import { safeCurrency, safeNumber, safePdfTemplateId, stripHtml } from '@/lib/sanitize';
 import { getSharedInvoicePdfPath, getSharedInvoiceViewerPath } from '@/lib/shared-invoice-links';
 import { supabaseAdmin } from '@/lib/supabase';
 import type { InvoiceData } from '@/types/invoice';
@@ -57,6 +57,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const sanitized = {
       ...body,
+      pdfTemplateId: safePdfTemplateId(body.pdfTemplateId),
       businessName: stripHtml(body.businessName),
       businessEmail: stripHtml(body.businessEmail),
       businessPhone: stripHtml(body.businessPhone),

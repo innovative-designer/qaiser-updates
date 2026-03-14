@@ -1,4 +1,7 @@
 import { CURRENCIES } from '@/lib/currencies';
+import { DEFAULT_PDF_TEMPLATE_ID } from '@/lib/constants';
+import { PDF_TEMPLATES } from '@/lib/pdf-templates';
+import type { PdfTemplateId } from '@/types/pdf-template';
 
 /**
  * Strip HTML tags from a string to prevent injection in rendered output.
@@ -28,4 +31,13 @@ export function safeCurrency(value: unknown): string {
     return value.toUpperCase();
   }
   return 'USD';
+}
+
+const ALLOWED_PDF_TEMPLATES = new Set<PdfTemplateId>(PDF_TEMPLATES.map((t) => t.id));
+
+export function safePdfTemplateId(value: unknown): PdfTemplateId {
+  if (typeof value === 'string' && ALLOWED_PDF_TEMPLATES.has(value as PdfTemplateId)) {
+    return value as PdfTemplateId;
+  }
+  return DEFAULT_PDF_TEMPLATE_ID;
 }
