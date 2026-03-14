@@ -21,6 +21,8 @@ import {
 import { toast } from 'sonner';
 
 import { InvoiceColorPicker } from '@/components/shared/invoice-color-picker';
+import { PdfTemplatePicker } from '@/components/shared/pdf-template-picker';
+import { SidebarDesign } from '@/components/shared/sidebar-design';
 import { ProWaitlistBanner } from '@/components/pro-waitlist-banner';
 import { Footer } from '@/components/shared/footer';
 import { Header } from '@/components/shared/header';
@@ -42,9 +44,10 @@ import { useInvoiceForm, type ValidationErrors } from '@/hooks/use-invoice-form'
 import { useLocalInvoices } from '@/hooks/use-local-invoices';
 import { captureAnalyticsEvent } from '@/lib/analytics/posthog';
 import { CURRENCIES, formatCurrency } from '@/lib/currencies';
-import { DEFAULT_ACCENT_COLOR, MAX_INVOICES } from '@/lib/constants';
+import { DEFAULT_ACCENT_COLOR, DEFAULT_PDF_TEMPLATE_ID, MAX_INVOICES } from '@/lib/constants';
 import { downloadPdf, shareOnWhatsApp } from '@/lib/share';
 import { getSharedInvoicePdfPath } from '@/lib/shared-invoice-links';
+import type { PdfTemplateId } from '@/types/pdf-template';
 import { cn } from '@/lib/utils';
 
 function getNumberValue(value: string) {
@@ -107,9 +110,11 @@ export default function CreateInvoicePage() {
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const logoInputRef = useRef<HTMLInputElement>(null);
   const [accentColor, setAccentColor] = useState(DEFAULT_ACCENT_COLOR);
+  const [pdfTemplateId, setPdfTemplateId] = useState<PdfTemplateId>(DEFAULT_PDF_TEMPLATE_ID);
 
   const BUSINESS_STORAGE_KEY = 'freeinvoicekit_business_info';
   const ACCENT_COLOR_KEY = 'freeinvoicekit_accent_color';
+  const PDF_TEMPLATE_KEY = 'freeinvoicekit_pdf_template';
 
   const today = useMemo(() => new Date().toISOString().split('T')[0] ?? '', []);
   const storageMessage = loading
@@ -145,6 +150,14 @@ export default function CreateInvoicePage() {
     } catch {
       // ignore
     }
+
+    // Load PDF template preference
+    try {
+      const savedTemplate = localStorage.getItem(PDF_TEMPLATE_KEY);
+      if (savedTemplate) setPdfTemplateId(savedTemplate as PdfTemplateId);
+    } catch {
+      // ignore
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -172,6 +185,18 @@ export default function CreateInvoicePage() {
       // ignore
     }
   }, []);
+
+  const handleTemplateChange = useCallback((id: PdfTemplateId) => {
+    setPdfTemplateId(id);
+    try {
+      localStorage.setItem(PDF_TEMPLATE_KEY, id);
+    } catch {
+      // ignore
+    }
+    if (hasGeneratedPdf) {
+      toast.info('Layout changed. Generate again to update the PDF.');
+    }
+  }, [hasGeneratedPdf]);
 
   const handleClearBusinessInfo = useCallback(() => {
     localStorage.removeItem(BUSINESS_STORAGE_KEY);
@@ -267,7 +292,7 @@ export default function CreateInvoicePage() {
       const response = await fetch('/api/invoice/generate-pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...invoice, businessLogo: logoPreview || undefined, accentColor }),
+        body: JSON.stringify({ ...invoice, businessLogo: logoPreview || undefined, accentColor, pdfTemplateId }),
       });
 
       if (!response.ok) {
@@ -318,6 +343,7 @@ export default function CreateInvoicePage() {
         ...invoice,
         status: 'sent',
         pdfUrl: persistedPdfUrl,
+        pdfTemplateId,
       });
 
       captureAnalyticsEvent('invoice_created', {
@@ -427,7 +453,7 @@ export default function CreateInvoicePage() {
           </div>
 
           {/* ── DESKTOP TWO-COLUMN LAYOUT ── */}
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-6">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-5">
 
           {/* ── INVOICE DOCUMENT CARD ── */}
           <div
@@ -951,8 +977,18 @@ export default function CreateInvoicePage() {
               </div>
             </div>
 
+            {/* ── Mobile Design (Color + Template) ── */}
+            <div className="space-y-3 p-5 sm:p-6 lg:hidden">
+              <SidebarDesign
+                accentColor={accentColor}
+                onAccentColorChange={handleAccentColorChange}
+                pdfTemplateId={pdfTemplateId}
+                onTemplateChange={handleTemplateChange}
+              />
+            </div>
+
             {/* ── SECTION 5: Primary Actions ── */}
-            <div className="flex flex-col items-center gap-3 p-5 sm:flex-row sm:justify-end sm:gap-2.5 sm:p-6">
+            <div className="flex flex-col items-center gap-0.5 p-5 sm:flex-row sm:justify-end sm:gap-2.5 sm:p-6">
               <Button
                 type="button"
                 variant="outline"
@@ -986,7 +1022,7 @@ export default function CreateInvoicePage() {
                 ) : (
                   <>
                     <Sparkles className="size-4" />
-                    Generate Invoice
+                    {hasGeneratedPdf ? 'Regenerate Invoice' : 'Generate Invoice'}
                   </>
                 )}
               </Button>
@@ -995,11 +1031,11 @@ export default function CreateInvoicePage() {
           {/* ── END INVOICE DOCUMENT CARD ── */}
 
           {/* ── RIGHT SIDEBAR (desktop only) ── */}
-          <div className="hidden lg:block lg:w-60 lg:shrink-0">
+          <div className="hidden lg:block lg:w-72 lg:shrink-0">
             <div className="sticky top-6 space-y-3">
               <div
                 className={cn(
-                  'rounded-(--radius-card) border bg-card p-5 shadow-(--shadow-card) transition-all',
+                  'rounded-(--radius-card) border bg-card p-4 shadow-(--shadow-card) transition-all',
                   generatedPdfUrl
                     ? 'border-emerald-200 bg-[linear-gradient(180deg,rgba(236,253,245,0.88),rgba(255,255,255,0.94))] shadow-[0_24px_70px_-44px_rgba(16,185,129,0.34)] dark:bg-[linear-gradient(180deg,rgba(6,78,59,0.18),rgba(20,24,32,0.92))]'
                     : undefined
@@ -1105,8 +1141,13 @@ export default function CreateInvoicePage() {
                 )}
               </div>
 
-              {/* ── Accent Color Picker ── */}
-              <InvoiceColorPicker value={accentColor} onChange={handleAccentColorChange} />
+              {/* ── Design (Color + Template) ── */}
+              <SidebarDesign
+                accentColor={accentColor}
+                onAccentColorChange={handleAccentColorChange}
+                pdfTemplateId={pdfTemplateId}
+                onTemplateChange={handleTemplateChange}
+              />
 
             </div>
           </div>

@@ -6,6 +6,8 @@ export interface LineItem {
   amount: number;
 }
 
+import type { PdfTemplateId } from '@/types/pdf-template';
+
 export interface InvoiceData {
   id: string;
   businessName: string;
@@ -32,6 +34,7 @@ export interface InvoiceData {
   sentAt?: string;
   sentVia?: 'whatsapp' | 'email' | 'download' | 'copy';
   accentColor?: string;
+  pdfTemplateId?: PdfTemplateId;
 }
 
 export interface CurrencyInfo {

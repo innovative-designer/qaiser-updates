@@ -14,6 +14,8 @@ export const DEFAULT_DISCOUNT = 0;
 
 export const DEFAULT_ACCENT_COLOR = '#4266c4';
 
+export const DEFAULT_PDF_TEMPLATE_ID = 'classic' as const;
+
 /** Two rows of accent color palettes for invoice theming. */
 export const INVOICE_COLOR_PALETTES = [
   // Row 1: Classic / Professional
