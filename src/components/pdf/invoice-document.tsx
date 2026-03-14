@@ -1,26 +1,52 @@
 import { Document, Image, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 
-import { APP_NAME, APP_TAGLINE, APP_URL } from '@/lib/constants';
+import { APP_NAME, APP_TAGLINE, APP_URL, DEFAULT_ACCENT_COLOR } from '@/lib/constants';
 import { formatCurrency } from '@/lib/currencies';
 import type { InvoiceData } from '@/types/invoice';
 
-const colors = {
-  ink: '#1a2433',
-  slate: '#617084',
-  line: '#d7dee8',
-  lineStrong: '#bcc8d6',
-  accent: '#4266c4',
-  accentDeep: '#274180',
-  accentSoft: '#eef3ff',
-  paper: '#fdfaf4',
-  quietPanel: '#f6f2ea',
-  white: '#ffffff',
-};
+/** Darken a hex color by mixing with black. ratio 0-1, 0 = original, 1 = black */
+function darkenHex(hex: string, ratio: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  const dr = Math.round(r * (1 - ratio));
+  const dg = Math.round(g * (1 - ratio));
+  const db = Math.round(b * (1 - ratio));
+  return `#${dr.toString(16).padStart(2, '0')}${dg.toString(16).padStart(2, '0')}${db.toString(16).padStart(2, '0')}`;
+}
+
+/** Lighten a hex color by mixing with white. ratio 0-1, 0 = original, 1 = white */
+function lightenHex(hex: string, ratio: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  const lr = Math.round(r + (255 - r) * ratio);
+  const lg = Math.round(g + (255 - g) * ratio);
+  const lb = Math.round(b + (255 - b) * ratio);
+  return `#${lr.toString(16).padStart(2, '0')}${lg.toString(16).padStart(2, '0')}${lb.toString(16).padStart(2, '0')}`;
+}
+
+function buildColors(accent: string) {
+  return {
+    ink: '#1a2433',
+    slate: '#617084',
+    line: '#d7dee8',
+    lineStrong: '#bcc8d6',
+    accent,
+    accentDeep: darkenHex(accent, 0.4),
+    accentSoft: lightenHex(accent, 0.9),
+    paper: '#fdfaf4',
+    quietPanel: '#f6f2ea',
+    white: '#ffffff',
+  };
+}
+
+const defaultColors = buildColors(DEFAULT_ACCENT_COLOR);
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: colors.paper,
-    color: colors.ink,
+    backgroundColor: defaultColors.paper,
+    color: defaultColors.ink,
     fontFamily: 'Helvetica',
     fontSize: 10,
     paddingTop: 40,
@@ -32,7 +58,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     paddingBottom: 18,
     borderBottomWidth: 1,
-    borderBottomColor: colors.lineStrong,
+    borderBottomColor: defaultColors.lineStrong,
     borderBottomStyle: 'solid',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -44,7 +70,7 @@ const styles = StyleSheet.create({
     fontSize: 8,
     textTransform: 'uppercase',
     letterSpacing: 1.9,
-    color: colors.slate,
+    color: defaultColors.slate,
     marginBottom: 6,
   },
   businessName: {
@@ -54,7 +80,7 @@ const styles = StyleSheet.create({
   },
   businessLine: {
     fontSize: 9,
-    color: colors.slate,
+    color: defaultColors.slate,
     lineHeight: 1.45,
     marginBottom: 2,
   },
@@ -66,7 +92,7 @@ const styles = StyleSheet.create({
     fontSize: 27,
     letterSpacing: 1.6,
     textTransform: 'uppercase',
-    color: colors.accentDeep,
+    color: defaultColors.accentDeep,
     fontFamily: 'Helvetica-Bold',
   },
   metaCard: {
@@ -74,8 +100,8 @@ const styles = StyleSheet.create({
     marginTop: 12,
     padding: 13,
     borderWidth: 1,
-    borderColor: colors.lineStrong,
-    backgroundColor: colors.accentSoft,
+    borderColor: defaultColors.lineStrong,
+    backgroundColor: defaultColors.accentSoft,
   },
   metaRow: {
     flexDirection: 'row',
@@ -90,11 +116,11 @@ const styles = StyleSheet.create({
     fontSize: 8,
     textTransform: 'uppercase',
     letterSpacing: 1.4,
-    color: colors.slate,
+    color: defaultColors.slate,
   },
   metaValue: {
     fontSize: 9,
-    color: colors.ink,
+    color: defaultColors.ink,
     fontFamily: 'Helvetica-Bold',
   },
   addressSection: {
@@ -106,8 +132,8 @@ const styles = StyleSheet.create({
     width: '48%',
     padding: 16,
     borderWidth: 1,
-    borderColor: colors.lineStrong,
-    backgroundColor: colors.white,
+    borderColor: defaultColors.lineStrong,
+    backgroundColor: defaultColors.white,
   },
   addressName: {
     fontSize: 12,
@@ -116,7 +142,7 @@ const styles = StyleSheet.create({
   },
   addressLine: {
     fontSize: 9,
-    color: colors.slate,
+    color: defaultColors.slate,
     lineHeight: 1.5,
     marginBottom: 2,
   },
@@ -127,8 +153,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingBottom: 8,
     borderBottomWidth: 1,
-    borderBottomColor: colors.lineStrong,
-    backgroundColor: colors.quietPanel,
+    borderBottomColor: defaultColors.lineStrong,
+    backgroundColor: defaultColors.quietPanel,
     paddingTop: 7,
     paddingLeft: 10,
     paddingRight: 10,
@@ -137,7 +163,7 @@ const styles = StyleSheet.create({
     fontSize: 8,
     textTransform: 'uppercase',
     letterSpacing: 1.5,
-    color: colors.slate,
+    color: defaultColors.slate,
     fontFamily: 'Helvetica-Bold',
   },
   tableRow: {
@@ -147,7 +173,7 @@ const styles = StyleSheet.create({
     paddingBottom: 11,
     paddingLeft: 10,
     borderBottomWidth: 1,
-    borderBottomColor: colors.line,
+    borderBottomColor: defaultColors.line,
     borderBottomStyle: 'solid',
   },
   descriptionCol: {
@@ -173,11 +199,11 @@ const styles = StyleSheet.create({
   },
   itemSubtle: {
     fontSize: 8,
-    color: colors.slate,
+    color: defaultColors.slate,
   },
   itemValue: {
     fontSize: 10,
-    color: colors.ink,
+    color: defaultColors.ink,
   },
   totalsWrap: {
     marginTop: 20,
@@ -192,11 +218,11 @@ const styles = StyleSheet.create({
   },
   totalLabel: {
     fontSize: 9,
-    color: colors.slate,
+    color: defaultColors.slate,
   },
   totalValue: {
     fontSize: 9,
-    color: colors.ink,
+    color: defaultColors.ink,
     fontFamily: 'Helvetica-Bold',
   },
   grandTotalRow: {
@@ -205,40 +231,40 @@ const styles = StyleSheet.create({
     marginTop: 12,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: colors.lineStrong,
+    borderTopColor: defaultColors.lineStrong,
   },
   grandTotalLabel: {
     fontSize: 12.5,
-    color: colors.ink,
+    color: defaultColors.ink,
     fontFamily: 'Helvetica-Bold',
   },
   grandTotalValue: {
     fontSize: 13,
-    color: colors.accentDeep,
+    color: defaultColors.accentDeep,
     fontFamily: 'Helvetica-Bold',
   },
   notesSection: {
     marginTop: 24,
     padding: 15,
     borderWidth: 1,
-    borderColor: colors.lineStrong,
-    backgroundColor: colors.white,
+    borderColor: defaultColors.lineStrong,
+    backgroundColor: defaultColors.white,
   },
   notesText: {
     fontSize: 9,
-    color: colors.slate,
+    color: defaultColors.slate,
     lineHeight: 1.6,
   },
   placeholderBox: {
     marginTop: 18,
     padding: 12,
-    backgroundColor: colors.quietPanel,
+    backgroundColor: defaultColors.quietPanel,
     borderWidth: 1,
-    borderColor: colors.lineStrong,
+    borderColor: defaultColors.lineStrong,
   },
   placeholderText: {
     fontSize: 8,
-    color: colors.slate,
+    color: defaultColors.slate,
     textAlign: 'center',
     textTransform: 'uppercase',
     letterSpacing: 1,
@@ -250,7 +276,7 @@ const styles = StyleSheet.create({
     bottom: 26,
     paddingTop: 11,
     borderTopWidth: 1,
-    borderTopColor: colors.line,
+    borderTopColor: defaultColors.line,
   },
   footerText: {
     fontSize: 8,
@@ -281,9 +307,11 @@ function formatDate(value: string) {
 interface InvoiceDocumentProps {
   invoice: InvoiceData;
   businessLogo?: string;
+  accentColor?: string;
 }
 
-export function InvoiceDocument({ invoice, businessLogo }: InvoiceDocumentProps) {
+export function InvoiceDocument({ invoice, businessLogo, accentColor }: InvoiceDocumentProps) {
+  const c = accentColor && accentColor !== DEFAULT_ACCENT_COLOR ? buildColors(accentColor) : null;
   const businessLines = [
     invoice.businessEmail,
     invoice.businessPhone,
@@ -321,8 +349,8 @@ export function InvoiceDocument({ invoice, businessLogo }: InvoiceDocumentProps)
           </View>
 
           <View style={styles.invoiceBlock}>
-            <Text style={styles.invoiceLabel}>Invoice</Text>
-            <View style={styles.metaCard}>
+            <Text style={[styles.invoiceLabel, c ? { color: c.accentDeep } : {}]}>Invoice</Text>
+            <View style={[styles.metaCard, c ? { backgroundColor: c.accentSoft } : {}]}>
               <View style={styles.metaRow}>
                 <Text style={styles.metaLabel}>Invoice ID</Text>
                 <Text style={styles.metaValue}>#{invoice.id}</Text>
@@ -356,7 +384,7 @@ export function InvoiceDocument({ invoice, businessLogo }: InvoiceDocumentProps)
         </View>
 
         <View style={styles.table}>
-          <View style={styles.tableHeader}>
+          <View style={[styles.tableHeader, c ? { backgroundColor: c.accentSoft } : {}]}>
             <Text style={[styles.tableHeaderText, styles.descriptionCol]}>Description</Text>
             <Text style={[styles.tableHeaderText, styles.qtyCol]}>Qty</Text>
             <Text style={[styles.tableHeaderText, styles.rateCol]}>Rate</Text>
@@ -408,7 +436,7 @@ export function InvoiceDocument({ invoice, businessLogo }: InvoiceDocumentProps)
 
           <View style={styles.grandTotalRow}>
             <Text style={styles.grandTotalLabel}>Total</Text>
-            <Text style={styles.grandTotalValue}>
+            <Text style={[styles.grandTotalValue, c ? { color: c.accentDeep } : {}]}>
               {formatCurrency(invoice.total, invoice.currency)}
             </Text>
           </View>

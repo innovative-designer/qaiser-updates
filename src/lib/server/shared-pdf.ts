@@ -11,7 +11,7 @@ export function buildPdfResponseHeaders(
   const disposition = options.download ? 'attachment' : 'inline';
 
   return {
-    'Cache-Control': 'public, max-age=300',
+    'Cache-Control': 'no-cache',
     'Content-Disposition': `${disposition}; filename="invoice-${invoiceId}.pdf"`,
     'Content-Type': 'application/pdf',
   };

@@ -87,6 +87,12 @@ export async function POST(request: NextRequest) {
         ? body.businessLogo
         : undefined;
 
+    // Pass through accent color (hex string) if provided
+    const accentColor =
+      typeof body.accentColor === 'string' && /^#[0-9a-fA-F]{6}$/.test(body.accentColor)
+        ? body.accentColor
+        : undefined;
+
     if (!hasRequiredInvoiceFields(invoiceData)) {
       return NextResponse.json(
         {
@@ -97,7 +103,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const pdfBuffer = await renderToBuffer(InvoiceDocument({ invoice: invoiceData, businessLogo }));
+    const pdfBuffer = await renderToBuffer(InvoiceDocument({ invoice: invoiceData, businessLogo, accentColor }));
     const pdfBytes = new Uint8Array(pdfBuffer);
 
     if (!supabaseAdmin) {

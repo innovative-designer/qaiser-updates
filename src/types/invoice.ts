@@ -31,6 +31,7 @@ export interface InvoiceData {
   pdfUrl?: string;
   sentAt?: string;
   sentVia?: 'whatsapp' | 'email' | 'download' | 'copy';
+  accentColor?: string;
 }
 
 export interface CurrencyInfo {
