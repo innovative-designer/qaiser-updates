@@ -978,17 +978,18 @@ export default function CreateInvoicePage() {
             </div>
 
             {/* ── Mobile Design (Color + Template) ── */}
-            <div className="space-y-3 p-5 sm:p-6 lg:hidden">
+            <div className="pt-2 pb-1 px-5 sm:px-6 lg:hidden">
               <SidebarDesign
                 accentColor={accentColor}
                 onAccentColorChange={handleAccentColorChange}
                 pdfTemplateId={pdfTemplateId}
                 onTemplateChange={handleTemplateChange}
+                collapsible
               />
             </div>
 
             {/* ── SECTION 5: Primary Actions ── */}
-            <div className="flex flex-col items-center gap-0.5 p-5 sm:flex-row sm:justify-end sm:gap-2.5 sm:p-6">
+            <div className="flex flex-col items-center gap-3 px-5 pb-6 pt-2 sm:flex-row sm:justify-end sm:gap-2.5 sm:px-6">
               <Button
                 type="button"
                 variant="outline"
@@ -1032,7 +1033,7 @@ export default function CreateInvoicePage() {
 
           {/* ── RIGHT SIDEBAR (desktop only) ── */}
           <div className="hidden lg:block lg:w-72 lg:shrink-0">
-            <div className="sticky top-6 space-y-3">
+            <div className="sticky top-6 space-y-[7px]">
               <div
                 className={cn(
                   'rounded-(--radius-card) border bg-card p-4 shadow-(--shadow-card) transition-all',
