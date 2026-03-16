@@ -4,6 +4,12 @@ import { APP_NAME, APP_TAGLINE, APP_URL, DEFAULT_ACCENT_COLOR } from '@/lib/cons
 import { formatCurrency } from '@/lib/currencies';
 import { buildColors, defaultColors } from '@/components/pdf/shared/colors';
 import { formatDate } from '@/components/pdf/shared/format';
+import {
+  getBillFromName,
+  getBrandName,
+  getBusinessLines,
+  getClientLines,
+} from '@/components/pdf/shared/parties';
 import type { InvoiceDocumentProps } from '@/components/pdf/shared/types';
 
 const styles = StyleSheet.create({
@@ -33,6 +39,13 @@ const styles = StyleSheet.create({
   },
   brandBlock: {
     maxWidth: 270,
+  },
+  brandRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  brandText: {
+    marginLeft: 12,
   },
   businessName: {
     fontSize: 20,
@@ -76,8 +89,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Helvetica-Bold',
     color: '#ffffff',
   },
-  billToSection: {
+  addressSection: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: 24,
+  },
+  addressCard: {
+    width: '48%',
     padding: 16,
     borderLeftWidth: 3,
     borderLeftColor: defaultColors.accent,
@@ -240,14 +258,10 @@ export function BoldInvoiceDocument({ invoice, businessLogo, accentColor }: Invo
   const accentDeep = c?.accentDeep || defaultColors.accentDeep;
   const accentSoft = c?.accentSoft || defaultColors.accentSoft;
 
-  const businessLines = [
-    invoice.businessEmail,
-    invoice.businessPhone,
-    invoice.businessAddress,
-  ].filter(Boolean);
-  const clientLines = [invoice.clientCompany, invoice.clientEmail, invoice.clientPhone].filter(
-    Boolean
-  );
+  const brandName = getBrandName(invoice);
+  const billFromName = getBillFromName(invoice);
+  const businessLines = getBusinessLines(invoice);
+  const clientLines = getClientLines(invoice);
   const lineItems = invoice.lineItems.filter((item) => item.description.trim());
 
   return (
@@ -259,27 +273,14 @@ export function BoldInvoiceDocument({ invoice, businessLogo, accentColor }: Invo
         {/* Masthead: logo + business info | INVOICE label */}
         <View style={styles.masthead}>
           <View style={styles.brandBlock}>
-            {businessLogo ? (
-              <Image
-                src={businessLogo}
-                style={{ width: 52, height: 52, marginBottom: 8, objectFit: 'contain' }}
-              />
-            ) : null}
-            <Text style={styles.businessName}>{invoice.businessName || 'Your Business'}</Text>
-            {invoice.senderName?.trim() ? (
-              <Text style={styles.businessLine}>{invoice.senderName}</Text>
-            ) : null}
-            {businessLines.length > 0 ? (
-              businessLines.map((line) => (
-                <Text key={line} style={styles.businessLine}>
-                  {line}
-                </Text>
-              ))
-            ) : (
-              <Text style={styles.businessLine}>
-                Add your business details in Free Invoice Kit.
-              </Text>
-            )}
+            <View style={styles.brandRow}>
+              {businessLogo ? (
+                <Image src={businessLogo} style={{ width: 52, height: 52, objectFit: 'contain' }} />
+              ) : null}
+              <View style={[styles.brandText, !businessLogo ? { marginLeft: 0 } : {}]}>
+                <Text style={styles.businessName}>{brandName}</Text>
+              </View>
+            </View>
           </View>
 
           <View style={{ alignItems: 'flex-end', justifyContent: 'flex-start' }}>
@@ -307,19 +308,34 @@ export function BoldInvoiceDocument({ invoice, businessLogo, accentColor }: Invo
           </View>
         </View>
 
-        {/* Bill To */}
-        <View style={[styles.billToSection, { borderLeftColor: accent }]}>
-          <Text style={styles.sectionEyebrow}>Bill To</Text>
-          <Text style={styles.clientName}>{invoice.clientName || 'Client Name'}</Text>
-          {clientLines.length > 0 ? (
-            clientLines.map((line) => (
-              <Text key={line} style={styles.clientLine}>
-                {line}
-              </Text>
-            ))
-          ) : (
-            <Text style={styles.clientLine}>Client details will appear here.</Text>
-          )}
+        {/* Bill From / Bill To */}
+        <View style={styles.addressSection}>
+          <View style={[styles.addressCard, { borderLeftColor: accent }]}>
+            <Text style={styles.sectionEyebrow}>Bill From</Text>
+            <Text style={styles.clientName}>{billFromName}</Text>
+            {businessLines.length > 0 ? (
+              businessLines.map((line) => (
+                <Text key={line} style={styles.clientLine}>
+                  {line}
+                </Text>
+              ))
+            ) : (
+              <Text style={styles.clientLine}>Business details will appear here.</Text>
+            )}
+          </View>
+          <View style={[styles.addressCard, { borderLeftColor: accent }]}>
+            <Text style={styles.sectionEyebrow}>Bill To</Text>
+            <Text style={styles.clientName}>{invoice.clientName || 'Client Name'}</Text>
+            {clientLines.length > 0 ? (
+              clientLines.map((line) => (
+                <Text key={line} style={styles.clientLine}>
+                  {line}
+                </Text>
+              ))
+            ) : (
+              <Text style={styles.clientLine}>Client details will appear here.</Text>
+            )}
+          </View>
         </View>
 
         {/* Line Items Table */}

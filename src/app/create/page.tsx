@@ -20,8 +20,6 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { InvoiceColorPicker } from '@/components/shared/invoice-color-picker';
-import { PdfTemplatePicker } from '@/components/shared/pdf-template-picker';
 import { SidebarDesign } from '@/components/shared/sidebar-design';
 import { ProWaitlistBanner } from '@/components/pro-waitlist-banner';
 import { Footer } from '@/components/shared/footer';
@@ -61,6 +59,20 @@ function getNumberValue(value: string) {
 
 function selectAll(event: React.FocusEvent<HTMLInputElement>) {
   event.currentTarget.select();
+}
+
+function getInitials(value: string) {
+  const parts = value
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2);
+
+  if (parts.length === 0) {
+    return 'QB';
+  }
+
+  return parts.map((part) => part[0]?.toUpperCase() ?? '').join('');
 }
 
 interface FieldProps {
@@ -176,7 +188,7 @@ export default function CreateInvoicePage() {
     localStorage.setItem(BUSINESS_STORAGE_KEY, JSON.stringify(data));
     setHasSavedBusiness(true);
     setBusinessEditable(false);
-    toast.success('Business info saved for future invoices.');
+    toast.success('Brand and sender details saved for future invoices.');
   }, [invoice.businessName, invoice.businessEmail, invoice.businessPhone, invoice.businessAddress, invoice.senderName, logoPreview]);
 
   const handleAccentColorChange = useCallback((color: string) => {
@@ -469,61 +481,163 @@ export default function CreateInvoicePage() {
             style={{ '--invoice-accent': accentColor } as React.CSSProperties}
           >
 
-            {/* ── SECTION 1: Invoice Header ── */}
-            <div className="grid grid-cols-1 items-stretch gap-5 border-b border-border/60 p-5 sm:grid-cols-2 sm:p-6">
+            {/* ── SECTION 1: Brand + Invoice Header ── */}
+            <div className="grid grid-cols-1 items-start gap-5 border-b border-border/60 p-5 sm:p-6 xl:grid-cols-[minmax(0,1.35fr)_minmax(280px,0.9fr)]">
 
-              {/* Left: Logo upload */}
-              <div className="flex h-full flex-col gap-2">
-                <label
-                  htmlFor="business-logo-input"
-                  className="group relative flex h-40 w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-border/50 bg-muted/20 transition-all hover:border-primary/40 hover:bg-muted/30"
-                >
-                  {logoPreview ? (
-                    <>
-                      <Image
-                        src={logoPreview}
-                        alt="Business logo"
-                        fill
-                        unoptimized
-                        sizes="(max-width: 640px) 100vw, 50vw"
-                        className="object-contain p-2"
-                      />
-                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 rounded-xl bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
-                        <ImagePlus className="size-4 text-white" />
-                        <span className="text-[10px] font-medium text-white">Change Logo</span>
-                      </div>
-                    </>
-                  ) : (
-                    <div className="flex flex-col items-center gap-1.5">
-                      <ImagePlus className="size-5 text-muted-foreground/50 transition-colors group-hover:text-primary/60" />
-                      <span className="text-[11px] font-medium text-muted-foreground/50 transition-colors group-hover:text-primary/60">
-                        Add your logo
-                      </span>
-                      <span className="text-[10px] text-muted-foreground/35">PNG, JPG, SVG · max 512KB</span>
-                    </div>
-                  )}
-                  <input
-                    ref={logoInputRef}
-                    id="business-logo-input"
-                    type="file"
-                    accept="image/png,image/jpeg,image/svg+xml"
-                    className="absolute inset-0 opacity-0 cursor-pointer"
-                    onChange={handleLogoSelect}
-                  />
-                </label>
-                {logoPreview && (
-                  <button
-                    type="button"
-                    onClick={handleLogoRemove}
-                    className="text-center text-[11px] text-muted-foreground underline-offset-2 transition-colors hover:text-destructive hover:underline"
+              {/* Left: Brand identity */}
+              <div
+                className={cn(
+                  'rounded-[var(--radius-card)] border p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] sm:p-5',
+                  errors.businessName
+                    ? 'border-destructive/40 bg-destructive/[0.03]'
+                    : 'border-border/60 bg-muted/15'
+                )}
+              >
+                <div className="mb-4">
+                  <p
+                    className="text-[10px] font-bold tracking-[0.14em] uppercase"
+                    style={{ color: 'var(--invoice-accent)' }}
                   >
-                    Remove logo
-                  </button>
+                    Brand Identity
+                  </p>
+                  <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                    Group your logo and brand name together for the invoice header.
+                  </p>
+                </div>
+
+                {hasSavedBusiness && !businessEditable ? (
+                  <div
+                    className="cursor-pointer rounded-xl border border-dashed border-border/60 bg-background/70 p-4 transition-colors hover:border-primary/30 hover:bg-background"
+                    onClick={() => setBusinessEditable(true)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        setBusinessEditable(true);
+                      }
+                    }}
+                    aria-label="Edit brand identity"
+                  >
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                      <div className="relative flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-border/60 bg-muted/25">
+                        {logoPreview ? (
+                          <Image
+                            src={logoPreview}
+                            alt="Business logo"
+                            fill
+                            unoptimized
+                            sizes="80px"
+                            className="object-contain p-2.5"
+                          />
+                        ) : (
+                          <span className="text-lg font-semibold tracking-[0.18em] text-muted-foreground">
+                            {getInitials(invoice.businessName)}
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="min-w-0">
+                        <p className="text-base font-semibold tracking-tight text-foreground">
+                          {invoice.businessName || 'Your Business'}
+                        </p>
+                        <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                          Shown in the invoice masthead with your logo.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-[124px_minmax(0,1fr)]">
+                    <div className="space-y-2">
+                      <label
+                        htmlFor="business-logo-input"
+                        className="group relative flex h-32 w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-border/50 bg-background/70 transition-all hover:border-primary/40 hover:bg-muted/20"
+                      >
+                        {logoPreview ? (
+                          <>
+                            <Image
+                              src={logoPreview}
+                              alt="Business logo"
+                              fill
+                              unoptimized
+                              sizes="124px"
+                              className="object-contain p-2.5"
+                            />
+                            <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 rounded-xl bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
+                              <ImagePlus className="size-4 text-white" />
+                              <span className="text-[10px] font-medium text-white">Change Logo</span>
+                            </div>
+                          </>
+                        ) : (
+                          <div className="flex flex-col items-center gap-1.5 px-3 text-center">
+                            <ImagePlus className="size-5 text-muted-foreground/50 transition-colors group-hover:text-primary/60" />
+                            <span className="text-[11px] font-medium text-muted-foreground/60 transition-colors group-hover:text-primary/70">
+                              Add logo
+                            </span>
+                            <span className="text-[10px] text-muted-foreground/40">
+                              PNG, JPG, SVG
+                            </span>
+                          </div>
+                        )}
+                        <input
+                          ref={logoInputRef}
+                          id="business-logo-input"
+                          type="file"
+                          accept="image/png,image/jpeg,image/svg+xml"
+                          className="absolute inset-0 cursor-pointer opacity-0"
+                          onChange={handleLogoSelect}
+                        />
+                      </label>
+                      {logoPreview ? (
+                        <button
+                          type="button"
+                          onClick={handleLogoRemove}
+                          className="w-full text-center text-[11px] text-muted-foreground underline-offset-2 transition-colors hover:text-destructive hover:underline"
+                        >
+                          Remove logo
+                        </button>
+                      ) : (
+                        <p className="text-center text-[10px] text-muted-foreground/55">
+                          Optional
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="space-y-3">
+                      <Field
+                        id="businessName"
+                        label="Business / Brand Name"
+                        required
+                        error={errors.businessName}
+                      >
+                        <Input
+                          id="businessName"
+                          value={invoice.businessName}
+                          placeholder="Studio North"
+                          aria-invalid={Boolean(errors.businessName)}
+                          onChange={(event) => setField('businessName', event.target.value)}
+                          className="h-10 sm:h-9"
+                        />
+                      </Field>
+                      <p className="text-xs leading-5 text-muted-foreground">
+                        This appears next to your logo at the top of the invoice.
+                      </p>
+                    </div>
+                  </div>
                 )}
               </div>
 
               {/* Right: Invoice number + dates + currency */}
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3 rounded-[var(--radius-card)] border border-border/60 bg-muted/10 p-4 sm:p-5">
+                <div className="col-span-2">
+                  <p
+                    className="text-[10px] font-bold tracking-[0.14em] uppercase"
+                    style={{ color: 'var(--invoice-accent)' }}
+                  >
+                    Invoice Details
+                  </p>
+                </div>
                 <Field id="invoice-number-display" label="Invoice No.">
                   <div className="flex h-9 items-center rounded-[var(--radius-field)] border border-border/60 bg-muted/20 px-3 text-sm font-mono font-medium text-foreground/70">
                     #{invoice.id}
@@ -544,7 +658,11 @@ export default function CreateInvoicePage() {
 
                 <Field id="currency" label="Currency">
                   <Select value={invoice.currency} onValueChange={setCurrency}>
-                    <SelectTrigger id="currency" className="h-9 w-full">
+                    <SelectTrigger
+                      id="currency"
+                      size="sm"
+                      className="h-9 w-full border-border/60 bg-muted/20 px-3 text-sm"
+                    >
                       <SelectValue placeholder="Currency" />
                     </SelectTrigger>
                     <SelectContent>
@@ -557,7 +675,7 @@ export default function CreateInvoicePage() {
                   </Select>
                 </Field>
 
-                <div className="flex items-end pb-0.5">
+                <div className="col-span-2 flex items-end pb-0.5">
                   <p className="text-muted-foreground text-xs tabular-nums">{storageMessage}</p>
                 </div>
               </div>
@@ -566,16 +684,15 @@ export default function CreateInvoicePage() {
             {/* ── SECTION 2: From / Bill To ── */}
             <div className="grid grid-cols-1 gap-0 border-b border-border/60 sm:grid-cols-2 sm:divide-x sm:divide-border/60">
 
-              {/* FROM — Business Info */}
+              {/* BILL FROM — Sender + Business Contact Info */}
               <div
                 className={cn(
                   'group relative border-b border-border/60 p-6 sm:border-b-0 sm:p-8',
-                  errors.businessName ? 'bg-destructive/[0.03]' : undefined
                 )}
               >
                 <div className="mb-3 flex items-center justify-between">
                   <span className="text-[10px] font-bold tracking-[0.14em] uppercase" style={{ color: 'var(--invoice-accent)' }}>
-                    From
+                    Bill From
                   </span>
                   <div className="flex items-center gap-1">
                     {!hasSavedBusiness && (
@@ -638,11 +755,21 @@ export default function CreateInvoicePage() {
                     onClick={() => setBusinessEditable(true)}
                     role="button"
                     tabIndex={0}
-                    onKeyDown={(e) => e.key === 'Enter' && setBusinessEditable(true)}
-                    aria-label="Edit business info"
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        setBusinessEditable(true);
+                      }
+                    }}
+                    aria-label="Edit bill from info"
                   >
-                    {invoice.businessName && (
-                      <p className="text-sm font-semibold text-foreground">{invoice.businessName}</p>
+                    {invoice.senderName && (
+                      <div className="mb-2">
+                        <p className="text-[10px] font-semibold tracking-[0.12em] uppercase text-muted-foreground">
+                          Sender
+                        </p>
+                        <p className="mt-1 text-sm font-semibold text-foreground">{invoice.senderName}</p>
+                      </div>
                     )}
                     {invoice.businessAddress && (
                       <p className="mt-0.5 text-xs text-muted-foreground">{invoice.businessAddress}</p>
@@ -653,27 +780,35 @@ export default function CreateInvoicePage() {
                     {invoice.businessPhone && (
                       <p className="mt-0.5 text-xs text-muted-foreground">{invoice.businessPhone}</p>
                     )}
-                    {invoice.senderName && (
-                      <p className="mt-0.5 text-xs text-muted-foreground italic">
-                        Issued by: {invoice.senderName}
-                      </p>
-                    )}
-                    {!invoice.businessName && (
-                      <p className="text-xs text-muted-foreground/50 italic">Click to add business info</p>
-                    )}
+                    {!invoice.senderName &&
+                      !invoice.businessAddress &&
+                      !invoice.businessEmail &&
+                      !invoice.businessPhone && (
+                        <p className="text-xs text-muted-foreground/50 italic">
+                          Click to add sender details
+                        </p>
+                      )}
+                    {!invoice.senderName &&
+                      (invoice.businessAddress || invoice.businessEmail || invoice.businessPhone) && (
+                        <p className="mt-2 text-xs text-muted-foreground/60 italic">
+                          Add a sender name to show who created the invoice.
+                        </p>
+                      )}
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    <Field id="businessName" label="Business Name" required error={errors.businessName}>
+                    <Field id="senderName" label="Sender Name">
                       <Input
-                        id="businessName"
-                        value={invoice.businessName}
-                        placeholder="Studio North"
-                        aria-invalid={Boolean(errors.businessName)}
-                        onChange={(event) => setField('businessName', event.target.value)}
+                        id="senderName"
+                        value={invoice.senderName || ''}
+                        placeholder="John Smith"
+                        onChange={(event) => setField('senderName', event.target.value)}
                         className="h-9"
                       />
                     </Field>
+                    <p className="-mt-1 text-xs leading-5 text-muted-foreground">
+                      This appears in the Bill From section as the invoice creator.
+                    </p>
                     <div className="grid grid-cols-2 gap-3">
                       <Field id="businessEmail" label="Email">
                         <Input
@@ -701,15 +836,6 @@ export default function CreateInvoicePage() {
                         value={invoice.businessAddress}
                         placeholder="221B Market St, San Francisco"
                         onChange={(event) => setField('businessAddress', event.target.value)}
-                        className="h-9"
-                      />
-                    </Field>
-                    <Field id="senderName" label="Your Name">
-                      <Input
-                        id="senderName"
-                        value={invoice.senderName || ''}
-                        placeholder="John Smith (optional)"
-                        onChange={(event) => setField('senderName', event.target.value)}
                         className="h-9"
                       />
                     </Field>

@@ -4,6 +4,12 @@ import { APP_NAME, APP_TAGLINE, APP_URL, DEFAULT_ACCENT_COLOR } from '@/lib/cons
 import { formatCurrency } from '@/lib/currencies';
 import { buildColors, defaultColors } from '@/components/pdf/shared/colors';
 import { formatDate } from '@/components/pdf/shared/format';
+import {
+  getBillFromName,
+  getBrandName,
+  getBusinessLines,
+  getClientLines,
+} from '@/components/pdf/shared/parties';
 import type { InvoiceDocumentProps } from '@/components/pdf/shared/types';
 
 const styles = StyleSheet.create({
@@ -243,15 +249,10 @@ export function CompactInvoiceDocument({
   const c =
     accentColor && accentColor !== DEFAULT_ACCENT_COLOR ? buildColors(accentColor) : null;
 
-  const businessLines = [
-    invoice.businessEmail,
-    invoice.businessPhone,
-    invoice.businessAddress,
-  ].filter(Boolean);
-
-  const clientLines = [invoice.clientCompany, invoice.clientEmail, invoice.clientPhone].filter(
-    Boolean
-  );
+  const brandName = getBrandName(invoice);
+  const billFromName = getBillFromName(invoice);
+  const businessLines = getBusinessLines(invoice);
+  const clientLines = getClientLines(invoice);
 
   const lineItems = invoice.lineItems.filter((item) => item.description.trim());
 
@@ -268,7 +269,7 @@ export function CompactInvoiceDocument({
               />
             ) : null}
             <View style={styles.brandText}>
-              <Text style={styles.businessName}>{invoice.businessName || 'Your Business'}</Text>
+              <Text style={styles.businessName}>{brandName}</Text>
             </View>
           </View>
           <Text style={[styles.invoiceLabel, c ? { color: c.accentDeep } : {}]}>Invoice</Text>
@@ -295,13 +296,17 @@ export function CompactInvoiceDocument({
         {/* From / To side by side */}
         <View style={styles.addressSection}>
           <View style={styles.addressBlock}>
-            <Text style={styles.addressLabel}>From</Text>
-            <Text style={styles.addressName}>{invoice.senderName?.trim() || invoice.businessName || 'Your Business'}</Text>
-            {businessLines.map((line) => (
-              <Text key={line} style={styles.addressLine}>
-                {line}
-              </Text>
-            ))}
+            <Text style={styles.addressLabel}>Bill From</Text>
+            <Text style={styles.addressName}>{billFromName}</Text>
+            {businessLines.length > 0 ? (
+              businessLines.map((line) => (
+                <Text key={line} style={styles.addressLine}>
+                  {line}
+                </Text>
+              ))
+            ) : (
+              <Text style={styles.addressLine}>Business details will appear here.</Text>
+            )}
           </View>
           <View style={styles.addressBlock}>
             <Text style={styles.addressLabel}>Bill To</Text>
