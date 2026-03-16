@@ -482,12 +482,12 @@ export default function CreateInvoicePage() {
           >
 
             {/* ── SECTION 1: Brand + Invoice Header ── */}
-            <div className="grid grid-cols-1 items-start gap-5 border-b border-border/60 p-5 sm:p-6 xl:grid-cols-[minmax(0,1.35fr)_minmax(280px,0.9fr)]">
+            <div className="grid grid-cols-1 items-stretch gap-5 border-b border-border/60 p-5 sm:p-6 xl:grid-cols-[minmax(0,1.35fr)_minmax(280px,0.9fr)]">
 
               {/* Left: Brand identity */}
               <div
                 className={cn(
-                  'rounded-[var(--radius-card)] border p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] sm:p-5',
+                  'h-full rounded-[var(--radius-card)] border p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] sm:p-5',
                   errors.businessName
                     ? 'border-destructive/40 bg-destructive/[0.03]'
                     : 'border-border/60 bg-muted/15'
@@ -629,7 +629,7 @@ export default function CreateInvoicePage() {
               </div>
 
               {/* Right: Invoice number + dates + currency */}
-              <div className="grid grid-cols-2 gap-3 rounded-[var(--radius-card)] border border-border/60 bg-muted/10 p-4 sm:p-5">
+              <div className="grid h-full grid-cols-2 gap-3 rounded-[var(--radius-card)] border border-border/60 bg-muted/10 p-4 sm:p-5">
                 <div className="col-span-2">
                   <p
                     className="text-[10px] font-bold tracking-[0.14em] uppercase"
@@ -806,9 +806,6 @@ export default function CreateInvoicePage() {
                         className="h-9"
                       />
                     </Field>
-                    <p className="-mt-1 text-xs leading-5 text-muted-foreground">
-                      This appears in the Bill From section as the invoice creator.
-                    </p>
                     <div className="grid grid-cols-2 gap-3">
                       <Field id="businessEmail" label="Email">
                         <Input
