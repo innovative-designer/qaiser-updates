@@ -18,6 +18,13 @@ export const metadata: Metadata = {
   title: 'Free Invoice Maker for Freelancers - No Signup, No Fees',
   description:
     'Create professional invoices for free. No monthly fees, no signup required. Built for freelancers who need to invoice fast and get paid via WhatsApp.',
+  keywords: [
+    'free invoice maker for freelancers',
+    'freelancer invoice generator',
+    'invoice maker no signup',
+    'invoice pdf for freelancers',
+    'whatsapp invoice for freelancers',
+  ],
   alternates: { canonical: `${APP_URL}/free-invoice-maker-freelancers` },
 };
 
@@ -53,7 +60,7 @@ const benefits = [
     icon: Globe,
   },
   {
-    title: 'Ready in 30 seconds',
+    title: 'Quick to start',
     description: 'One focused screen, one generate action, less setup, faster invoicing.',
     icon: Clock,
   },
@@ -125,12 +132,12 @@ export default function FreeInvoiceMakerFreelancersPage() {
               <Badge>Freelancer Invoice Tool</Badge>
               <div className="space-y-4">
                 <h1 className="text-foreground max-w-4xl">
-                  Free invoice maker for freelancers who want speed, not bookkeeping overhead.
+                  Free invoice maker for freelancers who want to bill clients without extra setup.
                 </h1>
                 <p className="text-muted-foreground max-w-3xl text-base leading-7 sm:text-lg">
-                  {APP_NAME} keeps the flow narrow on purpose: enter your client details, tune the
-                  invoice on one focused screen, generate a clean PDF, and move on with the actual
-                  client work.
+                  {APP_NAME} keeps the workflow focused: enter the client details, add line items,
+                  generate a clean PDF, and send the invoice before it becomes another unfinished
+                  admin task.
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row">
@@ -168,7 +175,7 @@ export default function FreeInvoiceMakerFreelancersPage() {
               Why it fits freelance work
             </p>
             <h2 className="text-foreground mt-2 text-2xl font-semibold tracking-[-0.03em] sm:text-3xl">
-              The invoice tool is lightweight because your workflow already is.
+              Built for freelance work that moves fast and still needs a professional invoice.
             </h2>
           </div>
 
@@ -202,11 +209,11 @@ export default function FreeInvoiceMakerFreelancersPage() {
                 What this replaces
               </p>
               <p className="text-foreground mt-3 text-xl font-semibold tracking-[-0.02em]">
-                Spreadsheets, repeated templates, and awkward chat attachments.
+                Spreadsheets, old invoice files, and last-minute manual PDFs.
               </p>
               <p className="text-muted-foreground mt-3 text-sm leading-7">
-                Free Invoice Kit works best when you need a clean invoice fast and do not want
-                another platform to manage every detail of the business.
+                Free Invoice Kit works best when you need a clean invoice quickly and do not want
+                another platform to manage the rest of your business.
               </p>
             </InfoPanel>
 
@@ -215,7 +222,7 @@ export default function FreeInvoiceMakerFreelancersPage() {
                 Start invoicing
               </p>
               <p className="text-foreground mt-3 text-xl font-semibold tracking-[-0.02em]">
-                Make the invoice and send it before the task slips into admin backlog.
+                Create the invoice while the project handoff is still active.
               </p>
               <Button asChild size="lg" className="mt-6">
                 <Link href="/create">

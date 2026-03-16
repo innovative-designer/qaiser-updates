@@ -36,8 +36,8 @@ export default function ContactPage() {
               <div className="space-y-4">
                 <h1 className="text-foreground max-w-4xl">Contact FreeInvoiceKit</h1>
                 <p className="text-muted-foreground max-w-3xl text-base leading-7 sm:text-lg">
-                  For support, privacy, legal, or product feedback, use the email address below. The
-                  first version of this page is intentionally simple and direct.
+                  For support, privacy, legal questions, or product feedback, email the address
+                  below and include enough detail for a useful reply.
                 </p>
               </div>
               <Button asChild size="lg">
@@ -64,8 +64,9 @@ export default function ContactPage() {
                   Email-first support
                 </p>
                 <p className="text-muted-foreground mt-3 text-sm leading-7">
-                  The support inbox is the primary contact channel for FreeInvoiceKit. Please
-                  include enough context in your message so the request can be handled efficiently.
+                  The support inbox is the main contact channel for FreeInvoiceKit. Include your
+                  question, device, browser, and any invoice workflow issue if you need help
+                  troubleshooting.
                 </p>
               </InfoPanel>
             </div>

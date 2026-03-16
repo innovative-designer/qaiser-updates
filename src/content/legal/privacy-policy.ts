@@ -20,19 +20,19 @@ export const privacyPolicy: ContentDocument = {
   eyebrow: 'Privacy Policy',
   title: `${APP_NAME} privacy policy`,
   description:
-    'How FreeInvoiceKit collects, stores, and uses information across invoice creation, analytics, support, and future advertising.',
+    'How Free Invoice Kit collects, stores, and uses information related to invoice creation, browser storage, analytics, and support.',
   lastUpdated: PRIVACY_LAST_UPDATED,
   highlights: [
-    'Invoices and saved business details can be stored in your own browser using localStorage and IndexedDB.',
-    'Minimal PostHog analytics may run only on non-indexed app pages such as invoice creation and history.',
-    'Google advertising cookies may be used if AdSense is enabled on indexable content pages in the future.',
+    'Business details are stored in localStorage for reuse, and invoice drafts and history are stored in IndexedDB on your device.',
+    'PostHog analytics may run only on app routes such as invoice creation, invoice history, and shared invoice views when analytics is configured.',
+    'Support and waitlist submissions may store your email address and related anti-abuse metadata.',
   ],
   sections: [
     {
       title: 'Overview',
       paragraphs: [
         `${LEGAL_ENTITY_NAME} operates ${APP_NAME}. This Privacy Policy explains what information we collect, how we use it, and the choices available to users when they visit the website or use the invoicing tool.`,
-        `This policy applies to FreeInvoiceKit.com, including the invoice creator, learning content, waitlist signup, and any related support communication.`,
+        `This policy applies to FreeInvoiceKit.com, including the invoice creator, public content pages, waitlist signup, shared invoice views, and related support communication.`,
       ],
     },
     {
@@ -45,12 +45,12 @@ export const privacyPolicy: ContentDocument = {
     {
       title: 'Information stored in your browser',
       paragraphs: [
-        'FreeInvoiceKit stores some information locally in your browser so you can create invoices faster and keep drafts available on the same device.',
-        'This includes business details saved for reuse, invoice drafts, and a limited invoice history stored through browser technologies such as localStorage and IndexedDB.',
+        'Free Invoice Kit stores some information locally in your browser so you can create invoices faster and keep drafts available on the same device.',
+        'Business details are saved in localStorage for reuse. Invoice drafts, invoice metadata, and local invoice history are stored in IndexedDB in that same browser profile.',
       ],
       items: [
         'Saved business name, email, phone number, and address',
-        'Invoice drafts and generated invoice metadata',
+        'Invoice drafts, totals, and generated invoice metadata',
         'Limited local app preferences, such as waitlist banner dismissal state',
       ],
     },
@@ -58,14 +58,14 @@ export const privacyPolicy: ContentDocument = {
       title: 'Automatically collected technical data',
       paragraphs: [
         'We may collect standard technical information such as IP address, browser type, device data, referral pages, and page interaction data to operate, secure, and improve the service.',
-        'We also use a country and currency lookup flow to estimate a likely local currency for invoice creation. This is used to make the tool more useful at first load.',
+        'We also use an IP-based country and currency lookup flow to estimate a likely local currency when the invoice builder first loads.',
       ],
     },
     {
       title: 'Analytics',
       paragraphs: [
-        'FreeInvoiceKit uses PostHog only on non-indexed product pages such as the invoice creator and invoice history. Public SEO pages and blog content are intended to load without PostHog.',
-        'Analytics are limited to explicit product events such as creating an invoice, downloading a PDF, or clicking a share action. Session recording, surveys, and broad automatic page interaction capture are disabled in this configuration.',
+        'If analytics is configured, Free Invoice Kit uses PostHog only on app routes such as the invoice creator, invoice history, and shared invoice views. Public marketing pages, comparison pages, and blog content are not intended to load PostHog.',
+        'Analytics are limited to product events such as creating an invoice, downloading a PDF, or clicking a share action. Session recording, surveys, and broad automatic interaction capture are disabled in this setup.',
       ],
     },
     {
@@ -78,7 +78,7 @@ export const privacyPolicy: ContentDocument = {
     {
       title: 'Third-party services',
       paragraphs: [
-        'FreeInvoiceKit uses third-party infrastructure and services to operate parts of the website. These providers may process information on our behalf.',
+        'Free Invoice Kit uses third-party infrastructure and services to operate parts of the website. These providers may process information on our behalf.',
       ],
       items: [
         'Supabase for backend data and file handling where configured',
@@ -90,16 +90,15 @@ export const privacyPolicy: ContentDocument = {
     {
       title: 'Cookies and similar technologies',
       paragraphs: [
-        'We use cookies and similar technologies to keep the site functional, understand usage, remember preferences, and support future advertising or consent flows where applicable.',
-        'Because FreeInvoiceKit also relies on localStorage and IndexedDB, not all stored data is technically a cookie. This policy covers those similar browser-storage technologies as well.',
+        'We use cookies and similar technologies to keep the site functional, remember preferences, and understand app usage where analytics is enabled.',
+        'Because Free Invoice Kit also relies on localStorage and IndexedDB, not all stored data is technically a cookie. This policy covers those browser-storage technologies as well.',
       ],
     },
     {
-      title: 'Google AdSense and advertising cookies',
+      title: 'Advertising',
       paragraphs: [
-        'If Google AdSense or similar advertising services are enabled on public content pages, Google and other third-party vendors may use cookies to serve ads based on a user’s prior visits to this website or other websites.',
-        'Google may use advertising cookies, including the DoubleClick cookie or similar technologies, to help deliver personalized or non-personalized advertising. Users can learn more about how Google uses data in advertising through Google’s advertising and privacy settings resources.',
-        'The invoice creator workflow is intended to remain ad-free, but advertising may appear on indexable informational pages in the future.',
+        'We do not rely on advertising cookies to run the invoice creator.',
+        'If we introduce advertising on public content pages later, we will update this policy before those advertising technologies are used.',
       ],
     },
     {

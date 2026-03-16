@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import {
   ArrowRight,
@@ -21,6 +22,28 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { APP_DESCRIPTION, APP_NAME, APP_TAGLINE, APP_URL } from '@/lib/constants';
+
+export const metadata: Metadata = {
+  title: 'Free Invoice Generator | PDF Invoice Maker for Freelancers',
+  description:
+    'Create professional invoice PDFs for free. Free Invoice Kit helps freelancers and small businesses generate invoices, download PDFs, and share them by WhatsApp or email.',
+  keywords: [
+    'free invoice generator',
+    'pdf invoice maker',
+    'invoice generator for freelancers',
+    'free invoice maker no signup',
+    'whatsapp invoice generator',
+  ],
+  alternates: {
+    canonical: `${APP_URL}/`,
+  },
+  openGraph: {
+    title: 'Free Invoice Generator | PDF Invoice Maker for Freelancers',
+    description:
+      'Create professional invoice PDFs for free and share them by WhatsApp or email without signup.',
+    url: `${APP_URL}/`,
+  },
+};
 
 const workflow = [
   {
@@ -84,7 +107,7 @@ const useCases = [
   {
     href: '/invoice-generator/india',
     title: 'For local-currency markets',
-    description: 'Browse country pages for INR, PKR, AED, and NGN invoice flows.',
+    description: 'Browse country pages for PKR, INR, AED, NGN, THB, MYR, SGD, LKR, and EUR invoice flows.',
   },
   {
     href: '/compare/freshbooks',
@@ -135,13 +158,13 @@ export default function Home() {
               </Badge>
 
               <div className="space-y-4">
-                <p className="section-kicker">Editorial Utility</p>
+                <p className="section-kicker">Free Invoice Generator</p>
                 <h1 data-display="true" className="text-foreground max-w-3xl">
-                  Send a polished invoice from your phone before the chat goes cold.
+                  Free invoice generator for freelancers who need a polished PDF fast.
                 </h1>
                 <p className="text-muted-foreground max-w-2xl text-base leading-7 sm:text-lg sm:leading-8">
-                  {APP_TAGLINE}. Build the invoice, review the essentials, generate the PDF, and
-                  send it where the client already replies.
+                  {APP_TAGLINE}. Add your details, generate a clean invoice PDF, and share it by
+                  WhatsApp, email, or download without going through signup first.
                 </p>
               </div>
 
@@ -248,11 +271,11 @@ export default function Home() {
           <div className="max-w-2xl">
             <p className="section-kicker">Workflow</p>
             <h2 data-display="true" className="text-foreground mt-3">
-              Built for getting the invoice out, not getting lost in admin.
+              Built for getting the invoice out without extra admin.
             </h2>
             <p className="text-muted-foreground mt-4 text-base leading-7">
-              Free Invoice Kit keeps the path narrow: fill the essentials, check the live output,
-              and send the finished document where the client already responds.
+              Free Invoice Kit keeps the path focused: fill the essentials, review the live
+              preview, and send the finished invoice where your client already replies.
             </p>
           </div>
 
@@ -283,17 +306,17 @@ export default function Home() {
             <InfoPanel>
               <p className="section-kicker">Why it feels faster</p>
               <h2 data-display="true" className="text-foreground mt-3">
-                The product follows the way freelancers already work on mobile.
+                The workflow fits the way freelancers already invoice on mobile.
               </h2>
               <div className="text-muted-foreground mt-5 space-y-4 text-sm leading-7 sm:text-base">
-                <p>Most invoicing tools feel like desktop billing software shrunk onto a phone.</p>
+                <p>Most invoicing tools feel like desktop accounting software squeezed onto a phone.</p>
                 <p>
-                  Free Invoice Kit is narrower by design: one focused form and one clean export
-                  path.
+                  Free Invoice Kit stays focused on one job: helping you create a client-ready
+                  invoice and export it without setup friction.
                 </p>
                 <p>
-                  That makes it easier to generate the invoice in the same moment you agree the work
-                  or confirm the deliverable.
+                  That makes it easier to invoice right after a delivery, approval, or payment
+                  conversation instead of leaving it for later.
                 </p>
               </div>
             </InfoPanel>
@@ -324,14 +347,14 @@ export default function Home() {
               <div className="max-w-2xl">
                 <p className="section-kicker">Use Cases</p>
                 <h2 data-display="true" className="text-foreground mt-3">
-                  One product language, multiple invoicing paths.
+                  Explore the invoicing path that matches your work.
                 </h2>
                 <p className="text-muted-foreground mt-3 leading-7">
-                  Each guide and landing page now ladders back to the same mobile-first invoicing
-                  workflow.
+                  Browse freelancer guides, country-specific invoice pages, comparisons, and
+                  templates that all lead back to the same no-signup invoice builder.
                 </p>
               </div>
-              <Badge className="px-4 py-1.5">Expanded across guides, comparisons, and templates</Badge>
+              <Badge className="px-4 py-1.5">Guides, templates, and comparisons</Badge>
             </div>
 
             <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -370,11 +393,11 @@ export default function Home() {
                   Start now
                 </p>
                 <h2 data-display="true" className="mt-3 text-3xl font-semibold sm:text-4xl">
-                  Create the invoice while the project is still top of mind.
+                  Create the invoice while the work is still fresh.
                 </h2>
                 <p className="text-primary-foreground/80 mt-3 max-w-xl text-sm leading-7 sm:text-base">
-                  No signup ceremony. No billing-suite overhead. Just a clean invoice workflow that
-                  respects how mobile freelancers actually get paid.
+                  No signup ceremony. No accounting-suite overhead. Just a clean invoice workflow
+                  built for freelancers, consultants, and small service businesses.
                 </p>
               </div>
 

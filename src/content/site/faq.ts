@@ -1,3 +1,5 @@
+import { SUPPORT_EMAIL } from '@/lib/site';
+
 export type FaqItem = {
   question: string;
   answer: string;
@@ -7,50 +9,49 @@ export const faqItems: FaqItem[] = [
   {
     question: 'Is Free Invoice Kit really free?',
     answer:
-      'The core invoice workflow is free. You can create invoices, generate PDF output, and use the tool without going through a signup wall.',
+      'Yes. The core invoice workflow is free, including invoice creation, PDF generation, and download or share actions.',
   },
   {
     question: 'Do I need an account to create an invoice?',
-    answer: 'No. The current workflow is designed to work without mandatory account creation.',
+    answer: 'No. You can open the builder, fill in your invoice, and generate a PDF without creating an account.',
   },
   {
     question: 'Where are my invoices stored?',
     answer:
-      'Invoice data can be stored locally in your browser using technologies such as localStorage and IndexedDB. Some file-related features may also use backend services when configured.',
+      'Saved business details are stored locally in your browser for reuse, and invoice drafts and history are stored in IndexedDB on the same device and browser profile.',
   },
   {
     question: 'Is it safe to add client information?',
     answer:
-      'You should only enter information you are comfortable handling through a normal web app workflow. FreeInvoiceKit uses reasonable protections, but no web service can promise absolute security.',
+      'Use the same care you would with any web app that handles business information. Free Invoice Kit uses standard web protections, but you should only store information you are comfortable keeping in your browser.',
   },
   {
     question: 'Can I download my invoice as a PDF?',
     answer:
-      'Yes. The invoice flow is built around generating a professional PDF document you can download and share.',
+      'Yes. The builder generates a client-ready PDF invoice that you can download, save, and share.',
   },
   {
     question: 'Can I send invoices on WhatsApp?',
     answer:
-      'Yes. The product is intentionally designed around WhatsApp-friendly invoice delivery and mobile-first workflows.',
+      'Yes. On supported mobile devices, you can share the PDF through the native share sheet. If direct sharing is not available, you can download the PDF first and send it in WhatsApp yourself.',
   },
   {
     question: 'What currencies are supported?',
     answer:
-      'FreeInvoiceKit supports multiple commonly used currencies, and the product can estimate a likely local currency based on location signals.',
+      'Free Invoice Kit supports a range of commonly used currencies and can suggest a likely local currency when the builder first loads.',
   },
   {
     question: 'Does this replace accounting software?',
     answer:
-      'No. FreeInvoiceKit is an invoicing utility, not a full accounting platform or a source of tax or legal advice.',
+      'No. Free Invoice Kit is a focused invoicing tool, not a full accounting platform and not a source of tax or legal advice.',
   },
   {
     question: 'Can I add tax and discounts?',
     answer:
-      'Yes. The invoice workflow supports tax and discount handling as part of the invoice calculation flow.',
+      'Yes. You can add tax rates and discounts, and the builder recalculates totals automatically.',
   },
   {
     question: 'How can I contact support?',
-    answer:
-      'You can contact support, privacy, or legal inquiries by emailing support@freeinvoicekit.com.',
+    answer: `You can reach support, privacy, or legal contacts at ${SUPPORT_EMAIL}.`,
   },
 ];

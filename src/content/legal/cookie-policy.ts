@@ -6,12 +6,12 @@ export const cookiePolicy: ContentDocument = {
   eyebrow: 'Cookie Policy',
   title: `${APP_NAME} cookie policy`,
   description:
-    'How FreeInvoiceKit uses cookies and similar browser-storage technologies, including analytics, preferences, and future advertising support.',
+    'How Free Invoice Kit uses cookies and similar browser-storage technologies for app functionality, preferences, and analytics.',
   lastUpdated: COOKIE_LAST_UPDATED,
   highlights: [
     'This site uses both cookies and non-cookie browser storage technologies.',
-    'Minimal PostHog analytics may run only on non-indexed app pages.',
-    'Advertising cookies may be introduced later if AdSense is enabled on public content pages.',
+    'Business details and invoice data can be stored locally in your browser through localStorage and IndexedDB.',
+    'PostHog analytics may run only on app routes when analytics is configured.',
   ],
   sections: [
     {
@@ -29,37 +29,36 @@ export const cookiePolicy: ContentDocument = {
     {
       title: 'Similar technologies we use',
       paragraphs: [
-        'FreeInvoiceKit also uses browser-based storage technologies that are not technically cookies, including localStorage and IndexedDB. These technologies may hold invoice drafts, saved business details, and app state on your device.',
+        'Free Invoice Kit also uses browser-based storage technologies that are not technically cookies, including localStorage and IndexedDB. These technologies can hold invoice drafts, saved business details, and app state on your device.',
       ],
       items: [
-        'localStorage for business info and UI state',
-        'IndexedDB for invoice history and invoice data',
+        'localStorage for saved business details and UI state',
+        'IndexedDB for invoice drafts, invoice history, and invoice data',
       ],
     },
     {
       title: 'Categories of technologies used',
       paragraphs: [
-        'We may use essential, analytics, preference, and advertising-related technologies depending on the page and the current production configuration.',
+        'We use a small set of technologies to run the app, remember preferences, and measure product usage where analytics is enabled.',
       ],
       items: [
         'Essential technologies needed to operate the site or store user-requested data',
-        'Analytics technologies used to understand traffic and product usage',
+        'Analytics technologies used to understand product usage on app routes',
         'Preference technologies used to remember UI state or prior actions',
-        'Advertising technologies that may be used later on public content pages',
       ],
     },
     {
       title: 'Analytics technologies',
       paragraphs: [
-        'PostHog may be loaded only on non-indexed app routes such as invoice creation and invoice history. Public SEO pages are intended to load without PostHog.',
+        'If analytics is configured, PostHog may load only on app routes such as invoice creation, invoice history, and shared invoice views. Public content pages are not intended to load PostHog.',
         'When enabled, the setup is limited to explicit product events such as invoice creation, PDF download, and share actions. Session recording, surveys, and broad automatic interaction capture are disabled.',
       ],
     },
     {
       title: 'Advertising technologies',
       paragraphs: [
-        'If Google AdSense or similar advertising services are added in the future, Google and other third-party vendors may use cookies to serve personalized or non-personalized ads based on prior visits to this site or other sites.',
-        'The invoice-creation workflow is intended to remain ad-free even if advertising is later enabled on public content pages.',
+        'The invoice creator does not depend on advertising cookies.',
+        'If advertising technologies are introduced on public content pages later, this policy will be updated before those cookies are used.',
       ],
     },
     {

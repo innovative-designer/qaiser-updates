@@ -18,6 +18,7 @@ type EditableInvoiceField =
   | 'businessEmail'
   | 'businessPhone'
   | 'businessAddress'
+  | 'senderName'
   | 'clientName'
   | 'clientEmail'
   | 'clientPhone'
@@ -88,6 +89,7 @@ function createInitialState(): InvoiceData {
     businessEmail: '',
     businessPhone: '',
     businessAddress: '',
+    senderName: '',
     clientName: '',
     clientEmail: '',
     clientPhone: '',

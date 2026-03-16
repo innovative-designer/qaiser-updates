@@ -1,5 +1,5 @@
 import { APP_NAME } from '@/lib/constants';
-import { GOVERNING_LAW, SUPPORT_EMAIL, TERMS_LAST_UPDATED } from '@/lib/site';
+import { GOVERNING_LAW, LEGAL_ENTITY_NAME, SUPPORT_EMAIL, TERMS_LAST_UPDATED } from '@/lib/site';
 import type { ContentDocument } from '@/content/legal/privacy-policy';
 
 export const termsOfService: ContentDocument = {
@@ -10,8 +10,8 @@ export const termsOfService: ContentDocument = {
   lastUpdated: TERMS_LAST_UPDATED,
   highlights: [
     'Users remain responsible for the accuracy, legality, and compliance of invoices they create.',
-    'FreeInvoiceKit is a tool for generating invoices, not a source of accounting, tax, or legal advice.',
-    `These Terms use ${GOVERNING_LAW} law as the governing law placeholder for the U.S. launch path.`,
+    `${APP_NAME} is a tool for generating invoices, not a source of accounting, tax, or legal advice.`,
+    `These Terms are governed by the laws of the State of ${GOVERNING_LAW}.`,
   ],
   sections: [
     {
@@ -24,7 +24,7 @@ export const termsOfService: ContentDocument = {
       title: 'Service description',
       paragraphs: [
         `${APP_NAME} provides a web-based invoice creation tool together with related informational content and support channels.`,
-        'Features may include local invoice storage, PDF generation, sharing workflows, waitlist signup, and educational content.',
+        'Features may include local invoice storage, PDF generation, sharing workflows, waitlist signup, shared invoice links, and educational content.',
       ],
     },
     {
@@ -80,7 +80,7 @@ export const termsOfService: ContentDocument = {
     {
       title: 'Limitation of liability',
       paragraphs: [
-        'To the fullest extent permitted by law, FreeInvoiceKit company will not be liable for indirect, incidental, special, consequential, exemplary, or punitive damages, or for lost profits, lost revenue, lost data, or business interruption arising from or related to the service.',
+        `To the fullest extent permitted by law, ${LEGAL_ENTITY_NAME} will not be liable for indirect, incidental, special, consequential, exemplary, or punitive damages, or for lost profits, lost revenue, lost data, or business interruption arising from or related to the service.`,
       ],
     },
     {

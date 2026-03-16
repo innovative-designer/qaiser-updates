@@ -15,9 +15,16 @@ import { APP_NAME, APP_URL } from '@/lib/constants';
 import { buildBreadcrumbSchema, buildFaqSchema, buildHowToSchema } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'How to Send an Invoice on WhatsApp - Free PDF Invoice Maker',
+  title: 'How to Send an Invoice on WhatsApp Quickly - Free PDF Invoice Maker',
   description:
-    'Send professional PDF invoices on WhatsApp in 30 seconds. No signup needed. Free forever. Create, generate, and share invoices as WhatsApp attachments.',
+    'Send professional PDF invoices on WhatsApp without signup. Create, generate, and share invoice PDFs quickly from your phone or desktop.',
+  keywords: [
+    'how to send invoice on whatsapp',
+    'send pdf invoice on whatsapp',
+    'whatsapp invoice pdf',
+    'invoice generator whatsapp',
+    'free invoice maker no signup',
+  ],
   alternates: { canonical: `${APP_URL}/send-invoice-whatsapp` },
 };
 
@@ -36,13 +43,13 @@ const steps = [
   },
   {
     title: 'Generate PDF',
-    description: 'Click Generate Invoice to create a professional PDF ready to download and share.',
+    description: 'Generate a professional invoice PDF that is ready to download or share.',
     icon: Send,
   },
   {
     title: 'Send on WhatsApp',
     description:
-      'Download the PDF and drop it into your client chat so they receive the invoice instantly.',
+      'Share the PDF directly on supported devices, or download it and send it in your client chat.',
     icon: MessageCircleMore,
   },
 ];
@@ -61,7 +68,7 @@ const faqs = [
   {
     question: 'Is the invoice sent as a link or as a file?',
     answer:
-      'The current workflow generates a PDF file that you can download and share directly in WhatsApp.',
+      'Free Invoice Kit generates a PDF file. On supported devices you can share that file directly; otherwise you can download it and attach it in WhatsApp yourself.',
   },
   {
     question: 'Can I customize the invoice with my business logo?',
@@ -94,8 +101,8 @@ export default function SendInvoiceWhatsAppPage() {
     buildHowToSchema({
       name: 'How to Send an Invoice on WhatsApp',
       description:
-        'Create a professional PDF invoice and send it on WhatsApp in 30 seconds.',
-      totalTime: 'PT30S',
+        'Create a professional PDF invoice and send it on WhatsApp in a few quick steps.',
+      totalTime: 'PT5M',
       steps: [
         {
           name: 'Open Free Invoice Kit',
@@ -135,11 +142,12 @@ export default function SendInvoiceWhatsAppPage() {
               <Badge>WhatsApp Invoice Guide</Badge>
               <div className="space-y-4">
                 <h1 className="text-foreground max-w-3xl">
-                  Send an invoice on WhatsApp without turning a simple task into admin work.
+                  Send an invoice on WhatsApp without turning billing into a slow admin task.
                 </h1>
                 <p className="text-muted-foreground max-w-2xl text-base leading-7 sm:text-lg">
-                  Most clients answer faster in chat than email. {APP_NAME} helps you create a clean
-                  PDF, then move it into WhatsApp with almost no setup friction.
+                  Many freelancers close work in chat and need the invoice to follow quickly.
+                  {` ${APP_NAME}`} helps you create a clean PDF, then share or download it for
+                  WhatsApp without account setup getting in the way.
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row">
@@ -220,9 +228,9 @@ export default function SendInvoiceWhatsAppPage() {
                 A PDF travels better through chat and keeps the invoice looking finished.
               </p>
               <p className="text-muted-foreground mt-3 text-sm leading-7">
-                Clients can save it, forward it, open it offline, and keep the layout intact on
-                phone or desktop. That lowers friction compared with sending people through another
-                interface.
+                Clients can save it, forward it, and open it later without losing the layout on
+                phone or desktop. That keeps the payment step simple when you want the invoice to
+                feel complete the moment you send it.
               </p>
             </InfoPanel>
 
@@ -231,7 +239,7 @@ export default function SendInvoiceWhatsAppPage() {
                 Start now
               </p>
               <p className="text-foreground mt-3 text-xl font-semibold tracking-[-0.02em]">
-                Create your first WhatsApp-ready invoice in under 30 seconds.
+                Create your first WhatsApp-ready invoice in a few quick steps.
               </p>
               <p className="text-muted-foreground mt-3 text-sm leading-7">
                 Fill your details, generate the PDF, and move it into chat before the conversation

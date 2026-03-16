@@ -11,7 +11,7 @@ export const comparisonPages: ComparisonPageData[] = [
     h1: 'A simpler Stripe invoice alternative when the goal is just to send the invoice.',
     badge: 'Comparison',
     intro:
-      'If you need straightforward invoice creation and fast sharing, Free Invoice Kit removes the setup drag. Create the invoice, export the PDF, and send it in seconds.',
+      'If you need straightforward invoice creation and fast sharing, Free Invoice Kit removes the setup friction. Create the invoice, export the PDF, and send it quickly.',
     keywords: [
       'stripe invoice alternative',
       'free stripe invoice alternative',
@@ -27,7 +27,7 @@ export const comparisonPages: ComparisonPageData[] = [
       points: [
         'Free Invoice Kit is for fast invoice delivery and low setup overhead.',
         'Stripe is stronger when you need deeper payment automation and billing infrastructure.',
-        'The right tool depends on whether your workflow is operationally heavy or intentionally light.',
+        'The right tool depends on whether you need a focused invoice workflow or a broader billing stack.',
       ],
       tone: 'quiet',
     },
@@ -39,7 +39,7 @@ export const comparisonPages: ComparisonPageData[] = [
       },
       {
         feature: 'Time to first invoice',
-        productValue: 'Under 1 minute',
+        productValue: 'Quick start',
         competitorValue: 'Longer setup',
       },
       {
@@ -80,7 +80,7 @@ export const comparisonPages: ComparisonPageData[] = [
       {
         question: 'Does Free Invoice Kit support WhatsApp sharing more directly?',
         answer:
-          'Yes. The product is positioned around creating a finished invoice PDF quickly and moving it into the client conversation with minimal setup.',
+          'Yes. Free Invoice Kit focuses on creating the PDF quickly so you can share it in chat or by email without extra setup.',
       },
     ],
     faqTitle: 'Comparison questions people ask before switching',
@@ -101,7 +101,7 @@ export const comparisonPages: ComparisonPageData[] = [
         description: 'Return to the broader no-signup invoice flow outside the comparison context.',
       },
     ],
-    relatedTitle: 'Move the next click somewhere useful',
+    relatedTitle: 'Related comparisons and freelancer invoice guides',
   },
   {
     slug: 'freshbooks',
@@ -140,7 +140,7 @@ export const comparisonPages: ComparisonPageData[] = [
     comparisonRows: [
       {
         feature: 'Time to first invoice',
-        productValue: 'Under 1 minute',
+        productValue: 'Quick start',
         competitorValue: 'Longer setup',
       },
       {
@@ -204,10 +204,10 @@ export const comparisonPages: ComparisonPageData[] = [
       {
         href: '/invoice-generator/consultants',
         title: 'Invoice Generator for Consultants',
-        description: 'Use a profession-focused page if your consulting work needs faster project billing.',
+        description: 'See a consultant-focused invoice guide built for quick project and retainer billing.',
       },
     ],
-    relatedTitle: 'Keep comparison traffic on adjacent high-intent pages',
+    relatedTitle: 'Related alternatives and invoicing guides',
   },
   {
     slug: 'wave',
@@ -216,7 +216,7 @@ export const comparisonPages: ComparisonPageData[] = [
     title: 'Wave Invoice Alternative for Freelancers | Free Invoice Kit',
     description:
       'Looking for a Wave invoice alternative? Free Invoice Kit focuses on quick invoice PDFs, WhatsApp sharing, and low setup friction for freelancers.',
-    h1: 'A Wave invoice alternative when free accounting software still feels heavier than the job.',
+    h1: 'A Wave invoice alternative when free accounting software feels like more than you need.',
     badge: 'Comparison',
     intro:
       'Wave is useful when you want free accounting software with invoicing attached. Free Invoice Kit is better when the work is simply to make the invoice, export the PDF, and send it fast.',
@@ -291,7 +291,7 @@ export const comparisonPages: ComparisonPageData[] = [
           'The product is optimized around fast invoice PDF generation and direct sharing, especially for freelancers and small service businesses.',
       },
     ],
-    faqTitle: 'Questions people ask when Wave still feels heavier than they want',
+    faqTitle: 'Questions people ask when Wave feels like more software than they need',
     relatedLinks: [
       {
         href: '/compare/freshbooks',
@@ -306,9 +306,9 @@ export const comparisonPages: ComparisonPageData[] = [
       {
         href: '/free-invoice-maker-freelancers',
         title: 'Freelancer Invoice Maker',
-        description: 'Return to the broader freelancer page if the comparison route answered the software question.',
+        description: 'See the broader no-signup invoice workflow if you want a faster way to bill clients.',
       },
     ],
-    relatedTitle: 'Move comparison traffic into adjacent intent pages',
+    relatedTitle: 'More alternatives and invoicing guides',
   },
 ];

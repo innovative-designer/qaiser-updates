@@ -1,5 +1,5 @@
 export const SUPPORT_EMAIL = 'support@freeinvoicekit.com';
-export const LEGAL_ENTITY_NAME = 'FreeInvoiceKit company';
+export const LEGAL_ENTITY_NAME = 'Free Invoice Kit';
 export const GOVERNING_LAW = 'Delaware';
 
 export const PRIVACY_LAST_UPDATED = 'March 11, 2026';
