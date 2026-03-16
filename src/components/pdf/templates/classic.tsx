@@ -274,6 +274,9 @@ export function ClassicInvoiceDocument({ invoice, businessLogo, accentColor }: I
             ) : null}
             <Text style={styles.eyebrow}>Invoice From</Text>
             <Text style={styles.businessName}>{invoice.businessName || 'Your Business'}</Text>
+            {invoice.senderName?.trim() ? (
+              <Text style={styles.businessLine}>{invoice.senderName}</Text>
+            ) : null}
             {businessLines.length > 0 ? (
               businessLines.map((line) => (
                 <Text key={line} style={styles.businessLine}>

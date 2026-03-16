@@ -312,17 +312,6 @@ export function LedgerInvoiceDocument({
             {businessLogo ? <Image src={businessLogo} style={styles.logo} /> : null}
             <View>
               <Text style={styles.businessName}>{invoice.businessName || 'Your Business'}</Text>
-              {businessLines.length > 0 ? (
-                businessLines.map((line) => (
-                  <Text key={line} style={styles.businessLine}>
-                    {line}
-                  </Text>
-                ))
-              ) : (
-                <Text style={styles.businessLine}>
-                  Add your business details in Free Invoice Kit.
-                </Text>
-              )}
             </View>
           </View>
 
@@ -347,7 +336,7 @@ export function LedgerInvoiceDocument({
         <View style={styles.parties}>
           <View style={styles.partyBlock}>
             <Text style={styles.partyLabel}>From</Text>
-            <Text style={styles.partyName}>{invoice.businessName || 'Your Business'}</Text>
+            <Text style={styles.partyName}>{invoice.senderName?.trim() || invoice.businessName || 'Your Business'}</Text>
             {businessLines.map((line) => (
               <Text key={line} style={styles.partyLine}>
                 {line}

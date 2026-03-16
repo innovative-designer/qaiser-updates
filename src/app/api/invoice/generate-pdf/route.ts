@@ -62,6 +62,7 @@ export async function POST(request: NextRequest) {
       businessEmail: stripHtml(body.businessEmail),
       businessPhone: stripHtml(body.businessPhone),
       businessAddress: stripHtml(body.businessAddress),
+      senderName: stripHtml(body.senderName ?? ''),
       clientName: stripHtml(body.clientName),
       clientEmail: stripHtml(body.clientEmail),
       clientPhone: stripHtml(body.clientPhone),

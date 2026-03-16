@@ -141,7 +141,7 @@ export async function shareViaEmail(invoice: InvoiceData): Promise<void> {
   const body = encodeURIComponent(
     `Hi ${invoice.clientName || 'there'},\n\n` +
       `Please find your invoice for ${amount}.\n\n` +
-      `Best regards,\n${invoice.businessName || ''}`
+      `Best regards,\n${invoice.senderName?.trim() || invoice.businessName || ''}`
   );
   const recipient = encodeURIComponent(invoice.clientEmail || '');
   captureAnalyticsEvent('share_clicked', {

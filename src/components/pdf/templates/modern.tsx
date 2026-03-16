@@ -1,3 +1,6 @@
+// ...existing code...
+// ...existing code...
+// ...existing code...
 import { Document, Image, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
 
 import { APP_NAME, APP_TAGLINE, APP_URL, DEFAULT_ACCENT_COLOR } from '@/lib/constants';
@@ -105,6 +108,13 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: 'Helvetica-Bold',
     marginBottom: 5,
+  },
+  addressNameLabel: {
+    fontSize: 8,
+    textTransform: 'uppercase',
+    letterSpacing: 1.2,
+    color: defaultColors.slate,
+    marginBottom: 2,
   },
   addressLine: {
     fontSize: 9,
@@ -280,22 +290,11 @@ export function ModernInvoiceDocument({
                 style={{ width: 52, height: 52, marginBottom: 10, objectFit: 'contain' }}
               />
             ) : null}
-            <Text style={styles.businessName}>{invoice.businessName || 'Your Business'}</Text>
-            <View style={[styles.businessUnderline, { backgroundColor: accent }]} />
-            {businessLines.length > 0 ? (
-              businessLines.map((line) => (
-                <Text key={line} style={styles.businessLine}>
-                  {line}
-                </Text>
-              ))
-            ) : (
-              <Text style={styles.businessLine}>
-                Add your business details in Free Invoice Kit.
-              </Text>
-            )}
           </View>
 
           <View style={styles.invoiceBlock}>
+            <Text style={styles.businessName}>{invoice.businessName || 'Your Business'}</Text>
+            <View style={[styles.businessUnderline, { backgroundColor: accent }]} />
             <Text style={[styles.invoiceLabel, { color: accent }]}>Invoice</Text>
             <View style={styles.metaRow}>
               <Text style={styles.metaLabel}>Invoice ID</Text>
@@ -318,8 +317,13 @@ export function ModernInvoiceDocument({
         {/* Two-column from / bill-to */}
         <View style={styles.addressSection}>
           <View style={styles.addressCard}>
-            <Text style={styles.addressLabel}>From</Text>
-            <Text style={styles.addressName}>{invoice.businessName || 'Your Business'}</Text>
+            <Text style={styles.addressLabel}>Bill From</Text>
+            {invoice.senderName ? (
+              <>
+                <Text style={styles.addressNameLabel}>Name</Text>
+                <Text style={styles.addressName}>{invoice.senderName}</Text>
+              </>
+            ) : null}
             {businessLines.length > 0 ? (
               businessLines.map((line) => (
                 <Text key={line} style={styles.addressLine}>

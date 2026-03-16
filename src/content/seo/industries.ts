@@ -62,7 +62,7 @@ export const industryPages: IndustryPageData[] = [
       title: 'The design is approved. The invoice should follow immediately.',
       body: [
         'Most designers lose time when they finish the work, send the files, and only remember the invoice later.',
-        'This page is built around that exact moment: generate the invoice while the work is still fresh and the client already expects the next step.',
+        'Free Invoice Kit helps you capture that moment with a clean PDF invoice while the project details and approval context are still fresh.',
       ],
     },
     ctaPanel: {
@@ -102,7 +102,7 @@ export const industryPages: IndustryPageData[] = [
       {
         href: '/invoice-template/freelancer',
         title: 'Freelancer Invoice Template',
-        description: 'Start from a template-minded page if you want a simpler setup framing.',
+        description: 'Review a clean invoice structure before opening the builder for your next client.',
       },
       {
         href: '/send-invoice-whatsapp',
@@ -110,7 +110,7 @@ export const industryPages: IndustryPageData[] = [
         description: 'Move the finished PDF into chat when clients reply faster there than by email.',
       },
     ],
-    relatedTitle: 'Keep the next click inside the design billing path',
+    relatedTitle: 'More invoicing guides for creative freelancers',
   },
   {
     pageType: 'industry',
@@ -164,7 +164,7 @@ export const industryPages: IndustryPageData[] = [
       {
         title: 'Send from chat-native workflows',
         description:
-          'If your clients already coordinate sessions in WhatsApp, the invoice PDF can follow the same route.',
+          'If your clients already coordinate sessions in WhatsApp, the finished invoice can follow in the same conversation.',
         icon: 'message-circle',
       },
     ],
@@ -173,14 +173,14 @@ export const industryPages: IndustryPageData[] = [
       title: 'The client has the previews. The invoice should not become another delayed admin task.',
       body: [
         'Photography businesses often invoice around booking, delivery, or upgrade requests, and those moments move quickly.',
-        'This page keeps the invoice flow short enough that you can send the document while the client is still actively responding.',
+        'Free Invoice Kit keeps the process short enough that you can send the document while the client is still replying and the project details are easy to confirm.',
       ],
     },
     ctaPanel: {
       eyebrow: 'Start now',
       title: 'Create a photography invoice that matches the way shoots are actually sold.',
       body: [
-        'Open the builder, add the session details, and export the PDF before the delivery thread cools off.',
+        'Open the builder, add the session details, and export the PDF while the delivery conversation is still active.',
       ],
       tone: 'accent',
       buttonHref: '/create',
@@ -221,7 +221,7 @@ export const industryPages: IndustryPageData[] = [
         description: 'Use the WhatsApp-first sending flow when client communication already lives in chat.',
       },
     ],
-    relatedTitle: 'Move into adjacent billing pages that still fit creative work',
+    relatedTitle: 'Related invoice guides for creative work',
   },
   {
     pageType: 'industry',
@@ -234,7 +234,7 @@ export const industryPages: IndustryPageData[] = [
     h1: 'Invoice generator for consultants who need to bill cleanly without adding a finance platform to the engagement.',
     badge: 'Consulting Billing',
     intro:
-      'Consultants often need to bill after a call, a milestone, or a monthly retainer checkpoint. Free Invoice Kit helps you package that work into a clear PDF invoice without account setup drag.',
+      'Consultants often need to bill after a call, a milestone, or a monthly retainer checkpoint. Free Invoice Kit helps you package that work into a clear PDF invoice without a long setup process.',
     keywords: [
       'invoice generator for consultants',
       'consulting invoice maker',
@@ -283,8 +283,8 @@ export const industryPages: IndustryPageData[] = [
       eyebrow: 'Common billing moment',
       title: 'The meeting is over. The invoice should be the next action, not next week’s action.',
       body: [
-        'Consulting work often closes loops quickly: a workshop ends, the recap is sent, and the invoice needs to follow while the momentum is still there.',
-        'This page keeps the billing step short so the handoff from advice to payment feels immediate and professional.',
+        'Consulting work often closes loops quickly: a workshop ends, the recap is sent, and the invoice needs to follow while the context is still fresh.',
+        'Free Invoice Kit makes that handoff feel immediate and professional by turning your scope, hours, or milestone into a polished PDF without extra setup.',
       ],
     },
     ctaPanel: {
@@ -329,9 +329,9 @@ export const industryPages: IndustryPageData[] = [
       {
         href: '/free-invoice-maker-freelancers',
         title: 'Freelancer Invoice Maker',
-        description: 'Return to the broader no-signup invoicing page for solo operators.',
+        description: 'See the faster no-signup invoice workflow built for solo consultants and service businesses.',
       },
     ],
-    relatedTitle: 'Keep users on the consulting billing path',
+    relatedTitle: 'More invoicing resources for consultants',
   },
 ];

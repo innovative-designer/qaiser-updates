@@ -7,11 +7,11 @@ export const templatePages: TemplatePageData[] = [
     lastModified: '2026-03-11',
     title: 'Freelancer Invoice Template | Free PDF Invoice Workflow',
     description:
-      'Use this freelancer invoice template page to understand what a clean freelance invoice should include, then create one fast in Free Invoice Kit.',
-    h1: 'Freelancer invoice template guidance for people who want a clean invoice without turning templates into admin debt.',
+      'Use this freelancer invoice template guide to see what a strong freelance invoice should include, then create your PDF in Free Invoice Kit.',
+    h1: 'Freelancer invoice template guidance for people who want a clean invoice without turning billing into admin debt.',
     badge: 'Invoice Template',
     intro:
-      'This page shows what a strong freelancer invoice should cover, then points you to the fastest way to turn that structure into a finished PDF.',
+      'Use this freelancer invoice template to understand the right structure, then turn it into a finished PDF invoice in a few quick steps.',
     keywords: ['freelancer invoice template', 'free freelancer invoice template', 'freelance invoice format'],
     primaryCta: {
       href: '/create',
@@ -68,9 +68,9 @@ export const templatePages: TemplatePageData[] = [
     },
     notesPanel: {
       eyebrow: 'Important note',
-      title: 'The page explains the template structure. The CTA still leads to the main invoice builder.',
+      title: 'Use the checklist as your template, then build the real invoice in the app.',
       body: [
-        'There is no fake promise of a prefilled template here. The current product flow sends you to the regular builder so you can create the invoice properly.',
+        'Free Invoice Kit helps you create the final invoice directly, so you do not have to keep editing old documents or duplicate template files.',
       ],
       tone: 'quiet',
     },
@@ -88,7 +88,7 @@ export const templatePages: TemplatePageData[] = [
       {
         question: 'Is this a downloadable freelancer invoice template?',
         answer:
-          'This page is a template guide and a path into the invoice builder. The current product flow creates the invoice directly rather than promising a downloadable prefilled template file.',
+          'It works as a practical template guide. When you are ready, you can open the builder and create a clean PDF invoice instead of downloading and editing a blank file.',
       },
       {
         question: 'What should a freelancer invoice always include?',
@@ -111,7 +111,7 @@ export const templatePages: TemplatePageData[] = [
       {
         href: '/free-invoice-maker-freelancers',
         title: 'Freelancer Invoice Maker',
-        description: 'Return to the broader freelancer route if you want the bigger workflow context.',
+        description: 'See the full no-signup invoice flow built for freelancers and solo operators.',
       },
       {
         href: '/send-invoice-whatsapp',
@@ -119,7 +119,7 @@ export const templatePages: TemplatePageData[] = [
         description: 'Move into the sharing guide when the next job is getting the PDF to the client fast.',
       },
     ],
-    relatedTitle: 'Keep template traffic inside invoice-ready pages',
+    relatedTitle: 'Related invoice guides for freelancers',
   },
   {
     slug: 'hourly',
@@ -131,7 +131,7 @@ export const templatePages: TemplatePageData[] = [
     h1: 'Hourly invoice template guidance for freelancers and consultants who need the math to look obvious.',
     badge: 'Invoice Template',
     intro:
-      'Hourly billing only feels easy when the invoice explains the work clearly. This page shows the structure, then points you to the fastest way to generate a clean PDF invoice.',
+      'Hourly billing works best when the invoice makes the time, rate, and scope obvious. Use this guide to structure it clearly, then create the PDF in Free Invoice Kit.',
     keywords: ['hourly invoice template', 'hourly billing invoice template', 'free hourly invoice format'],
     primaryCta: {
       href: '/create',
@@ -188,9 +188,9 @@ export const templatePages: TemplatePageData[] = [
     },
     notesPanel: {
       eyebrow: 'Important note',
-      title: 'The current CTA leads to the standard builder, not a prefilled hourly invoice mode.',
+      title: 'Start in the main builder and add hourly line items your way.',
       body: [
-        'That keeps the page honest. The structure guidance is template-driven, but the product flow still starts from the same core invoice builder.',
+        'The hourly template guidance gives you the structure. The builder lets you turn that structure into a client-ready invoice without maintaining a separate spreadsheet.',
       ],
       tone: 'quiet',
     },
@@ -213,12 +213,12 @@ export const templatePages: TemplatePageData[] = [
       {
         question: 'Can I use this for consulting or freelance development work?',
         answer:
-          'Yes. The page is meant for any service business where the invoice is based on time, not just one profession.',
+          'Yes. It works for any service business that bills by time, including consulting, development, editing, and support work.',
       },
       {
-        question: 'Does the current product prefill an hourly template automatically?',
+        question: 'Does Free Invoice Kit have a dedicated hourly template mode?',
         answer:
-          'No. The page explains the structure honestly and routes you to the main builder without promising prefilled behavior that does not exist yet.',
+          'Not yet. You start in the main builder, add your hourly line items, and export the finished invoice PDF from there.',
       },
     ],
     faqTitle: 'Questions people ask when looking for an hourly invoice template',
@@ -239,6 +239,6 @@ export const templatePages: TemplatePageData[] = [
         description: 'Compare a lighter invoice workflow against heavier software used for time-based work.',
       },
     ],
-    relatedTitle: 'Move template traffic into hourly and consulting pages',
+    relatedTitle: 'Related guides for hourly invoicing',
   },
 ];

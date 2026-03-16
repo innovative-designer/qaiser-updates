@@ -42,6 +42,13 @@ export const metadata: Metadata = {
   title: 'Invoicing Tips for Freelancers',
   description:
     'Guides on sending invoices faster, WhatsApp billing, and getting paid without heavy invoicing software.',
+  keywords: [
+    'invoicing tips for freelancers',
+    'how to send invoice on whatsapp',
+    'freelancer invoice guide',
+    'invoice template guide',
+    'get paid faster freelance',
+  ],
   alternates: {
     canonical: `${APP_URL}/blog`,
   },
@@ -65,14 +72,14 @@ export default function BlogIndexPage() {
         <PageSection width="wide" spacing="compact">
           <PageHero gridClassName="lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
             <div className="space-y-5">
-              <Badge>Editorial Dispatch</Badge>
+              <Badge>Invoice Guides</Badge>
               <div className="space-y-4">
                 <h1 className="text-foreground max-w-3xl">
-                  Short reads for freelancers who want to invoice faster and get paid cleaner.
+                  Invoice guides for freelancers who want to get paid with less friction.
                 </h1>
                 <p className="text-muted-foreground max-w-2xl text-base leading-7 sm:text-lg">
-                  Practical guides on invoices, WhatsApp billing, pricing habits, and getting rid of
-                  admin drag without adopting a heavy billing stack.
+                  Practical articles on invoice basics, WhatsApp billing, PDF sharing, and faster
+                  client follow-up without moving into a heavy billing stack.
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row">
@@ -91,21 +98,24 @@ export default function BlogIndexPage() {
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
               <InfoPanel tone="quiet" className="p-5">
                 <p className="text-muted-foreground text-[11px] font-semibold tracking-[0.24em] uppercase">
-                  Tone
+                  What you&apos;ll find
                 </p>
-                <p className="text-foreground mt-3 text-lg font-semibold">Fast, useful, no fluff</p>
+                <p className="text-foreground mt-3 text-lg font-semibold">
+                  Clear advice you can use right away
+                </p>
                 <p className="text-muted-foreground mt-2 text-sm leading-6">
-                  Each article is written to help a solo operator make one better billing decision.
+                  Each article is written for freelancers and small service businesses that need a
+                  faster, cleaner invoicing workflow.
                 </p>
               </InfoPanel>
               <InfoPanel tone="accent" className="p-5">
                 <p className="text-muted-foreground text-[11px] font-semibold tracking-[0.24em] uppercase">
-                  What you get
+                  Popular topics
                 </p>
                 <div className="text-foreground mt-3 space-y-2 text-sm leading-6">
-                  <p>Invoice templates in plain language</p>
-                  <p>WhatsApp-first billing tactics</p>
-                  <p>Freelancer-friendly payment advice</p>
+                  <p>How to send invoices through WhatsApp</p>
+                  <p>Invoice templates explained in plain language</p>
+                  <p>Tips for billing clients faster</p>
                 </div>
               </InfoPanel>
             </div>
@@ -175,7 +185,7 @@ export default function BlogIndexPage() {
                   Latest Articles
                 </p>
                 <h2 className="text-foreground mt-2 text-2xl font-semibold tracking-[-0.03em] sm:text-3xl">
-                  Billing notes worth keeping open in another tab
+                  Recent articles on invoicing and getting paid
                 </h2>
               </div>
             </div>

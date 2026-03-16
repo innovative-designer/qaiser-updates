@@ -51,23 +51,23 @@ export default function FaqPage() {
               <p className="section-kicker">FAQ</p>
               <div className="space-y-4">
                 <h1 className="text-foreground max-w-4xl">
-                  Questions users ask before they trust an invoice tool
+                  Common questions about creating and sending invoices with FreeInvoiceKit
                 </h1>
                 <p className="text-muted-foreground max-w-3xl text-base leading-7 sm:text-lg">
-                  These answers cover the topics that matter most for a trustable invoice workflow:
-                  storage, sharing, safety, pricing, and support.
+                  These answers cover pricing, storage, PDF generation, WhatsApp sharing, browser
+                  safety, and support so you know how the invoice workflow works before you start.
                 </p>
               </div>
             </div>
 
             <InfoPanel tone="quiet">
               <p className="text-muted-foreground text-[11px] font-semibold tracking-[0.24em] uppercase">
-                What this page covers
+                Quick topics
               </p>
               <div className="text-muted-foreground mt-4 space-y-3 text-sm leading-7">
-                <p>Where invoice data lives</p>
-                <p>How PDF and WhatsApp workflows work</p>
-                <p>What the product does and does not replace</p>
+                <p>Where invoice data is stored</p>
+                <p>How PDF download and sharing work</p>
+                <p>What the product is built to do</p>
               </div>
             </InfoPanel>
           </PageHero>

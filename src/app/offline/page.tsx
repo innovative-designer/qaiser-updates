@@ -26,8 +26,8 @@ export default function OfflinePage() {
 
               <h1 className="text-foreground mt-6">You&apos;re offline right now</h1>
               <p className="text-muted-foreground mx-auto mt-4 max-w-2xl text-base leading-7 sm:text-lg">
-                Free Invoice Kit cached the app shell, but this page still needs a connection. Once
-                you&apos;re back online, refresh and continue invoicing where you left off.
+                Free Invoice Kit cached the app shell, but this view still needs a connection to
+                load fully. Once you&apos;re back online, refresh and continue working on your invoice.
               </p>
 
               <div className="mt-8 grid gap-3 sm:grid-cols-2">

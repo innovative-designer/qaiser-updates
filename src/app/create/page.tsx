@@ -135,6 +135,7 @@ export default function CreateInvoicePage() {
         if (data.businessEmail) setField('businessEmail', data.businessEmail);
         if (data.businessPhone) setField('businessPhone', data.businessPhone);
         if (data.businessAddress) setField('businessAddress', data.businessAddress);
+        if (data.senderName) setField('senderName', data.senderName);
         if (data.businessLogo) setLogoPreview(data.businessLogo);
         setHasSavedBusiness(true);
         setBusinessEditable(false);
@@ -167,6 +168,7 @@ export default function CreateInvoicePage() {
       businessEmail: invoice.businessEmail,
       businessPhone: invoice.businessPhone,
       businessAddress: invoice.businessAddress,
+      senderName: invoice.senderName || '',
     };
     if (logoPreview && !logoPreview.startsWith('blob:')) {
       data.businessLogo = logoPreview;
@@ -175,7 +177,7 @@ export default function CreateInvoicePage() {
     setHasSavedBusiness(true);
     setBusinessEditable(false);
     toast.success('Business info saved for future invoices.');
-  }, [invoice.businessName, invoice.businessEmail, invoice.businessPhone, invoice.businessAddress, logoPreview]);
+  }, [invoice.businessName, invoice.businessEmail, invoice.businessPhone, invoice.businessAddress, invoice.senderName, logoPreview]);
 
   const handleAccentColorChange = useCallback((color: string) => {
     setAccentColor(color);
@@ -204,6 +206,7 @@ export default function CreateInvoicePage() {
     setField('businessEmail', '');
     setField('businessPhone', '');
     setField('businessAddress', '');
+    setField('senderName', '');
     setLogoPreview(null);
     if (logoInputRef.current) {
       logoInputRef.current.value = '';
@@ -650,6 +653,11 @@ export default function CreateInvoicePage() {
                     {invoice.businessPhone && (
                       <p className="mt-0.5 text-xs text-muted-foreground">{invoice.businessPhone}</p>
                     )}
+                    {invoice.senderName && (
+                      <p className="mt-0.5 text-xs text-muted-foreground italic">
+                        Issued by: {invoice.senderName}
+                      </p>
+                    )}
                     {!invoice.businessName && (
                       <p className="text-xs text-muted-foreground/50 italic">Click to add business info</p>
                     )}
@@ -693,6 +701,15 @@ export default function CreateInvoicePage() {
                         value={invoice.businessAddress}
                         placeholder="221B Market St, San Francisco"
                         onChange={(event) => setField('businessAddress', event.target.value)}
+                        className="h-9"
+                      />
+                    </Field>
+                    <Field id="senderName" label="Your Name">
+                      <Input
+                        id="senderName"
+                        value={invoice.senderName || ''}
+                        placeholder="John Smith (optional)"
+                        onChange={(event) => setField('senderName', event.target.value)}
                         className="h-9"
                       />
                     </Field>

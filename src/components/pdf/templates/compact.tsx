@@ -269,13 +269,6 @@ export function CompactInvoiceDocument({
             ) : null}
             <View style={styles.brandText}>
               <Text style={styles.businessName}>{invoice.businessName || 'Your Business'}</Text>
-              {businessLines.length > 0 ? (
-                <Text style={styles.businessLine}>{businessLines.join('  |  ')}</Text>
-              ) : (
-                <Text style={styles.businessLine}>
-                  Add your business details in Free Invoice Kit.
-                </Text>
-              )}
             </View>
           </View>
           <Text style={[styles.invoiceLabel, c ? { color: c.accentDeep } : {}]}>Invoice</Text>
@@ -303,7 +296,7 @@ export function CompactInvoiceDocument({
         <View style={styles.addressSection}>
           <View style={styles.addressBlock}>
             <Text style={styles.addressLabel}>From</Text>
-            <Text style={styles.addressName}>{invoice.businessName || 'Your Business'}</Text>
+            <Text style={styles.addressName}>{invoice.senderName?.trim() || invoice.businessName || 'Your Business'}</Text>
             {businessLines.map((line) => (
               <Text key={line} style={styles.addressLine}>
                 {line}
