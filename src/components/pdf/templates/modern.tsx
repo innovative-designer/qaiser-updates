@@ -7,6 +7,12 @@ import { APP_NAME, APP_TAGLINE, APP_URL, DEFAULT_ACCENT_COLOR } from '@/lib/cons
 import { formatCurrency } from '@/lib/currencies';
 import { buildColors, defaultColors } from '@/components/pdf/shared/colors';
 import { formatDate } from '@/components/pdf/shared/format';
+import {
+  getBillFromName,
+  getBrandName,
+  getBusinessLines,
+  getClientLines,
+} from '@/components/pdf/shared/parties';
 import type { InvoiceDocumentProps } from '@/components/pdf/shared/types';
 
 const styles = StyleSheet.create({
@@ -34,6 +40,13 @@ const styles = StyleSheet.create({
   },
   brandBlock: {
     maxWidth: 280,
+  },
+  brandRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  brandText: {
+    marginLeft: 12,
   },
   businessName: {
     fontSize: 20,
@@ -263,15 +276,10 @@ export function ModernInvoiceDocument({
 
   const accent = c ? c.accent : defaultColors.accent;
 
-  const businessLines = [
-    invoice.businessEmail,
-    invoice.businessPhone,
-    invoice.businessAddress,
-  ].filter(Boolean);
-
-  const clientLines = [invoice.clientCompany, invoice.clientEmail, invoice.clientPhone].filter(
-    Boolean
-  );
+  const brandName = getBrandName(invoice);
+  const billFromName = getBillFromName(invoice);
+  const businessLines = getBusinessLines(invoice);
+  const clientLines = getClientLines(invoice);
 
   const lineItems = invoice.lineItems.filter((item) => item.description.trim());
 
@@ -284,17 +292,21 @@ export function ModernInvoiceDocument({
         {/* Masthead: logo + business info | invoice label + meta */}
         <View style={styles.masthead}>
           <View style={styles.brandBlock}>
-            {businessLogo ? (
-              <Image
-                src={businessLogo}
-                style={{ width: 52, height: 52, marginBottom: 10, objectFit: 'contain' }}
-              />
-            ) : null}
+            <View style={styles.brandRow}>
+              {businessLogo ? (
+                <Image
+                  src={businessLogo}
+                  style={{ width: 52, height: 52, objectFit: 'contain' }}
+                />
+              ) : null}
+              <View style={[styles.brandText, !businessLogo ? { marginLeft: 0 } : {}]}>
+                <Text style={styles.businessName}>{brandName}</Text>
+                <View style={[styles.businessUnderline, { backgroundColor: accent }]} />
+              </View>
+            </View>
           </View>
 
           <View style={styles.invoiceBlock}>
-            <Text style={styles.businessName}>{invoice.businessName || 'Your Business'}</Text>
-            <View style={[styles.businessUnderline, { backgroundColor: accent }]} />
             <Text style={[styles.invoiceLabel, { color: accent }]}>Invoice</Text>
             <View style={styles.metaRow}>
               <Text style={styles.metaLabel}>Invoice ID</Text>
@@ -318,12 +330,7 @@ export function ModernInvoiceDocument({
         <View style={styles.addressSection}>
           <View style={styles.addressCard}>
             <Text style={styles.addressLabel}>Bill From</Text>
-            {invoice.senderName ? (
-              <>
-                <Text style={styles.addressNameLabel}>Name</Text>
-                <Text style={styles.addressName}>{invoice.senderName}</Text>
-              </>
-            ) : null}
+            <Text style={styles.addressName}>{billFromName}</Text>
             {businessLines.length > 0 ? (
               businessLines.map((line) => (
                 <Text key={line} style={styles.addressLine}>

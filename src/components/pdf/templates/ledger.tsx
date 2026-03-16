@@ -4,6 +4,12 @@ import { APP_NAME, APP_TAGLINE, APP_URL, DEFAULT_ACCENT_COLOR } from '@/lib/cons
 import { formatCurrency } from '@/lib/currencies';
 import { buildColors, defaultColors } from '@/components/pdf/shared/colors';
 import { formatDate } from '@/components/pdf/shared/format';
+import {
+  getBillFromName,
+  getBrandName,
+  getBusinessLines,
+  getClientLines,
+} from '@/components/pdf/shared/parties';
 import type { InvoiceDocumentProps } from '@/components/pdf/shared/types';
 
 const bg = '#f8f9fa';
@@ -291,15 +297,10 @@ export function LedgerInvoiceDocument({
   const accent = c ? c.accent : defaultColors.accent;
   const accentDeep = c ? c.accentDeep : defaultColors.accentDeep;
 
-  const businessLines = [
-    invoice.businessEmail,
-    invoice.businessPhone,
-    invoice.businessAddress,
-  ].filter(Boolean);
-
-  const clientLines = [invoice.clientCompany, invoice.clientEmail, invoice.clientPhone].filter(
-    Boolean
-  );
+  const brandName = getBrandName(invoice);
+  const billFromName = getBillFromName(invoice);
+  const businessLines = getBusinessLines(invoice);
+  const clientLines = getClientLines(invoice);
 
   const lineItems = invoice.lineItems.filter((item) => item.description.trim());
 
@@ -311,7 +312,7 @@ export function LedgerInvoiceDocument({
           <View style={styles.headerLeft}>
             {businessLogo ? <Image src={businessLogo} style={styles.logo} /> : null}
             <View>
-              <Text style={styles.businessName}>{invoice.businessName || 'Your Business'}</Text>
+              <Text style={styles.businessName}>{brandName}</Text>
             </View>
           </View>
 
@@ -335,13 +336,17 @@ export function LedgerInvoiceDocument({
         {/* ── From / To ── */}
         <View style={styles.parties}>
           <View style={styles.partyBlock}>
-            <Text style={styles.partyLabel}>From</Text>
-            <Text style={styles.partyName}>{invoice.senderName?.trim() || invoice.businessName || 'Your Business'}</Text>
-            {businessLines.map((line) => (
-              <Text key={line} style={styles.partyLine}>
-                {line}
-              </Text>
-            ))}
+            <Text style={styles.partyLabel}>Bill From</Text>
+            <Text style={styles.partyName}>{billFromName}</Text>
+            {businessLines.length > 0 ? (
+              businessLines.map((line) => (
+                <Text key={line} style={styles.partyLine}>
+                  {line}
+                </Text>
+              ))
+            ) : (
+              <Text style={styles.partyLine}>Business details will appear here.</Text>
+            )}
           </View>
           <View style={styles.partyBlock}>
             <Text style={styles.partyLabel}>Bill To</Text>
