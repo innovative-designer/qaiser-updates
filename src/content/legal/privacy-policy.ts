@@ -24,7 +24,7 @@ export const privacyPolicy: ContentDocument = {
   lastUpdated: PRIVACY_LAST_UPDATED,
   highlights: [
     'Business details are stored in localStorage for reuse, and invoice drafts and history are stored in IndexedDB on your device.',
-    'PostHog analytics may run only on app routes such as invoice creation, invoice history, and shared invoice views when analytics is configured.',
+    'Google Analytics may run site-wide when analytics is configured, and PostHog may run on app routes for product analytics.',
     'Support and waitlist submissions may store your email address and related anti-abuse metadata.',
   ],
   sections: [
@@ -64,8 +64,8 @@ export const privacyPolicy: ContentDocument = {
     {
       title: 'Analytics',
       paragraphs: [
-        'If analytics is configured, Free Invoice Kit uses PostHog only on app routes such as the invoice creator, invoice history, and shared invoice views. Public marketing pages, comparison pages, and blog content are not intended to load PostHog.',
-        'Analytics are limited to product events such as creating an invoice, downloading a PDF, or clicking a share action. Session recording, surveys, and broad automatic interaction capture are disabled in this setup.',
+        'If analytics is configured, Free Invoice Kit may use Google Analytics across the site to understand traffic sources, pageviews, and acquisition performance.',
+        'PostHog may also run on app routes such as the invoice creator, invoice history, and shared invoice views. PostHog analytics are limited to product events such as creating an invoice, downloading a PDF, or clicking a share action. Session recording, surveys, and broad automatic interaction capture are disabled in that setup.',
       ],
     },
     {
@@ -82,6 +82,7 @@ export const privacyPolicy: ContentDocument = {
       ],
       items: [
         'Supabase for backend data and file handling where configured',
+        'Google Analytics for website traffic measurement',
         'PostHog for analytics',
         'Infrastructure and hosting providers needed to serve the site',
         'IP-based location lookup used to estimate local currency',

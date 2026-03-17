@@ -11,7 +11,7 @@ export const cookiePolicy: ContentDocument = {
   highlights: [
     'This site uses both cookies and non-cookie browser storage technologies.',
     'Business details and invoice data can be stored locally in your browser through localStorage and IndexedDB.',
-    'PostHog analytics may run only on app routes when analytics is configured.',
+    'Google Analytics may run site-wide when analytics is configured, and PostHog may run on app routes.',
   ],
   sections: [
     {
@@ -43,15 +43,15 @@ export const cookiePolicy: ContentDocument = {
       ],
       items: [
         'Essential technologies needed to operate the site or store user-requested data',
-        'Analytics technologies used to understand product usage on app routes',
+        'Analytics technologies used to understand site traffic and product usage where analytics is enabled',
         'Preference technologies used to remember UI state or prior actions',
       ],
     },
     {
       title: 'Analytics technologies',
       paragraphs: [
-        'If analytics is configured, PostHog may load only on app routes such as invoice creation, invoice history, and shared invoice views. Public content pages are not intended to load PostHog.',
-        'When enabled, the setup is limited to explicit product events such as invoice creation, PDF download, and share actions. Session recording, surveys, and broad automatic interaction capture are disabled.',
+        'If analytics is configured, Google Analytics may load across the site to measure traffic, pageviews, and acquisition performance.',
+        'PostHog may also load on app routes such as invoice creation, invoice history, and shared invoice views for product events like invoice creation, PDF download, and share actions. Session recording, surveys, and broad automatic interaction capture are disabled in that setup.',
       ],
     },
     {
