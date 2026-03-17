@@ -20,24 +20,48 @@ function buildPagePath(pathname: string, search: string) {
 export function GoogleAnalyticsProvider() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const hasTrackedInitialPage = useRef(false);
+  const hasConfiguredGoogleAnalytics = useRef(false);
+  const lastTrackedPage = useRef<string | null>(null);
   const search = searchParams.toString();
 
   useEffect(() => {
-    if (!GA_MEASUREMENT_ID || !window.gtag) {
+    if (!GA_MEASUREMENT_ID) {
       return;
     }
 
-    if (!hasTrackedInitialPage.current) {
-      hasTrackedInitialPage.current = true;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag =
+      window.gtag ||
+      ((...args: unknown[]) => {
+        window.dataLayer.push(args);
+      });
+
+    if (!hasConfiguredGoogleAnalytics.current) {
+      window.gtag('js', new Date());
+      window.gtag('config', GA_MEASUREMENT_ID, {
+        send_page_view: false,
+      });
+      hasConfiguredGoogleAnalytics.current = true;
+    }
+
+    const pagePath = buildPagePath(pathname, search);
+
+    if (lastTrackedPage.current === pagePath) {
       return;
     }
 
-    window.gtag('config', GA_MEASUREMENT_ID, {
-      page_path: buildPagePath(pathname, search),
-      page_title: document.title,
-      page_location: window.location.href,
+    const frameId = window.requestAnimationFrame(() => {
+      window.gtag?.('event', 'page_view', {
+        page_path: pagePath,
+        page_title: document.title,
+        page_location: window.location.href,
+      });
+      lastTrackedPage.current = pagePath;
     });
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+    };
   }, [pathname, search]);
 
   if (!GA_MEASUREMENT_ID) {
@@ -50,19 +74,6 @@ export function GoogleAnalyticsProvider() {
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
         strategy="afterInteractive"
       />
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          window.gtag = gtag;
-          gtag('js', new Date());
-          gtag('config', '${GA_MEASUREMENT_ID}', {
-            page_path: window.location.pathname + window.location.search,
-            page_title: document.title,
-            page_location: window.location.href
-          });
-        `}
-      </Script>
     </>
   );
 }
