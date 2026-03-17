@@ -7,7 +7,7 @@ const cspBase = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
-  "connect-src 'self' https://*.supabase.co https://ip-api.com https://www.google-analytics.com https://us.i.posthog.com https://us-assets.i.posthog.com",
+  "connect-src 'self' https://*.supabase.co https://ip-api.com https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://region1.google-analytics.com https://us.i.posthog.com https://us-assets.i.posthog.com",
   "worker-src 'self' blob:",
 ];
 
