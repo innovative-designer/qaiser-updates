@@ -95,11 +95,13 @@ Create `.env.local` at the project root:
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 SUPABASE_SECRET_KEY=
+NEXT_PUBLIC_GA_MEASUREMENT_ID=
 NEXT_PUBLIC_POSTHOG_KEY=
 NEXT_PUBLIC_POSTHOG_HOST=
 ```
 
-PostHog is optional. Supabase-backed PDF hosting and waitlist storage require valid Supabase values.
+Google Analytics and PostHog are optional. Supabase-backed PDF hosting and waitlist
+storage require valid Supabase values.
 
 ## Key Paths
 

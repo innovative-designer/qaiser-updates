@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Geist_Mono, Inter } from 'next/font/google';
+import { Suspense } from 'react';
 
+import { GoogleAnalyticsProvider } from '@/components/providers/google-analytics-provider';
 import { SerwistProvider } from '@/components/providers/serwist-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
@@ -86,6 +88,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${geistMono.variable}`} suppressHydrationWarning>
       <body className="antialiased">
+        <Suspense fallback={null}>
+          <GoogleAnalyticsProvider />
+        </Suspense>
         <SerwistProvider>
           <ThemeProvider
             attribute="class"
