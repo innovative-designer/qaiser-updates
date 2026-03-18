@@ -37,10 +37,10 @@ describe('GET /api/shared-invoices/[invoiceId]/pdf', () => {
 
   it('returns an attachment when download=1', async () => {
     const request = new NextRequest(
-      'https://www.freeinvoicekit.com/api/shared-invoices/abc12345/pdf?download=1',
+      'https://www.freeinvoicekit.com/api/shared-invoices/studio-north_f7a2c91b12345678_2026-03-18/pdf?download=1',
     );
     const response = await GET(request, {
-      params: Promise.resolve({ invoiceId: 'abc12345' }),
+      params: Promise.resolve({ invoiceId: 'studio-north_f7a2c91b12345678_2026-03-18' }),
     });
 
     expect(response.status).toBe(200);

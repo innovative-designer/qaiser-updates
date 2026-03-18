@@ -2,7 +2,26 @@ import { renderToBuffer } from '@react-pdf/renderer';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { InvoiceDocument } from '@/components/pdf/invoice-document';
+import {
+  MAX_PDF_ADDRESS_LENGTH,
+  MAX_PDF_BUSINESS_NAME_LENGTH,
+  MAX_PDF_CLIENT_COMPANY_LENGTH,
+  MAX_PDF_EMAIL_LENGTH,
+  MAX_PDF_LINE_ITEMS,
+  MAX_PDF_LINE_ITEM_DESCRIPTION_LENGTH,
+  MAX_PDF_LOGO_BYTES,
+  MAX_PDF_NOTES_LENGTH,
+  MAX_PDF_PHONE_LENGTH,
+  MAX_PDF_REQUEST_BYTES,
+} from '@/lib/constants';
 import { safeCurrency, safeNumber, safePdfTemplateId, stripHtml } from '@/lib/sanitize';
+import {
+  createSharedPdfWriteToken,
+  createSharedInvoiceId,
+  getInvoiceStorageObjectPath,
+  isStableSharedInvoiceId,
+  isValidSharedPdfWriteToken,
+} from '@/lib/server/shared-pdf';
 import { getSharedInvoicePdfPath, getSharedInvoiceViewerPath } from '@/lib/shared-invoice-links';
 import { supabaseAdmin } from '@/lib/supabase';
 import type { InvoiceData } from '@/types/invoice';
@@ -39,6 +58,17 @@ function hasRequiredInvoiceFields(invoice: InvoiceData) {
   );
 }
 
+function getDataUrlByteSize(value: string) {
+  const [, base64 = ''] = value.split(',', 2);
+  const paddingLength = (base64.match(/=*$/)?.[0]?.length ?? 0);
+
+  return Math.floor((base64.length * 3) / 4) - paddingLength;
+}
+
+function hasExceededLengthLimit(value: string, maxLength: number) {
+  return value.length > maxLength;
+}
+
 export async function POST(request: NextRequest) {
   try {
     const ip =
@@ -54,7 +84,55 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    const contentLength = Number(request.headers.get('content-length') ?? '0');
+    if (Number.isFinite(contentLength) && contentLength > MAX_PDF_REQUEST_BYTES) {
+      return NextResponse.json(
+        { error: 'PDF request payload is too large.' },
+        { status: 413 },
+      );
+    }
+
+    const rawBody = await request.text();
+    if (Buffer.byteLength(rawBody, 'utf8') > MAX_PDF_REQUEST_BYTES) {
+      return NextResponse.json(
+        { error: 'PDF request payload is too large.' },
+        { status: 413 },
+      );
+    }
+
+    let body: Record<string, unknown>;
+
+    try {
+      body = JSON.parse(rawBody) as Record<string, unknown>;
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON payload.' }, { status: 400 });
+    }
+
+    if (Array.isArray(body.lineItems) && body.lineItems.length > MAX_PDF_LINE_ITEMS) {
+      return NextResponse.json(
+        { error: `Maximum ${MAX_PDF_LINE_ITEMS} line items allowed.` },
+        { status: 400 },
+      );
+    }
+
+    const requestedSharedInvoiceId =
+      typeof body.sharedInvoiceId === 'string' ? body.sharedInvoiceId.trim() : '';
+    const sharedPdfWriteToken =
+      typeof body.sharedPdfWriteToken === 'string' ? body.sharedPdfWriteToken.trim() : '';
+    const canOverwriteExistingPdf =
+      Boolean(requestedSharedInvoiceId) &&
+      Boolean(sharedPdfWriteToken) &&
+      isStableSharedInvoiceId(requestedSharedInvoiceId) &&
+      isValidSharedPdfWriteToken(requestedSharedInvoiceId, sharedPdfWriteToken);
+
+
+    if ((requestedSharedInvoiceId || sharedPdfWriteToken) && !canOverwriteExistingPdf) {
+      return NextResponse.json(
+        { error: 'Invalid shared PDF update token.' },
+        { status: 403 },
+      );
+    }
+
     const sanitized = {
       ...body,
       pdfTemplateId: safePdfTemplateId(body.pdfTemplateId),
@@ -95,6 +173,34 @@ export async function POST(request: NextRequest) {
         ? body.accentColor
         : undefined;
 
+    if (
+      hasExceededLengthLimit(invoiceData.businessName, MAX_PDF_BUSINESS_NAME_LENGTH) ||
+      hasExceededLengthLimit(invoiceData.businessEmail, MAX_PDF_EMAIL_LENGTH) ||
+      hasExceededLengthLimit(invoiceData.businessPhone, MAX_PDF_PHONE_LENGTH) ||
+      hasExceededLengthLimit(invoiceData.businessAddress, MAX_PDF_ADDRESS_LENGTH) ||
+      hasExceededLengthLimit(invoiceData.senderName ?? '', MAX_PDF_BUSINESS_NAME_LENGTH) ||
+      hasExceededLengthLimit(invoiceData.clientName, MAX_PDF_BUSINESS_NAME_LENGTH) ||
+      hasExceededLengthLimit(invoiceData.clientEmail, MAX_PDF_EMAIL_LENGTH) ||
+      hasExceededLengthLimit(invoiceData.clientPhone, MAX_PDF_PHONE_LENGTH) ||
+      hasExceededLengthLimit(invoiceData.clientCompany, MAX_PDF_CLIENT_COMPANY_LENGTH) ||
+      hasExceededLengthLimit(invoiceData.notes, MAX_PDF_NOTES_LENGTH) ||
+      invoiceData.lineItems.some((item) =>
+        hasExceededLengthLimit(item.description, MAX_PDF_LINE_ITEM_DESCRIPTION_LENGTH),
+      )
+    ) {
+      return NextResponse.json(
+        { error: 'One or more invoice fields exceed the allowed length.' },
+        { status: 400 },
+      );
+    }
+
+    if (businessLogo && getDataUrlByteSize(businessLogo) > MAX_PDF_LOGO_BYTES) {
+      return NextResponse.json(
+        { error: 'Logo must be under 512KB.' },
+        { status: 400 },
+      );
+    }
+
     if (!hasRequiredInvoiceFields(invoiceData)) {
       return NextResponse.json(
         {
@@ -118,12 +224,15 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    const fileName = `${invoiceData.id}.pdf`;
+    const sharedInvoiceId = canOverwriteExistingPdf
+      ? requestedSharedInvoiceId
+      : createSharedInvoiceId(invoiceData.businessName);
+    const storagePath = getInvoiceStorageObjectPath(sharedInvoiceId);
     const { error: uploadError } = await supabaseAdmin.storage
       .from('invoices')
-      .upload(fileName, pdfBytes, {
+      .upload(storagePath, pdfBytes, {
         contentType: 'application/pdf',
-        upsert: true,
+        upsert: canOverwriteExistingPdf,
       });
 
     if (uploadError) {
@@ -134,8 +243,10 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       invoiceId: invoiceData.id,
-      viewerPath: getSharedInvoiceViewerPath(invoiceData.id),
-      downloadPath: getSharedInvoicePdfPath(invoiceData.id, { download: true }),
+      pdfPath: getSharedInvoicePdfPath(sharedInvoiceId),
+      sharedPdfWriteToken: createSharedPdfWriteToken(sharedInvoiceId),
+      viewerPath: getSharedInvoiceViewerPath(sharedInvoiceId),
+      downloadPath: getSharedInvoicePdfPath(sharedInvoiceId, { download: true }),
     });
   } catch (error) {
     console.error('PDF generation error:', error);
