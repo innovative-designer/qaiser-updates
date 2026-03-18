@@ -15,8 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLocalInvoices } from '@/hooks/use-local-invoices';
 import { captureAnalyticsEvent } from '@/lib/analytics/posthog';
 import { formatCurrency } from '@/lib/currencies';
-import { downloadPdf, shareOnWhatsApp } from '@/lib/share';
-import { getSharedInvoiceViewerPath } from '@/lib/shared-invoice-links';
+import { downloadPdf, getShareableInvoicePaths, shareOnWhatsApp } from '@/lib/share';
 
 function formatInvoiceDate(value: string) {
   return new Date(value).toLocaleDateString('en-US', {
@@ -44,11 +43,7 @@ export default function HistoryPage() {
   }
 
   function getViewerPath(invoice: (typeof invoices)[number]) {
-    if (!invoice.pdfUrl || invoice.pdfUrl.startsWith('blob:')) {
-      return null;
-    }
-
-    return getSharedInvoiceViewerPath(invoice.id);
+    return getShareableInvoicePaths(invoice)?.viewerPath ?? null;
   }
 
   return (

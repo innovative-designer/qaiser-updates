@@ -14,16 +14,36 @@ vi.mock('@/lib/supabase', () => ({
 
 import {
   buildPdfResponseHeaders,
+  createSharedPdfWriteToken,
+  createSharedInvoiceId,
   downloadStoredInvoicePdf,
   getInvoiceStorageObjectPath,
+  isStableSharedInvoiceId,
+  isValidSharedPdfWriteToken,
 } from '@/lib/server/shared-pdf';
 
 describe('shared pdf server helpers', () => {
   beforeEach(() => {
     downloadMock.mockReset();
+    process.env.SHARED_PDF_WRITE_TOKEN_SECRET = 'test-write-token-secret';
   });
 
-  it('maps invoice id to the storage object path', () => {
+  it('creates a readable shared invoice id', () => {
+    expect(
+      createSharedInvoiceId('Studio North', {
+        date: new Date('2026-03-18T09:00:00.000Z'),
+        randomId: 'f7a2c91b-1234-5678-9abc-def012345678',
+      }),
+    ).toBe('studio-north_f7a2c91b12345678_2026-03-18');
+  });
+
+  it('maps new shared invoice ids to the scoped storage object path', () => {
+    expect(getInvoiceStorageObjectPath('studio-north_f7a2c91b12345678_2026-03-18')).toBe(
+      'shared/studio-north_f7a2c91b12345678_2026-03-18.pdf',
+    );
+  });
+
+  it('keeps legacy invoice ids on the old storage path', () => {
     expect(getInvoiceStorageObjectPath('abc12345')).toBe('abc12345.pdf');
   });
 
@@ -42,8 +62,12 @@ describe('shared pdf server helpers', () => {
     const blob = new Blob(['pdf'], { type: 'application/pdf' });
     downloadMock.mockResolvedValue({ data: blob, error: null });
 
-    await expect(downloadStoredInvoicePdf('abc12345')).resolves.toBe(blob);
-    expect(downloadMock).toHaveBeenCalledWith('abc12345.pdf');
+    await expect(
+      downloadStoredInvoicePdf('studio-north_f7a2c91b12345678_2026-03-18'),
+    ).resolves.toBe(blob);
+    expect(downloadMock).toHaveBeenCalledWith(
+      'shared/studio-north_f7a2c91b12345678_2026-03-18.pdf',
+    );
   });
 
   it('throws NOT_FOUND when storage cannot find the pdf', async () => {
@@ -53,5 +77,20 @@ describe('shared pdf server helpers', () => {
     });
 
     await expect(downloadStoredInvoicePdf('abc12345')).rejects.toThrow('NOT_FOUND');
+  });
+
+  it('recognizes the stable shared invoice id format', () => {
+    expect(isStableSharedInvoiceId('studio-north_f7a2c91b12345678_2026-03-18')).toBe(true);
+    expect(isStableSharedInvoiceId('abc12345')).toBe(false);
+  });
+
+  it('creates and validates a write token for a shared pdf id', () => {
+    const sharedInvoiceId = 'studio-north_f7a2c91b12345678_2026-03-18';
+    const token = createSharedPdfWriteToken(sharedInvoiceId);
+
+    expect(isValidSharedPdfWriteToken(sharedInvoiceId, token)).toBe(true);
+    expect(
+      isValidSharedPdfWriteToken(sharedInvoiceId, 'invalid-shared-pdf-write-token'),
+    ).toBe(false);
   });
 });

@@ -7,6 +7,19 @@ describe('getShareableInvoicePaths', () => {
     expect(
       getShareableInvoicePaths({
         id: 'abc12345',
+        pdfUrl: '/api/shared-invoices/studio-north_f7a2c91b12345678_2026-03-18/pdf',
+      }),
+    ).toEqual({
+      viewerPath: '/v/studio-north_f7a2c91b12345678_2026-03-18',
+      pdfPath: '/api/shared-invoices/studio-north_f7a2c91b12345678_2026-03-18/pdf',
+      downloadPath: '/api/shared-invoices/studio-north_f7a2c91b12345678_2026-03-18/pdf?download=1',
+    });
+  });
+
+  it('falls back to the legacy invoice id mapping for old remote pdf urls', () => {
+    expect(
+      getShareableInvoicePaths({
+        id: 'abc12345',
         pdfUrl: 'https://xyz.supabase.co/storage/v1/object/public/invoices/abc12345.pdf',
       }),
     ).toEqual({

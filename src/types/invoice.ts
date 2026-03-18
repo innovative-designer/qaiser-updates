@@ -31,6 +31,7 @@ export interface InvoiceData {
   createdAt: string;
   status: 'draft' | 'sent';
   pdfUrl?: string;
+  sharedPdfWriteToken?: string;
   sentAt?: string;
   sentVia?: 'whatsapp' | 'email' | 'download' | 'copy';
   accentColor?: string;

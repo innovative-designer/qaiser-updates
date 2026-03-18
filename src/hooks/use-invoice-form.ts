@@ -9,6 +9,7 @@ import {
   DEFAULT_TAX_RATE,
   INVOICE_ID_LENGTH,
   LINE_ITEM_ID_LENGTH,
+  MAX_PDF_LINE_ITEMS,
 } from '@/lib/constants';
 import { detectCurrency } from '@/lib/geolocation';
 import type { InvoiceData, LineItem } from '@/types/invoice';
@@ -170,6 +171,10 @@ function invoiceReducer(state: InvoiceData, action: InvoiceFormAction): InvoiceD
     }
 
     case 'ADD_LINE_ITEM':
+      if (state.lineItems.length >= MAX_PDF_LINE_ITEMS) {
+        return state;
+      }
+
       return recalculateInvoice({
         ...state,
         lineItems: [...state.lineItems, createLineItem()],
@@ -236,6 +241,10 @@ export function validateInvoice(invoice: InvoiceData): ValidationErrors {
 
   if (!hasValidLineItem) {
     errors.lineItems = 'At least one line item with description and rate is required';
+  }
+
+  if (invoice.lineItems.length > MAX_PDF_LINE_ITEMS) {
+    errors.lineItems = `Maximum ${MAX_PDF_LINE_ITEMS} line items allowed`;
   }
 
   if (invoice.dueDate) {

@@ -1,7 +1,12 @@
 import { captureAnalyticsEvent } from '@/lib/analytics/posthog';
 import { formatCurrency } from '@/lib/currencies';
 import { saveInvoice } from '@/lib/db';
-import { getSharedInvoicePdfPath, getSharedInvoiceViewerPath } from '@/lib/shared-invoice-links';
+import {
+  extractSharedInvoiceIdFromPdfUrl,
+  getSharedInvoicePdfPath,
+  getSharedInvoiceViewerPath,
+  isLegacyRemotePdfUrl,
+} from '@/lib/shared-invoice-links';
 import type { InvoiceData } from '@/types/invoice';
 
 type ShareMethod = NonNullable<InvoiceData['sentVia']>;
@@ -14,6 +19,20 @@ export interface ShareTrackingContext {
 
 export function getShareableInvoicePaths(invoice: Pick<InvoiceData, 'id' | 'pdfUrl'>) {
   if (!invoice.pdfUrl || invoice.pdfUrl.startsWith('blob:')) {
+    return null;
+  }
+
+  const sharedInvoiceId = extractSharedInvoiceIdFromPdfUrl(invoice.pdfUrl);
+
+  if (sharedInvoiceId) {
+    return {
+      viewerPath: getSharedInvoiceViewerPath(sharedInvoiceId),
+      pdfPath: getSharedInvoicePdfPath(sharedInvoiceId),
+      downloadPath: getSharedInvoicePdfPath(sharedInvoiceId, { download: true }),
+    };
+  }
+
+  if (!isLegacyRemotePdfUrl(invoice.pdfUrl)) {
     return null;
   }
 

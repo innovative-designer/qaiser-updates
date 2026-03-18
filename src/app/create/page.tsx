@@ -42,9 +42,14 @@ import { useInvoiceForm, type ValidationErrors } from '@/hooks/use-invoice-form'
 import { useLocalInvoices } from '@/hooks/use-local-invoices';
 import { captureAnalyticsEvent } from '@/lib/analytics/posthog';
 import { CURRENCIES, formatCurrency } from '@/lib/currencies';
-import { DEFAULT_ACCENT_COLOR, DEFAULT_PDF_TEMPLATE_ID, MAX_INVOICES } from '@/lib/constants';
+import {
+  DEFAULT_ACCENT_COLOR,
+  DEFAULT_PDF_TEMPLATE_ID,
+  MAX_INVOICES,
+  MAX_PDF_LINE_ITEMS,
+} from '@/lib/constants';
 import { downloadPdf, shareOnWhatsApp } from '@/lib/share';
-import { getSharedInvoicePdfPath } from '@/lib/shared-invoice-links';
+import { extractSharedInvoiceIdFromPdfUrl } from '@/lib/shared-invoice-links';
 import type { PdfTemplateId } from '@/types/pdf-template';
 import { cn } from '@/lib/utils';
 
@@ -115,7 +120,9 @@ export default function CreateInvoicePage() {
   const [isSaving, setIsSaving] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedPdfUrl, setGeneratedPdfUrl] = useState<string | null>(null);
+  const [generatedRemotePdfPath, setGeneratedRemotePdfPath] = useState<string | null>(null);
   const [generatedViewerPath, setGeneratedViewerPath] = useState<string | null>(null);
+  const [sharedPdfWriteToken, setSharedPdfWriteToken] = useState<string | null>(null);
   const invoiceReadyRef = useRef<HTMLDivElement>(null);
   const [hasSavedBusiness, setHasSavedBusiness] = useState(false);
   const [businessEditable, setBusinessEditable] = useState(true);
@@ -278,12 +285,19 @@ export default function CreateInvoicePage() {
 
     try {
       const currentCurrency = invoice.currency;
-      await saveInvoice(invoice);
+      await saveInvoice({
+        ...invoice,
+        pdfTemplateId,
+        pdfUrl: invoice.pdfUrl || generatedRemotePdfPath || undefined,
+        sharedPdfWriteToken: sharedPdfWriteToken ?? invoice.sharedPdfWriteToken,
+      });
       toast.success(`Invoice ${invoice.id} saved locally.`);
       reset();
       setCurrency(currentCurrency);
       setGeneratedPdfUrl(null);
+      setGeneratedRemotePdfPath(null);
       setGeneratedViewerPath(null);
+      setSharedPdfWriteToken(null);
       setErrors({});
     } catch {
       toast.error('Could not save the invoice in local storage.');
@@ -304,10 +318,21 @@ export default function CreateInvoicePage() {
     setIsGenerating(true);
 
     try {
+      const existingSharedInvoiceId =
+        sharedPdfWriteToken
+          ? extractSharedInvoiceIdFromPdfUrl(invoice.pdfUrl ?? generatedRemotePdfPath ?? undefined)
+          : null;
       const response = await fetch('/api/invoice/generate-pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...invoice, businessLogo: logoPreview || undefined, accentColor, pdfTemplateId }),
+        body: JSON.stringify({
+          ...invoice,
+          businessLogo: logoPreview || undefined,
+          accentColor,
+          pdfTemplateId,
+          sharedInvoiceId: existingSharedInvoiceId ?? undefined,
+          sharedPdfWriteToken: sharedPdfWriteToken ?? undefined,
+        }),
       });
 
       if (!response.ok) {
@@ -316,6 +341,8 @@ export default function CreateInvoicePage() {
       }
 
       let resolvedPdfUrl: string | null = null;
+      let resolvedRemotePdfPath: string | null = null;
+      let resolvedSharedPdfWriteToken: string | null = null;
       let resolvedViewerPath: string | null = null;
       let persistedPdfUrl: string | undefined;
 
@@ -323,14 +350,20 @@ export default function CreateInvoicePage() {
         const blob = await response.blob();
         resolvedPdfUrl = URL.createObjectURL(blob);
       } else {
-        const data = (await response.json()) as { viewerPath?: string };
+        const data = (await response.json()) as {
+          pdfPath?: string;
+          sharedPdfWriteToken?: string;
+          viewerPath?: string;
+        };
 
-        if (!data.viewerPath) {
-          throw new Error('Viewer path was not returned by the server');
+        if (!data.viewerPath || !data.pdfPath || !data.sharedPdfWriteToken) {
+          throw new Error('PDF paths were not returned by the server');
         }
 
+        resolvedRemotePdfPath = data.pdfPath;
+        resolvedSharedPdfWriteToken = data.sharedPdfWriteToken;
         resolvedViewerPath = data.viewerPath;
-        persistedPdfUrl = getSharedInvoicePdfPath(invoice.id);
+        persistedPdfUrl = data.pdfPath;
       }
 
       if (generatedPdfUrl?.startsWith('blob:')) {
@@ -338,7 +371,9 @@ export default function CreateInvoicePage() {
       }
 
       setGeneratedPdfUrl(resolvedPdfUrl);
+      setGeneratedRemotePdfPath(resolvedRemotePdfPath);
       setGeneratedViewerPath(resolvedViewerPath);
+      setSharedPdfWriteToken(resolvedSharedPdfWriteToken);
       setTimeout(() => {
         const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
         if (isDesktop) {
@@ -359,6 +394,7 @@ export default function CreateInvoicePage() {
         status: 'sent',
         pdfUrl: persistedPdfUrl,
         pdfTemplateId,
+        sharedPdfWriteToken: resolvedSharedPdfWriteToken ?? sharedPdfWriteToken ?? undefined,
       });
 
       captureAnalyticsEvent('invoice_created', {
@@ -386,7 +422,9 @@ export default function CreateInvoicePage() {
     }
 
     setGeneratedPdfUrl(null);
+    setGeneratedRemotePdfPath(null);
     setGeneratedViewerPath(null);
+    setSharedPdfWriteToken(null);
     reset();
     setCurrency(currentCurrency);
     setErrors({});
@@ -395,11 +433,31 @@ export default function CreateInvoicePage() {
   function getInvoiceForSharing() {
     return {
       ...invoice,
-      pdfUrl:
-        invoice.pdfUrl ||
-        (generatedViewerPath ? getSharedInvoicePdfPath(invoice.id) : generatedPdfUrl) ||
-        undefined,
+      pdfUrl: invoice.pdfUrl || generatedRemotePdfPath || generatedPdfUrl || undefined,
+      sharedPdfWriteToken: sharedPdfWriteToken ?? invoice.sharedPdfWriteToken,
     };
+  }
+
+  function handleAddLineItem() {
+    if (invoice.lineItems.length >= MAX_PDF_LINE_ITEMS) {
+      setErrors((current) => ({
+        ...current,
+        lineItems: `Maximum ${MAX_PDF_LINE_ITEMS} line items allowed`,
+      }));
+      toast.error(`Maximum ${MAX_PDF_LINE_ITEMS} line items allowed.`);
+      return;
+    }
+
+    setErrors((current) => {
+      if (!current.lineItems?.includes('Maximum')) {
+        return current;
+      }
+
+      const nextErrors = { ...current };
+      delete nextErrors.lineItems;
+      return nextErrors;
+    });
+    addLineItem();
   }
 
   async function handleShareWhatsApp() {
@@ -1029,14 +1087,18 @@ export default function CreateInvoicePage() {
 
               {/* Add line item — dashed full-width button */}
               <div className="px-6 py-4 sm:px-8">
-                <button
-                  type="button"
-                  onClick={addLineItem}
-                  className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border/50 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:bg-muted/20 hover:text-primary/80"
-                >
-                  <Plus className="size-4" />
-                  Add line item
-                </button>
+                  <button
+                    type="button"
+                    onClick={handleAddLineItem}
+                    disabled={invoice.lineItems.length >= MAX_PDF_LINE_ITEMS}
+                    className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border/50 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:bg-muted/20 hover:text-primary/80 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <Plus className="size-4" />
+                    Add line item
+                  </button>
+                  <p className="text-muted-foreground mt-2 text-xs">
+                    Up to {MAX_PDF_LINE_ITEMS} line items per PDF.
+                  </p>
               </div>
             </div>
 

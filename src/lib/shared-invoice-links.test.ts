@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  extractSharedInvoiceIdFromPdfUrl,
   getSharedInvoicePdfPath,
   getSharedInvoiceViewerPath,
   isLegacyRemotePdfUrl,
@@ -19,6 +20,14 @@ describe('shared invoice links', () => {
     expect(getSharedInvoicePdfPath('abc12345', { download: true })).toBe(
       '/api/shared-invoices/abc12345/pdf?download=1',
     );
+  });
+
+  it('extracts a shared invoice id from a same-origin api path', () => {
+    expect(
+      extractSharedInvoiceIdFromPdfUrl(
+        '/api/shared-invoices/studio-north_f7a2c91b12345678_2026-03-18/pdf',
+      ),
+    ).toBe('studio-north_f7a2c91b12345678_2026-03-18');
   });
 
   it('recognizes legacy remote pdf urls', () => {
