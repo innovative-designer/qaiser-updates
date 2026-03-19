@@ -54,4 +54,19 @@ export const faqItems: FaqItem[] = [
     question: 'How can I contact support?',
     answer: `You can reach support, privacy, or legal contacts at ${SUPPORT_EMAIL}.`,
   },
+  {
+    question: 'What should I include on an invoice?',
+    answer:
+      'A clear invoice usually includes: your business name and contact details, the client’s name and contact details, invoice number and date, due date, a list of line items (description, quantity, rate, amount), subtotal, any tax or discount, and the total amount due. Free Invoice Kit’s builder includes all of these fields so you can create a professional invoice format.',
+  },
+  {
+    question: 'What is a standard invoice format?',
+    answer:
+      'A standard invoice format has a header (your business and “Invoice”), bill-to section (client details), invoice number and dates, a table of line items with description, quantity, rate, and amount, and a footer with subtotal, tax, discount, and total. Free Invoice Kit generates a PDF in this format so your invoices look professional and are easy for clients to understand.',
+  },
+  {
+    question: 'Does Free Invoice Kit work on iPhone, Android, PC, and Mac?',
+    answer:
+      'Yes. Free Invoice Kit works in any modern browser on desktop and mobile. You can create and export invoice PDFs from a laptop, PC, Mac, iPhone, Android phone, or tablet—no separate app required.',
+  },
 ];

@@ -10,16 +10,16 @@ import { faqItems } from '@/content/site/faq';
 import { APP_NAME, APP_URL } from '@/lib/constants';
 
 export const metadata: Metadata = {
-  title: 'FAQ',
+  title: `FAQ | Free Invoice Generator Questions – ${APP_NAME}`,
   description:
-    'Answers to common questions about FreeInvoiceKit, including storage, pricing, PDF generation, WhatsApp workflows, and support.',
+    'Common questions about the free invoice generator: PDF creation, WhatsApp sending, storage, pricing, and how to create invoices without signup.',
   alternates: {
     canonical: `${APP_URL}/faq`,
   },
   openGraph: {
-    title: `FAQ | ${APP_NAME}`,
+    title: `FAQ | Free Invoice Generator Questions – ${APP_NAME}`,
     description:
-      'Answers to common questions about FreeInvoiceKit, including storage, pricing, PDF generation, WhatsApp workflows, and support.',
+      'Answers about Free Invoice Kit: PDF invoices, WhatsApp sending, storage, and how to create professional invoices without signup.',
     url: `${APP_URL}/faq`,
   },
 };
