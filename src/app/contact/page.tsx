@@ -9,16 +9,16 @@ import { APP_NAME, APP_URL } from '@/lib/constants';
 import { SUPPORT_EMAIL } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Contact',
+  title: `Contact ${APP_NAME} | Support & Invoicing Help`,
   description:
-    'Contact FreeInvoiceKit for support, legal, or privacy-related questions through the public support email.',
+    'Get in touch with Free Invoice Kit for support, invoicing help, or feedback. Use the free invoice generator and contact us for questions.',
   alternates: {
     canonical: `${APP_URL}/contact`,
   },
   openGraph: {
-    title: `Contact | ${APP_NAME}`,
+    title: `Contact ${APP_NAME} | Support & Invoicing Help`,
     description:
-      'Contact FreeInvoiceKit for support, legal, or privacy-related questions through the public support email.',
+      'Contact Free Invoice Kit for support, invoicing help, or product feedback. We reply to every message.',
     url: `${APP_URL}/contact`,
   },
 };

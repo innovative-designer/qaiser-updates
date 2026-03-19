@@ -311,4 +311,217 @@ export const comparisonPages: ComparisonPageData[] = [
     ],
     relatedTitle: 'More alternatives and invoicing guides',
   },
+  {
+    slug: 'shopify',
+    path: '/compare/shopify',
+    lastModified: '2026-03-18',
+    title: 'Invoice Generator for Shopify Users | Free PDF Invoicing Without Signup',
+    description:
+      'Need an invoice generator that works with your Shopify workflow? Free Invoice Kit creates professional PDF invoices you can send to buyers or partners—no Shopify app or signup required.',
+    h1: 'Invoice generator for Shopify sellers who need a clean PDF without another app.',
+    badge: 'Comparison',
+    intro:
+      'Free Invoice Kit is not a Shopify app—it is a standalone free invoice generator. Create a professional PDF invoice, download or share it by email, and use it for B2B orders, buyer requests, or your own records alongside your Shopify store.',
+    keywords: [
+      'invoice generator for shopify',
+      'shopify invoice generator',
+      'free invoice generator shopify',
+    ],
+    competitorName: 'Shopify',
+    primaryCta: { href: '/create', label: 'Create Free Invoice' },
+    secondaryCta: { href: '/compare/woocommerce', label: 'Compare WooCommerce' },
+    heroAside: {
+      eyebrow: 'Best fit',
+      points: [
+        'Free Invoice Kit is for fast PDF invoices without installing another app or signing up.',
+        'Use it when you need a one-off or standalone invoice alongside your Shopify store.',
+        'The PDF is client-ready for email or download—you choose how to send it.',
+      ],
+      tone: 'quiet',
+    },
+    comparisonRows: [
+      { feature: 'Signup required', productValue: 'No', competitorValue: 'Shopify account' },
+      { feature: 'Time to first invoice', productValue: 'Immediate', competitorValue: 'Depends on store setup' },
+      { feature: 'Standalone PDF invoice', productValue: 'Yes', competitorValue: 'Via apps or built-in' },
+      { feature: 'Core cost', productValue: 'Free', competitorValue: 'Store + optional app' },
+    ],
+    fitCards: [
+      {
+        title: 'When Free Invoice Kit is better',
+        description:
+          'When you need a quick, professional PDF invoice for a buyer or partner without adding another Shopify app or subscription.',
+      },
+      {
+        title: 'When to use Shopify invoicing',
+        description:
+          'When you want invoicing fully inside the Shopify admin or tied to orders and payments in the same platform.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is Free Invoice Kit a Shopify app?',
+        answer:
+          'No. It is a standalone free invoice generator. You create the invoice in your browser, export the PDF, and use it however you need—email, download, or for your records—alongside your Shopify store.',
+      },
+      {
+        question: 'Can I use this for Shopify B2B or buyer invoices?',
+        answer:
+          'Yes. The PDF invoice includes your business details, line items, and totals in a format suitable for buyers or partners. You send or share the PDF yourself.',
+      },
+      {
+        question: 'Do I need a Shopify account to use Free Invoice Kit?',
+        answer:
+          'No. Free Invoice Kit does not require Shopify or any other platform. You can use it with or without a Shopify store.',
+      },
+    ],
+    faqTitle: 'Questions Shopify sellers ask about invoice generators',
+    relatedLinks: [
+      { href: '/compare/woocommerce', title: 'WooCommerce Invoice Generator', description: 'Same free PDF invoicing for WooCommerce store owners.' },
+      { href: '/compare/wordpress', title: 'WordPress Invoice Generator', description: 'Free invoice generator for WordPress users.' },
+      { href: '/invoice-generator/amazon-sellers', title: 'Invoice Generator for Amazon Sellers', description: 'Free invoicing for marketplace sellers.' },
+    ],
+    relatedTitle: 'More invoice generators for ecommerce and marketplaces',
+  },
+  {
+    slug: 'woocommerce',
+    path: '/compare/woocommerce',
+    lastModified: '2026-03-18',
+    title: 'Invoice Generator for WooCommerce | Free PDF Invoicing Without Plugins',
+    description:
+      'Need an invoice generator for WooCommerce? Free Invoice Kit creates professional PDF invoices you can send to customers or B2B—no WooCommerce plugin or signup required.',
+    h1: 'Invoice generator for WooCommerce store owners who want a clean PDF without another plugin.',
+    badge: 'Comparison',
+    intro:
+      'Free Invoice Kit is a standalone free invoice generator. Create a professional PDF invoice in your browser, download or share it by email, and use it for orders or B2B alongside your WooCommerce store—no plugin required.',
+    keywords: [
+      'invoice generator for woocommerce',
+      'woocommerce invoice generator',
+      'free invoice generator woocommerce',
+    ],
+    competitorName: 'WooCommerce',
+    primaryCta: { href: '/create', label: 'Create Free Invoice' },
+    secondaryCta: { href: '/compare/wordpress', label: 'Compare WordPress' },
+    heroAside: {
+      eyebrow: 'Best fit',
+      points: [
+        'Free Invoice Kit is for fast PDF invoices without installing a WooCommerce plugin.',
+        'Use it when you need a standalone or one-off invoice alongside your store.',
+        'The PDF is client-ready for email or download.',
+      ],
+      tone: 'quiet',
+    },
+    comparisonRows: [
+      { feature: 'Signup required', productValue: 'No', competitorValue: 'WooCommerce/site required' },
+      { feature: 'Time to first invoice', productValue: 'Immediate', competitorValue: 'Depends on site + plugin' },
+      { feature: 'Standalone PDF invoice', productValue: 'Yes', competitorValue: 'Via plugins' },
+      { feature: 'Core cost', productValue: 'Free', competitorValue: 'Hosting + optional plugin' },
+    ],
+    fitCards: [
+      {
+        title: 'When Free Invoice Kit is better',
+        description:
+          'When you want a quick, professional PDF invoice without adding or configuring another WooCommerce plugin.',
+      },
+      {
+        title: 'When to use WooCommerce invoicing plugins',
+        description:
+          'When you want invoicing fully inside WordPress/WooCommerce and tied to orders in the same system.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Is Free Invoice Kit a WooCommerce plugin?',
+        answer:
+          'No. It is a standalone free invoice generator. You create the invoice in your browser, export the PDF, and use it for customers or B2B alongside your WooCommerce store.',
+      },
+      {
+        question: 'Can I use this for WooCommerce order invoices?',
+        answer:
+          'Yes. You can create a PDF invoice with your business and line items and send or share it yourself. It is not automatically tied to WooCommerce orders—you use it as a separate tool.',
+      },
+      {
+        question: 'Do I need WordPress or WooCommerce to use Free Invoice Kit?',
+        answer:
+          'No. Free Invoice Kit works in any browser. You can use it with or without a WooCommerce store.',
+      },
+    ],
+    faqTitle: 'Questions WooCommerce users ask about invoice generators',
+    relatedLinks: [
+      { href: '/compare/wordpress', title: 'WordPress Invoice Generator', description: 'Free invoice generator for WordPress users.' },
+      { href: '/compare/shopify', title: 'Shopify Invoice Generator', description: 'Same free PDF invoicing for Shopify sellers.' },
+      { href: '/invoice-generator/small-business', title: 'Invoice Generator for Small Business', description: 'Free invoicing for small business.' },
+    ],
+    relatedTitle: 'More invoice generators for stores and small business',
+  },
+  {
+    slug: 'wordpress',
+    path: '/compare/wordpress',
+    lastModified: '2026-03-18',
+    title: 'Invoice Generator for WordPress Users | Free Online PDF Invoicing',
+    description:
+      'Need an invoice generator for WordPress? Free Invoice Kit creates professional PDF invoices in your browser—no WordPress plugin or signup. Works on any device.',
+    h1: 'Invoice generator for WordPress users who need a clean PDF without another plugin.',
+    badge: 'Comparison',
+    intro:
+      'Free Invoice Kit is a standalone free invoice generator that works in any browser. Create a professional PDF invoice, download or share it by email, and use it for clients or projects—with or without WordPress. No plugin or signup required.',
+    keywords: [
+      'invoice generator for wordpress',
+      'wordpress invoice generator',
+      'free invoice generator wordpress',
+    ],
+    competitorName: 'WordPress',
+    primaryCta: { href: '/create', label: 'Create Free Invoice' },
+    secondaryCta: { href: '/compare/woocommerce', label: 'Compare WooCommerce' },
+    heroAside: {
+      eyebrow: 'Best fit',
+      points: [
+        'Free Invoice Kit works in any browser—no WordPress site or plugin needed.',
+        'Use it when you want a quick PDF invoice without adding plugins to your site.',
+        'Works on PC, Mac, and mobile so you can invoice from any device.',
+      ],
+      tone: 'quiet',
+    },
+    comparisonRows: [
+      { feature: 'Signup required', productValue: 'No', competitorValue: 'Not for this tool' },
+      { feature: 'WordPress or plugin required', productValue: 'No', competitorValue: 'Plugins available' },
+      { feature: 'Works on any device', productValue: 'Yes', competitorValue: 'Depends on setup' },
+      { feature: 'Core cost', productValue: 'Free', competitorValue: 'Hosting + optional plugin' },
+    ],
+    fitCards: [
+      {
+        title: 'When Free Invoice Kit is better',
+        description:
+          'When you want a simple PDF invoice without installing or maintaining a WordPress plugin, or when you invoice from multiple devices.',
+      },
+      {
+        title: 'When to use WordPress invoicing plugins',
+        description:
+          'When you want invoicing fully inside your WordPress site and tied to your theme or other plugins.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'Do I need WordPress to use Free Invoice Kit?',
+        answer:
+          'No. Free Invoice Kit runs in your browser. You can use it with or without a WordPress site. It is not a WordPress plugin.',
+      },
+      {
+        question: 'Can I use this on my phone or only on desktop?',
+        answer:
+          'Yes. Free Invoice Kit works on PC, Mac, laptop, iPhone, and Android—any device with a modern browser. Create and export the PDF from any device.',
+      },
+      {
+        question: 'Is this an alternative to WordPress invoice plugins?',
+        answer:
+          'It is a standalone option. If you prefer not to add another plugin to your WordPress site, you can create invoices in Free Invoice Kit and share the PDF yourself.',
+      },
+    ],
+    faqTitle: 'Questions WordPress users ask about invoice generators',
+    relatedLinks: [
+      { href: '/compare/woocommerce', title: 'WooCommerce Invoice Generator', description: 'Free invoice generator for WooCommerce.' },
+      { href: '/compare/shopify', title: 'Shopify Invoice Generator', description: 'Free invoice generator for Shopify users.' },
+      { href: '/invoice-generator/freelancers', title: 'Invoice Generator for Freelancers', description: 'No-signup invoicing for freelancers.' },
+    ],
+    relatedTitle: 'More invoice generators for freelancers and stores',
+  },
 ];

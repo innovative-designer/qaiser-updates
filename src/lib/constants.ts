@@ -4,6 +4,16 @@ export const APP_TAGLINE = 'Free invoicing on WhatsApp';
 export const APP_DESCRIPTION =
   'Create professional PDF invoices and send them on WhatsApp in 30 seconds. No signup required. Free forever.';
 
+/** Optional: social / brand profile URLs for Organization schema (e.g. Twitter, LinkedIn). */
+export const ORGANIZATION_SAME_AS: string[] = [];
+
+/** Optional: support contact for Organization schema. Set when you want it in structured data. */
+export const ORGANIZATION_CONTACT_POINT: {
+  contactType?: string;
+  email?: string;
+  url?: string;
+} | null = null;
+
 export const MAX_INVOICES = 10;
 export const INVOICE_ID_LENGTH = 8;
 export const LINE_ITEM_ID_LENGTH = 6;

@@ -1528,4 +1528,170 @@ export const countryPages: CountryPageData[] = [
     ],
     relatedTitle: 'Related invoice guides for Italy freelancers',
   },
+  {
+    pageType: 'country',
+    slug: 'australia',
+    path: '/invoice-generator/australia',
+    lastModified: '2026-03-18',
+    title: 'Free Invoice Generator for Australia | Online AUD Invoice Maker',
+    description:
+      'Create AUD invoice PDFs online for free. Free Invoice Kit helps Australia-based freelancers and small businesses send clear invoices without signup.',
+    h1: 'Create AUD invoices quickly for Australia—freelancers and small business.',
+    badge: 'Australia',
+    intro:
+      'Free Invoice Kit helps Australia-based freelancers and sole traders create clear AUD invoices, export the PDF, and send it by WhatsApp or email without a billing suite or signup.',
+    keywords: [
+      'invoice generator for australia',
+      'free invoice generator for australia',
+      'aud invoice maker',
+      'invoice maker australia',
+    ],
+    locale: 'en_AU',
+    alternatesLanguages: {
+      'en-AU': '/invoice-generator/australia',
+      en: '/invoice-generator/australia',
+    },
+    primaryCta: { href: '/create', label: 'Create Invoice in AUD' },
+    secondaryCta: { href: '/send-invoice-whatsapp', label: 'See WhatsApp workflow' },
+    heroAside: {
+      eyebrow: 'Why Australia users use it',
+      points: [
+        'AUD support keeps the invoice ready from the first export.',
+        'The builder works well for freelancers and sole traders who invoice from a phone or laptop.',
+        'A clean PDF is easy to send after a project handoff or client approval.',
+      ],
+      tone: 'quiet',
+    },
+    highlightCards: [
+      { title: 'AUD-ready output', description: 'Create invoices in Australian dollars without manual formatting.', icon: 'receipt' },
+      { title: 'Phone-friendly workflow', description: 'Useful for freelancers invoicing between messages and delivery updates.', icon: 'smartphone' },
+      { title: 'Fast PDF sharing', description: 'Generate the invoice PDF and send it through chat or email.', icon: 'message-circle' },
+    ],
+    contextPanel: {
+      eyebrow: 'Australia freelancer context',
+      title: 'A lot of Australia-based freelance invoicing happens right around project delivery or milestone approval.',
+      body: [
+        'Freelancers and sole traders often need a professional invoice PDF as soon as the work is done, not after opening a larger accounting setup.',
+        'Free Invoice Kit keeps the path narrow: create the invoice in AUD, export the PDF, and send it while the client conversation is still active.',
+      ],
+    },
+    nuancePanel: {
+      eyebrow: 'Practical fit',
+      title: 'A clear AUD invoice is easier to approve and pay when it arrives quickly.',
+      body: [
+        'When client communication already happens in email or chat, a polished PDF invoice often matters more than a full billing dashboard.',
+      ],
+      tone: 'quiet',
+    },
+    valuePanel: {
+      eyebrow: 'Why this matters',
+      title: 'A shorter invoice step helps you get paid without turning billing into admin backlog.',
+      body: [
+        'Free Invoice Kit keeps the invoice step focused so you can create the PDF, reuse saved details, and move on.',
+      ],
+    },
+    ctaPanel: {
+      eyebrow: 'Start now',
+      title: 'Create an AUD invoice and send it while the project details are still fresh.',
+      body: ['Open the builder, add your client and line items, then export a polished PDF.'],
+      tone: 'accent',
+      buttonHref: '/create',
+      buttonLabel: 'Open Invoice Builder',
+    },
+    faqs: [
+      { question: 'Can I create invoices in AUD?', answer: 'Yes. Free Invoice Kit supports AUD so you can generate invoice PDFs for Australia-based work.' },
+      { question: 'Is this useful for Australian freelancers and sole traders?', answer: 'Yes. The workflow is built for freelancers and small service businesses that want quick invoice creation without signup.' },
+      { question: 'Can I save invoice details in my browser?', answer: 'Yes. Business details and drafts can stay in your browser on the same device.' },
+    ],
+    faqTitle: 'Common questions from Australia-based users',
+    relatedLinks: [
+      { href: '/invoice-generator/uk', title: 'Invoice Generator UK', description: 'Compare another English-speaking market with GBP invoicing.' },
+      { href: '/invoice-generator/sole-traders', title: 'Invoice Generator for Sole Traders', description: 'Same workflow for sole traders and self-employed.' },
+      { href: '/send-invoice-whatsapp', title: 'Send Invoice on WhatsApp', description: 'Learn how to send invoice PDFs in chat.' },
+    ],
+    relatedTitle: 'Related invoice guides for Australia',
+  },
+  {
+    pageType: 'country',
+    slug: 'uk',
+    path: '/invoice-generator/uk',
+    lastModified: '2026-03-18',
+    title: 'Free Invoice Generator for UK | Online GBP Invoice Maker for Freelancers',
+    description:
+      'Create GBP invoice PDFs online for free. Free Invoice Kit helps UK freelancers and sole traders send clear invoices without signup.',
+    h1: 'Create GBP invoices quickly for the UK—freelancers and sole traders.',
+    badge: 'UK',
+    intro:
+      'Free Invoice Kit helps UK-based freelancers and sole traders create clear GBP invoices, export the PDF, and send it by WhatsApp or email without a billing suite or signup.',
+    keywords: [
+      'invoice generator for uk',
+      'free invoice generator for uk',
+      'gbp invoice maker',
+      'invoice maker uk freelancer',
+    ],
+    locale: 'en_GB',
+    alternatesLanguages: {
+      'en-GB': '/invoice-generator/uk',
+      en: '/invoice-generator/uk',
+    },
+    primaryCta: { href: '/create', label: 'Create Invoice in GBP' },
+    secondaryCta: { href: '/send-invoice-whatsapp', label: 'See WhatsApp workflow' },
+    heroAside: {
+      eyebrow: 'Why UK users use it',
+      points: [
+        'GBP support keeps the invoice ready from the first export.',
+        'The builder works well for freelancers and sole traders who invoice from a phone or laptop.',
+        'A clean PDF is easy to send after a project handoff or client approval.',
+      ],
+      tone: 'quiet',
+    },
+    highlightCards: [
+      { title: 'GBP-ready output', description: 'Create invoices in British pounds without manual formatting.', icon: 'receipt' },
+      { title: 'Phone-friendly workflow', description: 'Useful for freelancers invoicing between messages and delivery updates.', icon: 'smartphone' },
+      { title: 'Fast PDF sharing', description: 'Generate the invoice PDF and send it through chat or email.', icon: 'message-circle' },
+    ],
+    contextPanel: {
+      eyebrow: 'UK freelancer context',
+      title: 'A lot of UK-based freelance invoicing happens right around project delivery or milestone approval.',
+      body: [
+        'Freelancers and sole traders often need a professional invoice PDF as soon as the work is done, not after opening a larger accounting setup.',
+        'Free Invoice Kit keeps the path narrow: create the invoice in GBP, export the PDF, and send it while the client conversation is still active.',
+      ],
+    },
+    nuancePanel: {
+      eyebrow: 'Practical fit',
+      title: 'A clear GBP invoice is easier to approve and pay when it arrives quickly.',
+      body: [
+        'When client communication already happens in email or chat, a polished PDF invoice often matters more than a full billing dashboard.',
+      ],
+      tone: 'quiet',
+    },
+    valuePanel: {
+      eyebrow: 'Why this matters',
+      title: 'A shorter invoice step helps you get paid without turning billing into admin backlog.',
+      body: [
+        'Free Invoice Kit keeps the invoice step focused so you can create the PDF, reuse saved details, and move on.',
+      ],
+    },
+    ctaPanel: {
+      eyebrow: 'Start now',
+      title: 'Create a GBP invoice and send it while the project details are still fresh.',
+      body: ['Open the builder, add your client and line items, then export a polished PDF.'],
+      tone: 'accent',
+      buttonHref: '/create',
+      buttonLabel: 'Open Invoice Builder',
+    },
+    faqs: [
+      { question: 'Can I create invoices in GBP?', answer: 'Yes. Free Invoice Kit supports GBP so you can generate invoice PDFs for UK-based work.' },
+      { question: 'Is this useful for UK freelancers and sole traders?', answer: 'Yes. The workflow is built for freelancers and small service businesses that want quick invoice creation without signup.' },
+      { question: 'Can I save invoice details in my browser?', answer: 'Yes. Business details and drafts can stay in your browser on the same device.' },
+    ],
+    faqTitle: 'Common questions from UK-based users',
+    relatedLinks: [
+      { href: '/invoice-generator/australia', title: 'Invoice Generator Australia', description: 'Compare another English-speaking market with AUD invoicing.' },
+      { href: '/invoice-generator/sole-traders', title: 'Invoice Generator for Sole Traders', description: 'Same workflow for sole traders and self-employed.' },
+      { href: '/send-invoice-whatsapp', title: 'Send Invoice on WhatsApp', description: 'Learn how to send invoice PDFs in chat.' },
+    ],
+    relatedTitle: 'Related invoice guides for UK',
+  },
 ];

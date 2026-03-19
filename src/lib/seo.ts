@@ -4,6 +4,67 @@ import { APP_NAME, APP_URL } from '@/lib/constants';
 
 export type JsonLdObject = Record<string, unknown>;
 
+/** Optional Organization schema options (logo, sameAs, contactPoint). */
+export interface OrganizationSchemaOptions {
+  contactPoint?: {
+    contactType?: string;
+    email?: string;
+    url?: string;
+  };
+  logo?: string;
+  sameAs?: string[];
+}
+
+/** Optional WebSite schema options (e.g. for future searchAction). */
+export interface WebSiteSchemaOptions {
+  description?: string;
+}
+
+export function buildOrganizationSchema(options?: OrganizationSchemaOptions): JsonLdObject {
+  const logoUrl = options?.logo ? toAbsoluteUrl(options.logo) : `${APP_URL}/icon-192.png`;
+  const org: JsonLdObject = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: APP_NAME,
+    url: APP_URL,
+    logo: {
+      '@type': 'ImageObject',
+      url: logoUrl,
+    },
+  };
+  if (options?.sameAs?.length) {
+    org.sameAs = options.sameAs;
+  }
+  if (options?.contactPoint) {
+    org.contactPoint = {
+      '@type': 'ContactPoint',
+      contactType: options.contactPoint.contactType ?? 'customer service',
+      ...(options.contactPoint.email ? { email: options.contactPoint.email } : {}),
+      ...(options.contactPoint.url ? { url: options.contactPoint.url } : {}),
+    };
+  }
+  return org;
+}
+
+export function buildWebSiteSchema(options?: WebSiteSchemaOptions): JsonLdObject {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: APP_NAME,
+    url: APP_URL,
+    ...(options?.description ? { description: options.description } : {}),
+    publisher: {
+      '@type': 'Organization',
+      name: APP_NAME,
+      url: APP_URL,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${APP_URL}/icon-192.png`,
+      },
+    },
+  };
+}
+
 export interface BreadcrumbItem {
   name: string;
   item: string;

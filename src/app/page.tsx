@@ -6,6 +6,7 @@ import {
   Globe2,
   MessageCircleMore,
   ReceiptText,
+  Smartphone,
   WalletCards,
   Wifi,
   Zap,
@@ -21,12 +22,23 @@ import { ProWaitlistBanner } from '@/components/pro-waitlist-banner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { APP_DESCRIPTION, APP_NAME, APP_TAGLINE, APP_URL } from '@/lib/constants';
+import {
+  buildOrganizationSchema,
+  buildWebSiteSchema,
+} from '@/lib/seo';
+import {
+  APP_DESCRIPTION,
+  APP_NAME,
+  APP_TAGLINE,
+  APP_URL,
+  ORGANIZATION_CONTACT_POINT,
+  ORGANIZATION_SAME_AS,
+} from '@/lib/constants';
 
 export const metadata: Metadata = {
   title: 'Free Invoice Generator | PDF Invoice Maker for Freelancers',
   description:
-    'Create professional invoice PDFs for free. Free Invoice Kit helps freelancers and small businesses generate invoices, download PDFs, and share them by WhatsApp or email.',
+    'Create professional invoice PDFs for free—works on PC, Mac, iPhone, and Android. Free Invoice Kit helps freelancers and small businesses generate invoices, download PDFs, and share them by WhatsApp or email.',
   keywords: [
     'free invoice generator',
     'pdf invoice maker',
@@ -40,7 +52,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Free Invoice Generator | PDF Invoice Maker for Freelancers',
     description:
-      'Create professional invoice PDFs for free and share them by WhatsApp or email without signup.',
+      'Create professional invoice PDFs for free—works on PC, Mac, iPhone, and Android. Share by WhatsApp or email without signup.',
     url: `${APP_URL}/`,
   },
 };
@@ -70,6 +82,12 @@ const highlights = [
     icon: Zap,
   },
   {
+    title: 'Works on any device',
+    description:
+      'Create and export invoice PDFs from your laptop, PC, Mac, iPhone, or Android—no separate app, just a modern browser.',
+    icon: Smartphone,
+  },
+  {
     title: 'Works offline',
     description:
       'Invoices stay available locally in your browser, even when your connection is weak.',
@@ -93,6 +111,11 @@ const useCases = [
     href: '/free-invoice-maker-freelancers',
     title: 'For freelancers',
     description: 'Fast invoicing without turning your client work into bookkeeping admin.',
+  },
+  {
+    href: '/invoice-generator/small-business',
+    title: 'For small business',
+    description: 'Free online invoice generator for small businesses and sole traders—no signup.',
   },
   {
     href: '/send-invoice-whatsapp',
@@ -127,25 +150,32 @@ const stats = [
   { label: 'Primary workflow', value: 'Phone-first' },
 ];
 
+const homeSchemas = [
+  buildOrganizationSchema({
+    ...(ORGANIZATION_SAME_AS.length > 0 ? { sameAs: ORGANIZATION_SAME_AS } : {}),
+    ...(ORGANIZATION_CONTACT_POINT ? { contactPoint: ORGANIZATION_CONTACT_POINT } : {}),
+  }),
+  buildWebSiteSchema({ description: APP_DESCRIPTION }),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: APP_NAME,
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+    },
+    description: APP_DESCRIPTION,
+    url: APP_URL,
+  },
+];
+
 export default function Home() {
   return (
     <div className="min-h-screen">
-      <JsonLd
-        data={{
-          '@context': 'https://schema.org',
-          '@type': 'SoftwareApplication',
-          name: APP_NAME,
-          applicationCategory: 'BusinessApplication',
-          operatingSystem: 'Web',
-          offers: {
-            '@type': 'Offer',
-            price: '0',
-            priceCurrency: 'USD',
-          },
-          description: APP_DESCRIPTION,
-          url: APP_URL,
-        }}
-      />
+      <JsonLd data={homeSchemas} />
 
       <Header />
 
